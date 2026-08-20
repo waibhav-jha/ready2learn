@@ -3738,6 +3738,10 @@ CONTENT.a60 = {
 // =============================================================================
 // STORAGE, STATE & CLOUD SYNC ENGINE
 // =============================================================================
+const API_BASE = (typeof window !== "undefined" && window.location && window.location.hostname.includes("github.io"))
+  ? (localStorage.getItem("r2lk_api_base") || "")
+  : "";
+
 const STORAGE_KEY = "r2lk_progress_v1";
 let progress = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
 
@@ -3991,34 +3995,44 @@ function initAuth(){
 // Auth modal state controls
 function openAuthModal(tab = "login"){
   const overlay = document.getElementById("authModalOverlay");
-  overlay.style.display = "flex";
+  if(overlay) overlay.style.display = "flex";
   switchAuthTab(tab);
 }
 
 function closeAuthModal(){
-  document.getElementById("authModalOverlay").style.display = "none";
-  document.getElementById("loginError").style.display = "none";
-  document.getElementById("signupError").style.display = "none";
+  const overlay = document.getElementById("authModalOverlay");
+  const loginErr = document.getElementById("loginError");
+  const signupErr = document.getElementById("signupError");
+  if(overlay) overlay.style.display = "none";
+  if(loginErr) loginErr.style.display = "none";
+  if(signupErr) signupErr.style.display = "none";
 }
 
 function switchAuthTab(tab){
   const isLogin = tab === "login";
-  document.getElementById("tabLogin").classList.toggle("active", isLogin);
-  document.getElementById("tabSignup").classList.toggle("active", !isLogin);
-  document.getElementById("loginForm").style.display = isLogin ? "block" : "none";
-  document.getElementById("signupForm").style.display = isLogin ? "none" : "block";
-  document.getElementById("authModalTitle").textContent = isLogin ? "Sign In to Your Account" : "Create Ready2Learn Account";
-  document.getElementById("authModalSub").textContent = isLogin
+  const tabLogin = document.getElementById("tabLogin");
+  const tabSignup = document.getElementById("tabSignup");
+  const loginForm = document.getElementById("loginForm");
+  const signupForm = document.getElementById("signupForm");
+  const titleEl = document.getElementById("authModalTitle");
+  const subEl = document.getElementById("authModalSubtitle");
+
+  if(tabLogin) tabLogin.classList.toggle("active", isLogin);
+  if(tabSignup) tabSignup.classList.toggle("active", !isLogin);
+  if(loginForm) loginForm.style.display = isLogin ? "block" : "none";
+  if(signupForm) signupForm.style.display = isLogin ? "none" : "block";
+  if(titleEl) titleEl.textContent = isLogin ? "Sign In to Your Account" : "Create Ready2Learn Account";
+  if(subEl) subEl.textContent = isLogin
     ? "Access your child's saved milestones and unlocked stages across devices."
     : "Sync progress seamlessly across devices with cloud backup.";
 }
 
-document.getElementById("closeAuthModal").addEventListener("click", closeAuthModal);
-document.getElementById("authModalOverlay").addEventListener("click", (e)=>{
+document.getElementById("closeAuthModal")?.addEventListener("click", closeAuthModal);
+document.getElementById("authModalOverlay")?.addEventListener("click", (e)=>{
   if(e.target === document.getElementById("authModalOverlay")) closeAuthModal();
 });
-document.getElementById("tabLogin").addEventListener("click", ()=>openAuthModal("login"));
-document.getElementById("tabSignup").addEventListener("click", ()=>openAuthModal("signup"));
+document.getElementById("tabLogin")?.addEventListener("click", ()=>openAuthModal("login"));
+document.getElementById("tabSignup")?.addEventListener("click", ()=>openAuthModal("signup"));
 
 // Login Form Submit
 document.getElementById("loginForm").addEventListener("submit", (e)=>{
@@ -4148,7 +4162,7 @@ function startPurchase(bandId, buttonEl, email){
   const headers = { "Content-Type": "application/json" };
   if(getAuthToken()) headers["Authorization"] = "Bearer " + getAuthToken();
 
-  fetch("/api/create-order", {
+  fetch((API_BASE || "") + "/api/create-order", {
     method: "POST",
     headers,
     body: JSON.stringify({ amount: band.price, bandId })
@@ -4167,7 +4181,7 @@ function startPurchase(bandId, buttonEl, email){
         prefill: { email: email || (currentUser ? currentUser.email : "") },
         theme: { color: "#FF5A2E" },
         handler: function(response){
-          fetch("/api/verify-payment", {
+          fetch((API_BASE || "") + "/api/verify-payment", {
             method: "POST",
             headers,
             body: JSON.stringify({
@@ -4216,7 +4230,7 @@ function startPurchase(bandId, buttonEl, email){
 function restorePurchase(email, statusEl){
   statusEl.textContent = "Looking up your purchase\u2026";
   statusEl.style.display = "block";
-  fetch("/api/restore-purchase", {
+  fetch((API_BASE || "") + "/api/restore-purchase", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email })
