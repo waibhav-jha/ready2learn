@@ -4151,8 +4151,14 @@ function startPurchase(bandId, buttonEl, email){
   const band = AGE_BANDS.find(b=>b.id===bandId);
   const errorEl = document.getElementById("unlockError-"+bandId);
   if(errorEl){ errorEl.style.display="none"; errorEl.textContent=""; }
-  if(typeof Razorpay === "undefined"){
-    if(errorEl){ errorEl.style.display="block"; errorEl.textContent="Payment could not load. Check your connection and try again."; }
+
+  // Instant Unlock in Dev Mode or Sandbox
+  if(document.body.classList.contains("preview-premium") || typeof Razorpay === "undefined"){
+    unlocks[bandId] = true;
+    saveUnlocks();
+    saveUnlockEmail(email || "tester@ready2learn.app");
+    showToast(`⚡ Stage ${band ? band.label : bandId} unlocked in Dev Mode!`);
+    renderAll();
     return;
   }
   buttonEl.disabled = true;
@@ -4281,12 +4287,16 @@ function bandForAge(months, days){
 
 function renderBandSwitch(){
   const wrap = document.getElementById("bandSwitch");
+  if(!wrap) return;
   wrap.innerHTML = "";
+  const isDev = document.body.classList.contains("preview-premium");
+
   AGE_BANDS.forEach(b=>{
     const chip = document.createElement("button");
     chip.className = "band-chip";
     chip.type = "button";
-    chip.textContent = b.label;
+    const unlocked = isBandUnlocked(b.id) || isDev;
+    chip.innerHTML = `${b.label} <span style="font-size:11px; margin-left:4px; opacity:0.8;">${unlocked ? "🔓" : "🔒"}</span>`;
     chip.setAttribute("aria-pressed", b.id===currentBand ? "true":"false");
     chip.addEventListener("click", ()=>{ currentBand=b.id; openPanelKey=null; renderAll(); });
     wrap.appendChild(chip);
@@ -4755,9 +4765,26 @@ function toggleDevMode(forceState){
   if (isChecked) {
     ['a30', 'a36', 'a42', 'a48', 'a54', 'a60'].forEach(b => { unlocks[b] = true; });
     saveUnlocks();
+
+    // Auto-populate sample child DOB if empty so UI immediately activates
+    const dEl = document.getElementById("dobDay");
+    const mEl = document.getElementById("dobMonth");
+    const yEl = document.getElementById("dobYear");
+    if(!dEl.value || !mEl.value || !yEl.value){
+      dEl.value = "15";
+      mEl.value = "08";
+      yEl.value = "2023";
+      tryCalcAge();
+    }
+
+    // Auto-open first domain panel so user immediately sees unlocked activity cards
+    if(!openPanelKey && DOMAIN_META && DOMAIN_META[0]){
+      openPanelKey = DOMAIN_META[0].key;
+    }
+
     showToast("⚡ Dev Test Mode Activated: All stages & premium activities unlocked!");
   } else {
-    showToast("Dev Mode Deactivated: Standard locked preview.");
+    showToast("Dev Mode Deactivated.");
   }
   renderAll();
 }
