@@ -8,7 +8,7 @@ const http = require('http');
 const app = require('./server');
 
 let server;
-const TEST_PORT = 5055;
+const TEST_PORT = process.env.PORT || 5055;
 
 function request(method, path, body = null, token = null) {
   return new Promise((resolve, reject) => {
