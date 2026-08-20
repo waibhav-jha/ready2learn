@@ -105,6 +105,20 @@
   }
   .dev-toggle input{accent-color:var(--accent);}
 
+  /* Back to Main Site Link */
+  .nav-back-link {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: rgba(74, 35, 110, 0.06); color: var(--text-primary);
+    border: 1px solid rgba(74, 35, 110, 0.12);
+    padding: 7px 14px; border-radius: var(--radius-full);
+    font-size: 13px; font-weight: 700; text-decoration: none;
+    transition: var(--transition);
+  }
+  .nav-back-link:hover {
+    background: var(--text-primary); color: #fff;
+    transform: translateX(-2px); box-shadow: var(--shadow-sm);
+  }
+
   /* Dev Mode Controls & Banner */
   .dev-pill-btn {
     display: inline-flex; align-items: center; gap: 6px;
@@ -883,20 +897,24 @@
 
 <header>
   <div class="header-inner">
-    <div class="brand">
-      <div class="brand-mark">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c-1 3-4 3.5-4 7a4 4 0 0 0 8 0c0-3.5-3-4-4-7Z"/><path d="M12 14v7"/><path d="M9 21h6"/></svg>
-      </div>
-      <div>
-        <h1>Ready2LearnKids</h1>
-        <div class="sub">School Readiness Tracker</div>
+    <div style="display:flex; align-items:center; gap:16px;">
+      <a href="../index.html" class="nav-back-link" title="Return to Dr. Chitra Sankar Clinic Website">
+        <i class="fas fa-arrow-left"></i> <span>Back to Main Site</span>
+      </a>
+      <div class="brand">
+        <div class="brand-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c-1 3-4 3.5-4 7a4 4 0 0 0 8 0c0-3.5-3-4-4-7Z"/><path d="M12 14v7"/><path d="M9 21h6"/></svg>
+        </div>
+        <div>
+          <h1>Ready2LearnKids</h1>
+          <div class="sub">School Readiness Tracker</div>
+        </div>
       </div>
     </div>
     <div class="header-actions">
       <button type="button" class="dev-pill-btn" id="devPillBtn" title="Toggle Developer Testing Mode">
-        <i class="fas fa-flask"></i> <span>Dev Test</span>
+        <i class="fas fa-flask"></i> <span id="devPillText">Dev Test</span>
       </button>
-      <label class="dev-toggle" style="display:none;"><input type="checkbox" id="devPreview"> Dev test</label>
       <div id="headerAuthArea">
         <button class="auth-header-btn" id="openAuthBtn" type="button">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -3752,13 +3770,22 @@ function saveProgress(){
 
 // ---- Unlock storage ----
 const UNLOCK_KEY = "r2lk_unlocks_v1";
-let unlocks = JSON.parse(localStorage.getItem(UNLOCK_KEY) || '{"a30":true}');
+let rawUnlocks = {};
+try {
+  rawUnlocks = JSON.parse(localStorage.getItem(UNLOCK_KEY) || '{"a30":true}');
+} catch(e) {
+  rawUnlocks = { a30: true };
+}
+let unlocks = (rawUnlocks && typeof rawUnlocks === "object") ? rawUnlocks : { a30: true };
+
 function saveUnlocks(){
   localStorage.setItem(UNLOCK_KEY, JSON.stringify(unlocks));
   syncWithCloud(true);
 }
 function isBandUnlocked(bandId){
-  return bandId === "a30" || !!unlocks[bandId] || document.body.classList.contains("preview-premium");
+  if (bandId === "a30") return true; // Stage 30m is always free
+  if (document.body.classList.contains("preview-premium")) return true; // Dev preview active
+  return !!unlocks[bandId]; // Real user purchase
 }
 
 const EMAIL_KEY = "r2lk_email_v1";
@@ -3901,6 +3928,11 @@ function setSyncIndicator(state, label){
 
 function syncWithCloud(immediate = false){
   if(!currentUser || !getAuthToken()) return;
+  // If running on GitHub Pages without a remote backend URL, operate in local mode
+  if(window.location.hostname.includes("github.io") && !API_BASE){
+    setSyncIndicator("synced", "Saved on this device (Browser Storage)");
+    return;
+  }
 
   if(syncDebounceTimer) clearTimeout(syncDebounceTimer);
 
@@ -3958,6 +3990,11 @@ function initAuth(){
   renderHeaderAuth();
   const token = getAuthToken();
   if(!token) return;
+
+  if(window.location.hostname.includes("github.io") && !API_BASE){
+    setSyncIndicator("synced", "Saved on this device (Browser Storage)");
+    return;
+  }
 
   fetch((API_BASE || "") + "/api/user/sync", {
     headers: { "Authorization": "Bearer " + token }
@@ -4754,19 +4791,16 @@ function toggleDevMode(forceState){
   const isChecked = typeof forceState === "boolean" ? forceState : !document.body.classList.contains("preview-premium");
   document.body.classList.toggle("preview-premium", isChecked);
   
-  const devToggle = document.getElementById("devPreview");
   const devBar = document.getElementById("devToolbar");
   const devPill = document.getElementById("devPillBtn");
+  const devPillText = document.getElementById("devPillText");
 
-  if(devToggle) devToggle.checked = isChecked;
   if(devBar) devBar.style.display = isChecked ? "flex" : "none";
   if(devPill) devPill.classList.toggle("active", isChecked);
+  if(devPillText) devPillText.textContent = isChecked ? "Dev Mode: ON" : "Dev Test";
   
   if (isChecked) {
-    ['a30', 'a36', 'a42', 'a48', 'a54', 'a60'].forEach(b => { unlocks[b] = true; });
-    saveUnlocks();
-
-    // Auto-populate sample child DOB if empty so UI immediately activates
+    // If DOB is blank, populate sample child so the 36m stage is shown
     const dEl = document.getElementById("dobDay");
     const mEl = document.getElementById("dobMonth");
     const yEl = document.getElementById("dobYear");
@@ -4776,15 +4810,16 @@ function toggleDevMode(forceState){
       yEl.value = "2023";
       tryCalcAge();
     }
-
-    // Auto-open first domain panel so user immediately sees unlocked activity cards
+    // Auto-open first panel if none is open
     if(!openPanelKey && DOMAIN_META && DOMAIN_META[0]){
       openPanelKey = DOMAIN_META[0].key;
     }
-
-    showToast("⚡ Dev Test Mode Activated: All stages & premium activities unlocked!");
+    showToast("⚡ Dev Test Mode ON: All stages & activities unblurred!");
   } else {
-    showToast("Dev Mode Deactivated.");
+    // Clean mock unlocks from local storage so stages properly re-lock & blur
+    unlocks = { a30: true };
+    localStorage.setItem(UNLOCK_KEY, JSON.stringify(unlocks));
+    showToast("🔒 Dev Test Mode OFF: Premium stages locked & blurred.");
   }
   renderAll();
 }
@@ -4829,18 +4864,25 @@ function devResetData(){
     progress = {};
     unlocks = { a30: true };
     localStorage.removeItem(STORAGE_KEY);
-    localStorage.removeItem(UNLOCK_KEY);
+    localStorage.setItem(UNLOCK_KEY, JSON.stringify({ a30: true }));
+    document.body.classList.remove("preview-premium");
+    const devPill = document.getElementById("devPillBtn");
+    const devPillText = document.getElementById("devPillText");
+    const devBar = document.getElementById("devToolbar");
+    if (devPill) devPill.classList.remove("active");
+    if (devPillText) devPillText.textContent = "Dev Test";
+    if (devBar) devBar.style.display = "none";
     document.getElementById("dobDay").value = "";
     document.getElementById("dobMonth").value = "";
     document.getElementById("dobYear").value = "";
-    showToast("🔄 All test data reset.");
+    openPanelKey = null;
+    showToast("🔄 All test data reset to initial state.");
     renderAll();
   }
 }
 
 // Dev Event Listeners
 document.getElementById("devPillBtn")?.addEventListener("click", ()=>toggleDevMode());
-document.getElementById("devPreview")?.addEventListener("change", (e)=>toggleDevMode(e.target.checked));
 document.getElementById("btnDevLoadSample")?.addEventListener("click", loadSampleChild);
 document.getElementById("btnDevUnlockAll")?.addEventListener("click", devUnlockAllStages);
 document.getElementById("btnDevSimPayment")?.addEventListener("click", devSimulatePayment);
