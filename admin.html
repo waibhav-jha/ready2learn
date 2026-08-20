@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Admin Dashboard & Portal | Dr. Chitra Sankar Practice</title>
+
+  <!-- Google Fonts & FontAwesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="admin-body">
+
+  <!-- PIN LOCK SCREEN GATE -->
+  <div class="admin-lock-overlay" id="admin-lock-screen">
+    <div class="admin-lock-card">
+      <div class="lock-icon-wrap"><i class="fas fa-lock"></i></div>
+      <h2>Dr. Chitra Sankar Admin Portal</h2>
+      <p>Enter administrative Security PIN to access practice analytics, waitlists, and content management.</p>
+      
+      <form id="admin-pin-form" style="margin-top:24px;">
+        <div class="form-group">
+          <input type="password" id="admin-pin-input" class="form-control" placeholder="Enter PIN (Default: 2026)" maxlength="8" required style="text-align:center; font-size:1.4rem; letter-spacing:0.2em;">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%; margin-top:12px;">Unlock Portal <i class="fas fa-arrow-right"></i></button>
+      </form>
+      <div id="pin-error-msg" style="color:#D32F2F; font-size:0.85rem; font-weight:700; margin-top:12px; display:none;">
+        <i class="fas fa-exclamation-circle"></i> Invalid Security PIN. Please try again.
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN ADMIN PORTAL (HIDDEN UNTIL UNLOCKED) -->
+  <div class="admin-app-wrapper" id="admin-app-wrapper" style="display:none;">
+    
+    <!-- ADMIN NAVBAR -->
+    <nav class="admin-navbar">
+      <div class="container nav-container">
+        <div class="brand-logo">
+          <div class="logo-icon-wrap"><i class="fas fa-user-shield"></i></div>
+          <div class="logo-text-group">
+            <h1>Dr. Chitra Sankar</h1>
+            <span>Practice Management Portal</span>
+          </div>
+        </div>
+
+        <ul class="admin-nav-links">
+          <li><a href="#admin-analytics" class="active"><i class="fas fa-chart-line"></i> Analytics</a></li>
+          <li><a href="#admin-waitlist"><i class="fas fa-clock"></i> Waitlist Queue</a></li>
+          <li><a href="#admin-content"><i class="fas fa-edit"></i> Manage Content</a></li>
+          <li><a href="#admin-orders"><i class="fas fa-receipt"></i> Sales & Invoices</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <a href="index.html" target="_blank" class="btn btn-outline-purple" style="padding:8px 18px; font-size:0.85rem;"><i class="fas fa-external-link-alt"></i> View Main Site</a>
+          <button class="btn btn-primary" onclick="lockAdminPortal()" style="padding:8px 18px; font-size:0.85rem;"><i class="fas fa-sign-out-alt"></i> Lock Portal</button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ADMIN CONTENT CONTAINER -->
+    <main class="container section-padding" style="padding-top:120px;">
+
+      <!-- SECTION 1: OVERVIEW METRICS CARDS -->
+      <section id="admin-analytics" class="admin-section">
+        <div class="admin-section-header">
+          <div>
+            <h2>Practice Analytics & Engagement</h2>
+            <p>Real-time insights on digital store sales, resource downloads, and parent interactions.</p>
+          </div>
+          <div style="display:flex; gap:10px;">
+            <button class="btn btn-outline-purple" onclick="clearAnalyticsLogs()"><i class="fas fa-trash-can"></i> Clear Logs</button>
+            <button class="btn btn-primary" onclick="loadDashboardData()"><i class="fas fa-sync"></i> Refresh Data</button>
+          </div>
+        </div>
+
+
+        <div class="admin-metrics-grid">
+          <div class="admin-metric-card">
+            <div class="metric-icon-wrap" style="background:#E8F5E9; color:#2E7D32;"><i class="fas fa-indian-rupee-sign"></i></div>
+            <div class="metric-data">
+              <span class="metric-label">Total Revenue</span>
+              <h3 id="stat-total-revenue">₹0</h3>
+              <span class="metric-sub">From Razorpay Store Sales</span>
+            </div>
+          </div>
+
+          <div class="admin-metric-card">
+            <div class="metric-icon-wrap" style="background:var(--soft-pink); color:var(--accent);"><i class="fas fa-shopping-bag"></i></div>
+            <div class="metric-data">
+              <span class="metric-label">Total Orders</span>
+              <h3 id="stat-total-orders">0</h3>
+              <span class="metric-sub">Digital Resources Distributed</span>
+            </div>
+          </div>
+
+          <div class="admin-metric-card">
+            <div class="metric-icon-wrap" style="background:var(--lavender); color:var(--text-primary);"><i class="fas fa-user-clock"></i></div>
+            <div class="metric-data">
+              <span class="metric-label">Waitlist Registrations</span>
+              <h3 id="stat-waitlist-count">0</h3>
+              <span class="metric-sub">Priority Consult Inquiries</span>
+            </div>
+          </div>
+
+          <div class="admin-metric-card">
+            <div class="metric-icon-wrap" style="background:#FFF3E0; color:#E65100;"><i class="fas fa-mouse-pointer"></i></div>
+            <div class="metric-data">
+              <span class="metric-label">Resource & Blog Clicks</span>
+              <h3 id="stat-total-clicks">0</h3>
+              <span class="metric-sub">Total Parent Engagement</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CLICK ANALYTICS BREAKDOWN TABLE -->
+        <div class="admin-card-box" style="margin-top:32px;">
+          <div class="box-header-row">
+            <h3><i class="fas fa-chart-pie" style="color:var(--accent);"></i> Content Item Click Breakdown</h3>
+            <span class="badge badge-purple">Live Interaction Logs</span>
+          </div>
+
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Content Item / Resource Title</th>
+                <th>Category</th>
+                <th style="text-align:center;">Type</th>
+                <th style="text-align:right;">Total Clicks / Views</th>
+              </tr>
+            </thead>
+            <tbody id="analytics-click-table-body">
+              <!-- Dynamically populated via admin.js -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SECTION 2: APPOINTMENT CONSULTATION WAITLIST QUEUE -->
+      <section id="admin-waitlist" class="admin-section" style="margin-top:64px;">
+        <div class="admin-section-header">
+          <div>
+            <h2>Priority Consultation Waitlist Queue</h2>
+            <p>Manage parent consultation booking requests for Dr. Chitra Sankar.</p>
+          </div>
+          <button class="btn btn-primary" onclick="exportWaitlistCSV()"><i class="fas fa-file-csv"></i> Export to CSV</button>
+        </div>
+
+        <div class="admin-card-box">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Parent Name</th>
+                <th>Contact Details</th>
+                <th>Child's Age</th>
+                <th>Referral / Topic</th>
+                <th>Date Received</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="waitlist-table-body">
+              <!-- Dynamically populated via admin.js -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SECTION 3: CONTENT MANAGEMENT (Store Items, Blogs, Photos & Videos) -->
+      <section id="admin-content" class="admin-section" style="margin-top:64px;">
+        <div class="admin-section-header">
+          <div>
+            <h2>Content Management System</h2>
+            <p>Add new store resources, publishing blog articles, and photo/video media gallery items.</p>
+          </div>
+        </div>
+
+        <div class="admin-content-tabs">
+          <button class="admin-tab-btn active" onclick="switchAdminTab('store-tab')"><i class="fas fa-store"></i> Store Items</button>
+          <button class="admin-tab-btn" onclick="switchAdminTab('blogs-tab')"><i class="fas fa-newspaper"></i> Articles & Blogs</button>
+          <button class="admin-tab-btn" onclick="switchAdminTab('media-tab')"><i class="fas fa-photo-film"></i> Photos & Videos</button>
+        </div>
+
+        <!-- STORE ITEM CREATOR TAB -->
+        <div id="store-tab" class="admin-tab-pane active">
+          <div class="admin-grid-2col">
+            <!-- Add Item Form -->
+            <div class="admin-card-box">
+              <h3><i class="fas fa-plus-circle" style="color:var(--accent);"></i> Add New Store Resource</h3>
+              <form id="add-product-form" style="margin-top:20px;">
+                <div class="form-group">
+                  <label>Resource Title</label>
+                  <input type="text" id="prod-title" class="form-control" placeholder="e.g. Toddler Speech & Language Workbook" required>
+                </div>
+                <div class="form-row" style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+                  <div class="form-group">
+                    <label>Category</label>
+                    <select id="prod-category" class="form-control">
+                      <option value="guides">Digital Guides</option>
+                      <option value="courses">Video Masterclasses</option>
+                      <option value="workbooks">Activity Workbooks</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Price (₹)</label>
+                    <input type="number" id="prod-price" class="form-control" placeholder="499 (or 0 for Free)" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Format Metadata</label>
+                  <input type="text" id="prod-meta" class="form-control" placeholder="e.g. PDF eBook (48 pages) or Video Masterclass" required>
+                </div>
+                <div class="form-group">
+                  <label>Description</label>
+                  <textarea id="prod-desc" class="form-control" rows="3" placeholder="Brief explanation of the resource..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%;"><i class="fas fa-save"></i> Publish Store Resource</button>
+              </form>
+            </div>
+
+            <!-- Existing Products Catalog -->
+            <div class="admin-card-box">
+              <h3><i class="fas fa-boxes-stacked" style="color:var(--text-primary);"></i> Active Catalog Items</h3>
+              <div id="admin-products-list" style="margin-top:20px; display:grid; gap:12px;">
+                <!-- Populated via admin.js -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BLOG ARTICLE CREATOR TAB -->
+        <div id="blogs-tab" class="admin-tab-pane" style="display:none;">
+          <div class="admin-card-box">
+            <h3><i class="fas fa-pen-nib" style="color:var(--accent);"></i> Publish New Parenting Article</h3>
+            <form id="add-article-form" style="margin-top:20px;">
+              <div class="form-group">
+                <label>Article Title</label>
+                <input type="text" id="art-title" class="form-control" placeholder="e.g. Navigating Sensory Sensitivity in Early Childhood" required>
+              </div>
+              <div class="form-row" style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+                <div class="form-group">
+                  <label>Category Tag</label>
+                  <input type="text" id="art-category" class="form-control" placeholder="e.g. Behavioral Health" required>
+                </div>
+                <div class="form-group">
+                  <label>Estimated Read Time</label>
+                  <input type="text" id="art-readtime" class="form-control" placeholder="e.g. 5 min read" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Full Article Body (HTML / Text)</label>
+                <textarea id="art-body" class="form-control" rows="6" placeholder="Enter article content paragraphs..." required></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Publish Article</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- PHOTOS & VIDEOS MEDIA GALLERY TAB -->
+        <div id="media-tab" class="admin-tab-pane" style="display:none;">
+          <div class="admin-card-box">
+            <h3><i class="fas fa-video" style="color:var(--text-primary);"></i> Add Media Asset (Photo / Video Link)</h3>
+            <form id="add-media-form" style="margin-top:20px;">
+              <div class="form-group">
+                <label>Media Title / Label</label>
+                <input type="text" id="media-title" class="form-control" placeholder="e.g. Clinic Sensory Playroom Tour Video" required>
+              </div>
+              <div class="form-row" style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+                <div class="form-group">
+                  <label>Type</label>
+                  <select id="media-type" class="form-control">
+                    <option value="photo">Photo / Infographic</option>
+                    <option value="video">Video Embed Link</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>URL / File Path</label>
+                  <input type="text" id="media-url" class="form-control" placeholder="https://youtube.com/embed/... or image path" required>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-outline-purple"><i class="fas fa-upload"></i> Save Media Asset</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 4: RAZORPAY ORDERS & TAX INVOICE RE-PRINTER -->
+      <section id="admin-orders" class="admin-section" style="margin-top:64px;">
+        <div class="admin-section-header">
+          <div>
+            <h2>Order History & Customer Tax Invoices</h2>
+            <p>View Razorpay completed orders and re-issue tax receipt documents.</p>
+          </div>
+        </div>
+
+        <div class="admin-card-box">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Invoice No</th>
+                <th>Razorpay Payment ID</th>
+                <th>Items Purchased</th>
+                <th>Total Amount</th>
+                <th>Date</th>
+                <th style="text-align:right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="orders-table-body">
+              <!-- Dynamically populated via admin.js -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer" style="padding:32px 0;">
+      <div class="container" style="text-align:center; font-size:0.85rem; color:#777;">
+        <p>© 2026 Dr. Chitra Sankar Practice Admin Portal • Secured Access</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Dedicated Tax Invoice Re-Print Modal -->
+  <div class="modal-overlay" id="admin-invoice-modal">
+    <div class="modal-content" style="max-width: 760px; padding: 32px;">
+      <button class="modal-close-btn" onclick="document.getElementById('admin-invoice-modal').classList.remove('active')"><i class="fas fa-times"></i></button>
+      <div id="admin-invoice-modal-body"></div>
+    </div>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>
