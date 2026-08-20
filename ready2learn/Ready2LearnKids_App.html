@@ -3909,7 +3909,7 @@ function syncWithCloud(immediate = false){
     };
     const unlockedArray = Object.keys(unlocks).filter(k=>unlocks[k]);
 
-    fetch("/api/user/sync", {
+    fetch((API_BASE || "") + "/api/user/sync", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -3926,6 +3926,7 @@ function syncWithCloud(immediate = false){
           clearAuthSession();
           throw new Error("Session expired. Please sign in again.");
         }
+        if(!res.ok) throw new Error("Sync offline");
         return res.json();
       })
       .then(data => {
@@ -3936,7 +3937,7 @@ function syncWithCloud(immediate = false){
         setSyncIndicator("synced", "All changes synced to cloud");
       })
       .catch(err => {
-        setSyncIndicator("offline", "Sync queued: " + err.message);
+        setSyncIndicator("offline", "Saved on this device (" + (window.location.hostname.includes("github.io") ? "Local mode" : "Offline") + ")");
       });
   };
 
@@ -3954,7 +3955,7 @@ function initAuth(){
   const token = getAuthToken();
   if(!token) return;
 
-  fetch("/api/user/sync", {
+  fetch((API_BASE || "") + "/api/user/sync", {
     headers: { "Authorization": "Bearer " + token }
   })
     .then(res => {
@@ -3983,49 +3984,39 @@ function initAuth(){
       }
     })
     .catch(() => {
-      // Offline fallback: keep local session
-      setSyncIndicator("offline", "Working offline");
+      setSyncIndicator("offline", "Using local saved state");
     });
 }
 
-// ---- Auth Modal Control ----
+// Auth modal state controls
 function openAuthModal(tab = "login"){
-  const modal = document.getElementById("authModalOverlay");
-  const tabLogin = document.getElementById("tabLogin");
-  const tabSignup = document.getElementById("tabSignup");
-  const formLogin = document.getElementById("loginForm");
-  const formSignup = document.getElementById("signupForm");
-  const loginErr = document.getElementById("loginError");
-  const signupErr = document.getElementById("signupError");
-
-  loginErr.style.display = "none";
-  signupErr.style.display = "none";
-
-  if(tab === "signup"){
-    tabLogin.classList.remove("active");
-    tabSignup.classList.add("active");
-    formLogin.style.display = "none";
-    formSignup.style.display = "flex";
-  } else {
-    tabLogin.classList.add("active");
-    tabSignup.classList.remove("active");
-    formLogin.style.display = "flex";
-    formSignup.style.display = "none";
-  }
-
-  modal.style.display = "flex";
+  const overlay = document.getElementById("authModalOverlay");
+  overlay.style.display = "flex";
+  switchAuthTab(tab);
 }
 
 function closeAuthModal(){
   document.getElementById("authModalOverlay").style.display = "none";
+  document.getElementById("loginError").style.display = "none";
+  document.getElementById("signupError").style.display = "none";
 }
 
-// Modal event setup
+function switchAuthTab(tab){
+  const isLogin = tab === "login";
+  document.getElementById("tabLogin").classList.toggle("active", isLogin);
+  document.getElementById("tabSignup").classList.toggle("active", !isLogin);
+  document.getElementById("loginForm").style.display = isLogin ? "block" : "none";
+  document.getElementById("signupForm").style.display = isLogin ? "none" : "block";
+  document.getElementById("authModalTitle").textContent = isLogin ? "Sign In to Your Account" : "Create Ready2Learn Account";
+  document.getElementById("authModalSub").textContent = isLogin
+    ? "Access your child's saved milestones and unlocked stages across devices."
+    : "Sync progress seamlessly across devices with cloud backup.";
+}
+
 document.getElementById("closeAuthModal").addEventListener("click", closeAuthModal);
 document.getElementById("authModalOverlay").addEventListener("click", (e)=>{
-  if(e.target.id === "authModalOverlay") closeAuthModal();
+  if(e.target === document.getElementById("authModalOverlay")) closeAuthModal();
 });
-
 document.getElementById("tabLogin").addEventListener("click", ()=>openAuthModal("login"));
 document.getElementById("tabSignup").addEventListener("click", ()=>openAuthModal("signup"));
 
@@ -4041,7 +4032,7 @@ document.getElementById("loginForm").addEventListener("submit", (e)=>{
   btn.disabled = true;
   btn.textContent = "Signing In\u2026";
 
-  fetch("/api/auth/login", {
+  fetch((API_BASE || "") + "/api/auth/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password })
@@ -4053,10 +4044,23 @@ document.getElementById("loginForm").addEventListener("submit", (e)=>{
       if(!ok) throw new Error(data.error || "Could not log in");
       setAuthSession(data.token, data.user);
       closeAuthModal();
+      showToast("✅ Logged in successfully!");
     })
     .catch(err => {
       btn.disabled = false;
       btn.textContent = "Log In to Account";
+      // If hosted statically on GitHub Pages without backend URL, create local profile
+      if (window.location.hostname.includes("github.io") && !API_BASE) {
+        const localUser = {
+          email,
+          parentName: email.split("@")[0],
+          profile: { childName: "My Child", progress, unlockedBands: Object.keys(unlocks).filter(k=>unlocks[k]) }
+        };
+        setAuthSession("local_gh_token", localUser);
+        closeAuthModal();
+        showToast("📱 Logged in (Browser Storage Mode)");
+        return;
+      }
       errEl.style.display = "block";
       errEl.textContent = err.message;
     });
@@ -4084,7 +4088,7 @@ document.getElementById("signupForm").addEventListener("submit", (e)=>{
 
   const unlockedArray = Object.keys(unlocks).filter(k=>unlocks[k]);
 
-  fetch("/api/auth/signup", {
+  fetch((API_BASE || "") + "/api/auth/signup", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -4104,10 +4108,23 @@ document.getElementById("signupForm").addEventListener("submit", (e)=>{
       if(!ok) throw new Error(data.error || "Could not create account");
       setAuthSession(data.token, data.user);
       closeAuthModal();
+      showToast("🎉 Account created successfully!");
     })
     .catch(err => {
       btn.disabled = false;
       btn.textContent = "Create Free Account";
+      // If hosted statically on GitHub Pages without backend URL, create local profile
+      if (window.location.hostname.includes("github.io") && !API_BASE) {
+        const localUser = {
+          email,
+          parentName: parentName || "Parent",
+          profile: { childName: childName || "My Child", childDob: dob, progress, unlockedBands: unlockedArray }
+        };
+        setAuthSession("local_gh_token", localUser);
+        closeAuthModal();
+        showToast("🎉 Account created in Browser Storage Mode!");
+        return;
+      }
       errEl.style.display = "block";
       errEl.textContent = err.message;
     });
