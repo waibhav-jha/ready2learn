@@ -97,14 +97,6 @@
   .brand-mark svg{width:22px;height:22px;}
   .brand h1{font-size:20px;color:var(--text-primary);font-weight:800;}
   .brand .sub{font-size:11px;color:var(--purple-outline);font-weight:700;letter-spacing:.08em;text-transform:uppercase;}
-  .dev-toggle{
-    font-size:12px; color:var(--text-secondary);
-    display:flex; align-items:center; gap:6px;
-    white-space:nowrap;
-    font-weight:600;
-  }
-  .dev-toggle input{accent-color:var(--accent);}
-
   /* Back to Main Site Link */
   .nav-back-link {
     display: inline-flex; align-items: center; gap: 7px;
@@ -119,47 +111,161 @@
     transform: translateX(-2px); box-shadow: var(--shadow-sm);
   }
 
-  /* Dev Mode Controls & Banner */
-  .dev-pill-btn {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: #FFF0EB; color: var(--accent);
-    border: 1.5px solid rgba(255, 90, 46, 0.35);
-    padding: 6px 14px; border-radius: 9999px;
-    font-size: 12.5px; font-weight: 700; cursor: pointer;
+  /* Placeholder Paywall Styling */
+  .placeholder-paywall-card {
+    position: absolute;
+    inset: 0;
+    top: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    text-align: center;
+    padding: 28px 24px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1.5px solid rgba(255, 90, 46, 0.25);
+    border-radius: 20px;
+    box-shadow: 0 16px 36px rgba(74, 35, 110, 0.09);
+    max-width: 540px;
+    margin: 0 auto;
+    z-index: 5;
+  }
+  .paywall-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: #FFF0EB;
+    color: var(--accent);
+    border: 1px solid rgba(255, 90, 46, 0.25);
+    padding: 5px 14px;
+    border-radius: var(--radius-full);
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .paywall-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 0;
+  }
+  .paywall-desc {
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    max-width: 440px;
+    line-height: 1.5;
+    margin: 0;
+  }
+  .paywall-features-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: left;
+    width: 100%;
+    max-width: 420px;
+    background: #FAF7F5;
+    border: 1px solid rgba(74, 35, 110, 0.08);
+    border-radius: 12px;
+    padding: 12px 16px;
+  }
+  .paywall-feature-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .paywall-feature-row i {
+    color: var(--accent);
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .paywall-pricing-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 2px;
+  }
+  .paywall-price {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text-primary);
+  }
+  .paywall-mode-chip {
+    background: rgba(139, 90, 199, 0.12);
+    color: var(--text-primary);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 9999px;
+  }
+  .placeholder-unlock-btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 13px 26px;
+    border-radius: var(--radius-full);
+    font-weight: 800;
+    font-size: 14.5px;
+    font-family: inherit;
+    cursor: pointer;
+    box-shadow: var(--shadow-orange);
     transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
   }
-  .dev-pill-btn:hover { background: #FFE4DC; transform: translateY(-1px); }
-  .dev-pill-btn.active {
-    background: var(--accent); color: #fff;
+  .placeholder-unlock-btn:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 14px 28px rgba(255, 90, 46, 0.35);
+  }
+  .paywall-all-link {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    padding: 4px 8px;
+    transition: color 0.2s ease;
+  }
+  .paywall-all-link:hover {
+    color: var(--accent);
+  }
+  .app-footer-note {
+    text-align: center;
+    margin: 40px auto 20px;
+    padding: 20px;
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    border-top: 1px solid rgba(74, 35, 110, 0.08);
+    max-width: 600px;
+  }
+  .btn-reset-demo {
+    background: none;
+    border: 1px solid rgba(74, 35, 110, 0.15);
+    color: var(--text-secondary);
+    padding: 5px 12px;
+    border-radius: 9999px;
+    font-size: 11.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 6px;
+  }
+  .btn-reset-demo:hover {
+    background: #fff;
+    color: var(--accent);
     border-color: var(--accent);
-    box-shadow: 0 4px 14px rgba(255, 90, 46, 0.35);
   }
-  .dev-toolbar {
-    background: #2B1640; color: #fff;
-    padding: 10px 20px; border-bottom: 2.5px solid var(--accent);
-    display: flex; align-items: center; justify-content: space-between;
-    flex-wrap: wrap; gap: 12px; font-size: 13px;
-    position: relative; z-index: 1000;
-  }
-  .dev-toolbar-brand {
-    display: flex; align-items: center; gap: 8px;
-    font-weight: 800; color: #FFA97D; letter-spacing: 0.02em;
-  }
-  .dev-toolbar-actions {
-    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
-  }
-  .dev-action-btn {
-    background: rgba(255, 255, 255, 0.12); color: #fff;
-    border: 1px solid rgba(255, 255, 255, 0.22);
-    padding: 6px 13px; border-radius: 8px;
-    font-size: 12px; font-weight: 700; cursor: pointer;
-    transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 6px;
-  }
-  .dev-action-btn:hover { background: rgba(255, 255, 255, 0.25); border-color: #fff; }
-  .dev-action-btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .dev-action-btn.primary:hover { background: var(--accent-hover); }
-  .dev-action-btn.danger { background: rgba(235, 87, 87, 0.2); border-color: #EB5757; color: #FF8F8F; }
-  .dev-action-btn.danger:hover { background: #EB5757; color: #fff; }
 
   /* Toast Notification */
   .toast-notification {
@@ -520,16 +626,14 @@
     text-transform:uppercase;
     padding:4px 12px;border-radius:var(--radius-full);margin-bottom:14px;
   }
-  .premium-content{filter:blur(4px);pointer-events:none;user-select:none;transition:filter 0.2s ease;}
-  .premium-block.unlocked .premium-content,
-  body.preview-premium .premium-content{filter:none !important;pointer-events:auto !important;user-select:auto !important;}
+  .premium-content{filter:blur(5px);pointer-events:none;user-select:none;transition:filter 0.25s ease;}
+  .premium-block.unlocked .premium-content{filter:none !important;pointer-events:auto !important;user-select:auto !important;}
   .premium-lock{
     position:absolute;inset:0;top:38px;
     display:flex;flex-direction:column;align-items:center;justify-content:center;
     gap:12px;text-align:center;padding:24px;
   }
-  .premium-block.unlocked .premium-lock,
-  body.preview-premium .premium-lock{display:none !important;}
+  .premium-block.unlocked .premium-lock{display:none !important;}
   .unlock-btn{
     background:var(--accent);color:#fff;border:none;
     padding:12px 26px;border-radius:var(--radius-full);
@@ -862,7 +966,7 @@
   .auth-btn-submit:disabled{opacity:0.6;cursor:default;transform:none;}
 
   @media print{
-    header,.hero,.age-card,.notice,.dev-toggle,.premium-lock,.widgets-row,.export-reminder,.panel-close,.summary-close,.auth-modal-overlay{display:none !important;}
+    header,.hero,.age-card,.notice,.premium-lock,.widgets-row,.export-reminder,.panel-close,.summary-close,.auth-modal-overlay{display:none !important;}
     .domain-grid,#panelsContainer{display:none !important;}
     .summary-container{display:block !important;border:none;padding:0;box-shadow:none;}
     body{background:#fff;}
@@ -870,30 +974,6 @@
 </style>
 </head>
 <body>
-
-<!-- Top Dev Testing Toolbar (Activates in Dev Mode) -->
-<div class="dev-toolbar" id="devToolbar" style="display:none;">
-  <div class="dev-toolbar-brand">
-    <i class="fas fa-bolt"></i> <span>Ready2Learn Dev Test Suite</span>
-  </div>
-  <div class="dev-toolbar-actions">
-    <button type="button" class="dev-action-btn primary" id="btnDevLoadSample">
-      <i class="fas fa-child"></i> Load Sample Child & Milestones
-    </button>
-    <button type="button" class="dev-action-btn" id="btnDevUnlockAll">
-      <i class="fas fa-lock-open"></i> Unlock All 6 Stages
-    </button>
-    <button type="button" class="dev-action-btn" id="btnDevSimPayment">
-      <i class="fas fa-credit-card"></i> Simulate Payment Unlock
-    </button>
-    <button type="button" class="dev-action-btn danger" id="btnDevReset">
-      <i class="fas fa-trash-arrow-up"></i> Reset Data
-    </button>
-    <button type="button" class="dev-action-btn" id="btnDevCloseBar" title="Hide Dev Bar">
-      <i class="fas fa-xmark"></i>
-    </button>
-  </div>
-</div>
 
 <header>
   <div class="header-inner">
@@ -912,9 +992,6 @@
       </div>
     </div>
     <div class="header-actions">
-      <button type="button" class="dev-pill-btn" id="devPillBtn" title="Toggle Developer Testing Mode">
-        <i class="fas fa-flask"></i> <span id="devPillText">Dev Test</span>
-      </button>
       <div id="headerAuthArea">
         <button class="auth-header-btn" id="openAuthBtn" type="button">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -972,6 +1049,10 @@
 
   <div class="widgets-row" id="widgetsRow"></div>
   <p class="export-reminder">Your child's progress stays on this device only. Purchase emails are used only for receipts and restoring access.</p>
+  <div class="app-footer-note">
+    <p>Ready2Learn Kids &middot; Pediatric School Readiness Program &middot; Dr. Chitra Sankar</p>
+    <p class="reset-demo-wrap"><button type="button" class="btn-reset-demo" id="btnResetDemoUnlocks" title="Reset paid stages back to locked state for testing">🔒 Reset Stage Access (Lock Stages)</button></p>
+  </div>
   </div>
 
   <div id="summaryContainer" class="summary-container"></div>
@@ -3784,8 +3865,7 @@ function saveUnlocks(){
 }
 function isBandUnlocked(bandId){
   if (bandId === "a30") return true; // Stage 30m is always free
-  if (document.body.classList.contains("preview-premium")) return true; // Dev preview active
-  return !!unlocks[bandId]; // Real user purchase
+  return !!unlocks[bandId]; // User purchase or unlocked
 }
 
 const EMAIL_KEY = "r2lk_email_v1";
@@ -4182,92 +4262,28 @@ document.getElementById("signupForm").addEventListener("submit", (e)=>{
 });
 
 // =============================================================================
-// RAZORPAY PAYMENT & STAGE UNLOCK
+// PLACEHOLDER PAYWALL & STAGE UNLOCK ENGINE
 // =============================================================================
-function startPurchase(bandId, buttonEl, email){
+function unlockBandPlaceholder(bandId){
   const band = AGE_BANDS.find(b=>b.id===bandId);
-  const errorEl = document.getElementById("unlockError-"+bandId);
-  if(errorEl){ errorEl.style.display="none"; errorEl.textContent=""; }
+  unlocks[bandId] = true;
+  saveUnlocks();
+  showToast(`🎉 ${band ? band.label : bandId} stage unlocked! Premium activities and checklists are now available.`);
+  renderAll();
+}
 
-  // Instant Unlock in Dev Mode or Sandbox
-  if(document.body.classList.contains("preview-premium") || typeof Razorpay === "undefined"){
-    unlocks[bandId] = true;
-    saveUnlocks();
-    saveUnlockEmail(email || "tester@ready2learn.app");
-    showToast(`⚡ Stage ${band ? band.label : bandId} unlocked in Dev Mode!`);
-    renderAll();
-    return;
-  }
-  buttonEl.disabled = true;
-  const originalText = buttonEl.textContent;
-  buttonEl.textContent = "Loading\u2026";
+function unlockAllStagesPlaceholder(){
+  AGE_BANDS.forEach(b=>{ unlocks[b.id] = true; });
+  saveUnlocks();
+  showToast("🎉 All 6 developmental stages unlocked! Full premium access granted.");
+  renderAll();
+}
 
-  const headers = { "Content-Type": "application/json" };
-  if(getAuthToken()) headers["Authorization"] = "Bearer " + getAuthToken();
-
-  fetch((API_BASE || "") + "/api/create-order", {
-    method: "POST",
-    headers,
-    body: JSON.stringify({ amount: band.price, bandId })
-  })
-    .then(res => res.json().then(data => ({ ok: res.ok, data })))
-    .then(({ ok, data }) => {
-      if(!ok) throw new Error(data.error || "Could not start payment.");
-
-      const rzp = new Razorpay({
-        key: data.keyId,
-        amount: data.amount,
-        currency: data.currency,
-        order_id: data.orderId,
-        name: "Ready2LearnKids",
-        description: band.label + " stage \u2014 Activities & Checklists",
-        prefill: { email: email || (currentUser ? currentUser.email : "") },
-        theme: { color: "#FF5A2E" },
-        handler: function(response){
-          fetch((API_BASE || "") + "/api/verify-payment", {
-            method: "POST",
-            headers,
-            body: JSON.stringify({
-              orderId: response.razorpay_order_id,
-              paymentId: response.razorpay_payment_id,
-              signature: response.razorpay_signature,
-              bandId,
-              email: email || (currentUser ? currentUser.email : "")
-            })
-          })
-            .then(res => res.json().then(d => ({ ok: res.ok, d })))
-            .then(({ ok, d }) => {
-              if(!ok || !d.verified) throw new Error(d.error || "Payment could not be verified.");
-              unlocks[bandId] = true;
-              saveUnlocks();
-              saveUnlockEmail(email);
-              renderAll();
-            })
-            .catch(err => {
-              buttonEl.disabled = false;
-              buttonEl.textContent = originalText;
-              if(errorEl){ errorEl.style.display="block"; errorEl.textContent = "Payment went through, but we couldn't confirm it here: "+err.message+" Please contact support before trying again."; }
-            });
-        },
-        modal: {
-          ondismiss: function(){
-            buttonEl.disabled = false;
-            buttonEl.textContent = originalText;
-          }
-        }
-      });
-      rzp.on("payment.failed", function(){
-        buttonEl.disabled = false;
-        buttonEl.textContent = originalText;
-        if(errorEl){ errorEl.style.display="block"; errorEl.textContent = "Payment did not go through. No amount was charged."; }
-      });
-      rzp.open();
-    })
-    .catch(err => {
-      buttonEl.disabled = false;
-      buttonEl.textContent = originalText;
-      if(errorEl){ errorEl.style.display="block"; errorEl.textContent = err.message; }
-    });
+function resetDemoUnlocks(){
+  unlocks = { a30: true };
+  saveUnlocks();
+  showToast("🔒 Stage access reset. Stages 36m–60m are locked behind the paywall.");
+  renderAll();
 }
 
 function restorePurchase(email, statusEl){
@@ -4326,13 +4342,12 @@ function renderBandSwitch(){
   const wrap = document.getElementById("bandSwitch");
   if(!wrap) return;
   wrap.innerHTML = "";
-  const isDev = document.body.classList.contains("preview-premium");
 
   AGE_BANDS.forEach(b=>{
     const chip = document.createElement("button");
     chip.className = "band-chip";
     chip.type = "button";
-    const unlocked = isBandUnlocked(b.id) || isDev;
+    const unlocked = isBandUnlocked(b.id);
     chip.innerHTML = `${b.label} <span style="font-size:11px; margin-left:4px; opacity:0.8;">${unlocked ? "🔓" : "🔒"}</span>`;
     chip.setAttribute("aria-pressed", b.id===currentBand ? "true":"false");
     chip.addEventListener("click", ()=>{ currentBand=b.id; openPanelKey=null; renderAll(); });
@@ -4441,7 +4456,7 @@ function renderPanels(){
   }).join("");
 
   const band = AGE_BANDS.find(b=>b.id===currentBand);
-  const unlocked = isBandUnlocked(currentBand) || document.body.classList.contains("preview-premium");
+  const unlocked = isBandUnlocked(currentBand);
   const priceLabel = "\u20b9"+(band.price/100).toFixed(0);
 
   panel.innerHTML = `
@@ -4455,8 +4470,8 @@ function renderPanels(){
 
     <div class="premium-block ${unlocked ? "unlocked" : ""}">
       ${unlocked
-        ? `<span class="unlocked-badge">Unlocked</span>`
-        : `<span class="premium-label">Premium</span>`}
+        ? `<span class="unlocked-badge"><i class="fas fa-lock-open" style="font-size:10px;margin-right:4px;"></i> Unlocked</span>`
+        : `<span class="premium-label"><i class="fas fa-crown" style="font-size:10px;margin-right:4px;"></i> Premium Stage</span>`}
       <div class="premium-content">
         <h3 style="font-size:15px;margin-bottom:10px;">Activities to try</h3>
         ${activitiesHTML}
@@ -4468,12 +4483,33 @@ function renderPanels(){
           <textarea id="win-${openPanelKey}" placeholder="e.g. Today he pointed to the dog in his book without me asking.">${progress[winKey]||""}</textarea>
         </div>
       </div>
-      <div class="premium-lock">
-        <p style="font-size:13.5px;color:var(--ink-soft);max-width:320px;">Unlock step-by-step activities, printable checklists, and the small wins log for every area in this stage.</p>
-        <input type="email" class="unlock-email" id="unlockEmail-${currentBand}" placeholder="Your email (for your receipt and to restore this later)">
-        <button class="unlock-btn" id="unlockBtn-${currentBand}">Unlock this stage \u2014 ${priceLabel}</button>
-        <p class="unlock-price">One payment unlocks all 9 areas for the ${band.label} stage. We'll use your email only for your receipt and to restore your purchase if you switch devices.</p>
-        <p class="unlock-error" id="unlockError-${currentBand}" style="display:none;"></p>
+      <div class="premium-lock placeholder-paywall-card">
+        <div class="paywall-badge">
+          <i class="fas fa-crown"></i> <span>Ready2Learn Premium</span>
+        </div>
+        <h3 class="paywall-title">Unlock ${band.label} Stage Playbooks</h3>
+        <p class="paywall-desc">Get instant access to doctor-designed developmental activities, step-by-step checklists, and milestone tracking for this age band.</p>
+        <div class="paywall-features-list">
+          <div class="paywall-feature-row">
+            <i class="fas fa-circle-check"></i> <span>Activities for all 9 developmental domains</span>
+          </div>
+          <div class="paywall-feature-row">
+            <i class="fas fa-circle-check"></i> <span>Interactive checklists to track your effort</span>
+          </div>
+          <div class="paywall-feature-row">
+            <i class="fas fa-circle-check"></i> <span>Personal Small Wins journal & printable summary</span>
+          </div>
+        </div>
+        <div class="paywall-pricing-row">
+          <span class="paywall-price">${priceLabel}</span>
+          <span class="paywall-mode-chip">Placeholder Paywall</span>
+        </div>
+        <button type="button" class="unlock-btn placeholder-unlock-btn" id="unlockBtn-${currentBand}">
+          <i class="fas fa-unlock-alt"></i> Unlock This Stage Now (1-Click Demo)
+        </button>
+        <button type="button" class="paywall-all-link" id="unlockAllStagesBtn">
+          ✨ Or unlock all 6 developmental stages with 1-click &rarr;
+        </button>
       </div>
     </div>
   `;
@@ -4508,18 +4544,11 @@ function renderPanels(){
   }
 
   if(!unlocked){
-    panel.querySelector(".unlock-btn").addEventListener("click", (e)=>{
-      const emailEl = document.getElementById("unlockEmail-"+currentBand);
-      const errorEl = document.getElementById("unlockError-"+currentBand);
-      const email = emailEl.value.trim();
-      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-      if(!emailOk){
-        errorEl.style.display = "block";
-        errorEl.textContent = "Enter a valid email so we can send your receipt and let you restore this later.";
-        emailEl.focus();
-        return;
-      }
-      startPurchase(currentBand, e.target, email);
+    panel.querySelector(".placeholder-unlock-btn")?.addEventListener("click", ()=>{
+      unlockBandPlaceholder(currentBand);
+    });
+    panel.querySelector(".paywall-all-link")?.addEventListener("click", ()=>{
+      unlockAllStagesPlaceholder();
     });
   }
 
@@ -4621,7 +4650,7 @@ function renderSummary(){
   const bandLabel = AGE_BANDS.find(b=>b.id===currentBand).label;
   const dobVal = document.getElementById("dobDay").value;
   const ageTxt = document.getElementById("ageFigure").textContent;
-  const showPremium = isBandUnlocked(currentBand) || document.body.classList.contains("preview-premium");
+  const showPremium = isBandUnlocked(currentBand);
 
   if(!bandContent){
     container.innerHTML = `<div class="summary-head"><h2>No content yet for this age band</h2>
@@ -4786,110 +4815,11 @@ function showToast(message, duration = 3200){
   }, duration);
 }
 
-// Dev Test Mode State & Actions
-function toggleDevMode(forceState){
-  const isChecked = typeof forceState === "boolean" ? forceState : !document.body.classList.contains("preview-premium");
-  document.body.classList.toggle("preview-premium", isChecked);
-  
-  const devBar = document.getElementById("devToolbar");
-  const devPill = document.getElementById("devPillBtn");
-  const devPillText = document.getElementById("devPillText");
+// Ensure no stale preview classes remain
+document.body.classList.remove("preview-premium");
 
-  if(devBar) devBar.style.display = isChecked ? "flex" : "none";
-  if(devPill) devPill.classList.toggle("active", isChecked);
-  if(devPillText) devPillText.textContent = isChecked ? "Dev Mode: ON" : "Dev Test";
-  
-  if (isChecked) {
-    // If DOB is blank, populate sample child so the 36m stage is shown
-    const dEl = document.getElementById("dobDay");
-    const mEl = document.getElementById("dobMonth");
-    const yEl = document.getElementById("dobYear");
-    if(!dEl.value || !mEl.value || !yEl.value){
-      dEl.value = "15";
-      mEl.value = "08";
-      yEl.value = "2023";
-      tryCalcAge();
-    }
-    // Auto-open first panel if none is open
-    if(!openPanelKey && DOMAIN_META && DOMAIN_META[0]){
-      openPanelKey = DOMAIN_META[0].key;
-    }
-    showToast("⚡ Dev Test Mode ON: All stages & activities unblurred!");
-  } else {
-    // Clean mock unlocks from local storage so stages properly re-lock & blur
-    unlocks = { a30: true };
-    localStorage.setItem(UNLOCK_KEY, JSON.stringify(unlocks));
-    showToast("🔒 Dev Test Mode OFF: Premium stages locked & blurred.");
-  }
-  renderAll();
-}
-
-function loadSampleChild(){
-  const dEl = document.getElementById("dobDay");
-  const mEl = document.getElementById("dobMonth");
-  const yEl = document.getElementById("dobYear");
-  dEl.value = "15";
-  mEl.value = "08";
-  yEl.value = "2023";
-  tryCalcAge();
-  
-  // Seed sample milestones for current stage
-  const key = currentBand + "_social";
-  progress[key] = { 0: "achieved", 1: "achieved", 2: "emerging", 3: "achieved", 4: "emerging", 5: "notyet" };
-  progress["win_" + key] = "Noticed great sharing and eye contact during playgroup today!";
-  progress["chk_" + key + "_0"] = true;
-  
-  saveProgress();
-  showToast("👶 Sample 3-year-old child (Aarav, 36m) loaded with milestones!");
-  renderAll();
-}
-
-function devUnlockAllStages(){
-  ['a30', 'a36', 'a42', 'a48', 'a54', 'a60'].forEach(b => { unlocks[b] = true; });
-  saveUnlocks();
-  showToast("🔓 All 6 developmental stages unlocked!");
-  renderAll();
-}
-
-function devSimulatePayment(){
-  const band = AGE_BANDS.find(b=>b.id===currentBand);
-  unlocks[currentBand] = true;
-  saveUnlocks();
-  showToast(`💳 Simulated instant payment unlock for ${band ? band.label : currentBand} stage!`);
-  renderAll();
-}
-
-function devResetData(){
-  if (confirm("Reset all test milestone and progress data to fresh state?")) {
-    progress = {};
-    unlocks = { a30: true };
-    localStorage.removeItem(STORAGE_KEY);
-    localStorage.setItem(UNLOCK_KEY, JSON.stringify({ a30: true }));
-    document.body.classList.remove("preview-premium");
-    const devPill = document.getElementById("devPillBtn");
-    const devPillText = document.getElementById("devPillText");
-    const devBar = document.getElementById("devToolbar");
-    if (devPill) devPill.classList.remove("active");
-    if (devPillText) devPillText.textContent = "Dev Test";
-    if (devBar) devBar.style.display = "none";
-    document.getElementById("dobDay").value = "";
-    document.getElementById("dobMonth").value = "";
-    document.getElementById("dobYear").value = "";
-    openPanelKey = null;
-    showToast("🔄 All test data reset to initial state.");
-    renderAll();
-  }
-}
-
-// Dev Event Listeners
-document.getElementById("devPillBtn")?.addEventListener("click", ()=>toggleDevMode());
-document.getElementById("btnDevLoadSample")?.addEventListener("click", loadSampleChild);
-document.getElementById("btnDevUnlockAll")?.addEventListener("click", devUnlockAllStages);
-document.getElementById("btnDevSimPayment")?.addEventListener("click", devSimulatePayment);
-document.getElementById("btnDevReset")?.addEventListener("click", devResetData);
-document.getElementById("btnDevCloseBar")?.addEventListener("click", ()=>{
-  document.getElementById("devToolbar").style.display = "none";
-});
+// Footer Demo Reset Handler
+document.getElementById("btnResetDemoUnlocks")?.addEventListener("click", resetDemoUnlocks);
 
 // Hero CTA scrolls to and focuses the age field
 document.getElementById("heroCta").addEventListener("click", ()=>{
