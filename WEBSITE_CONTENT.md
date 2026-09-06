@@ -278,10 +278,10 @@
 - **Description**: An intelligent parent triage assistant that analyzes routine child screen meltdowns, bedtime resistance, and calculates personalized sensory reset schedules.
 - **Action**: Notify Me on Beta Launch
 
-### Feature 3: Speech & Milestone AI Evaluator
-- **Tag**: PEDIATRIC TOOLKIT
-- **Description**: Interactive acoustic and video analysis tools to track early speech sound production, joint attention, and developmental red flags for toddlers.
-- **Action**: Preview Demo
+### Feature 3: Social Communication Screener (M-CHAT-R™)
+- **Tag**: LIVE CLINICAL SCREENER
+- **Description**: Clinically validated 20-point screening tool for toddlers (16–30 months) to evaluate early social communication, joint attention, and autism risk indicators with instant scoring and exportable clinical summary.
+- **Action**: Launch Screener Tool (`social-communication-screener.html`)
 
 ---
 

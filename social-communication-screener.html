@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Social Communication Screener (M-CHAT-R™) | Dr. Chitra Sankar</title>
+<meta name="description" content="Modified Checklist for Autism in Toddlers, Revised (M-CHAT-R™) — Interactive Pediatric Clinical Screening Tool by Dr. Chitra Sankar.">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #f0f4f8; min-height: 100vh; padding: 18px 16px 48px; color: #1f2937;
+  }
+
+  .top-nav-bar {
+    max-width: 700px;
+    margin: 0 auto 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .top-nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 7px 14px;
+    border-radius: 8px;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    transition: all 0.2s;
+  }
+
+  .top-nav-link.back {
+    color: #1e3a5f;
+    border: 1px solid #e5e7eb;
+  }
+  .top-nav-link.back:hover {
+    background: #e2e8f0;
+  }
+
+  .top-nav-link.app {
+    color: #FF5A2E;
+    border: 1px solid #ffedd5;
+    background: #fff7ed;
+  }
+  .top-nav-link.app:hover {
+    background: #ffedd5;
+  }
+
+  .container { max-width: 700px; margin: 0 auto; }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%);
+    border-radius: 14px;
+    padding: 26px 28px;
+    margin-bottom: 20px;
+    color: white;
+    box-shadow: 0 4px 15px rgba(30, 58, 95, 0.2);
+  }
+  .header-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #93c5fd;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .header h1 { font-size: 26px; font-weight: 800; line-height: 1.2; margin-bottom: 6px; }
+  .header p { font-size: 13.5px; opacity: 0.85; line-height: 1.55; }
+
+  /* Card */
+  .card { background: white; border-radius: 12px; padding: 18px 20px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+
+  /* Patient Info */
+  .info-row { display: flex; gap: 16px; flex-wrap: wrap; }
+  .info-field { flex: 1; min-width: 140px; }
+  .field-label { display: block; font-size: 11px; font-weight: 700; color: #6b7280; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+  .field-input { width: 100%; padding: 8px 12px; border-radius: 8px; border: 1.5px solid #e5e7eb; font-size: 14px; outline: none; transition: border-color 0.15s; font-family: inherit; }
+  .field-input:focus { border-color: #1e3a5f; }
+
+  /* Progress */
+  .progress-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .progress-label { font-size: 13px; font-weight: 600; color: #374151; }
+  .progress-count { font-size: 13px; color: #6b7280; }
+  .progress-bar-bg { background: #f3f4f6; border-radius: 99px; height: 8px; overflow: hidden; }
+  .progress-bar-fill { background: #1e3a5f; height: 100%; border-radius: 99px; width: 0%; transition: width 0.3s ease; }
+
+  /* Question */
+  .question { background: white; border-radius: 12px; padding: 16px 18px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); border: 1.5px solid transparent; transition: border-color 0.2s; }
+  .question.risk { border-color: #fca5a5; }
+  .question.safe { border-color: #86efac; }
+  .question-inner { display: flex; gap: 12px; align-items: flex-start; }
+  .question-num { min-width: 28px; height: 28px; border-radius: 8px; background: #f3f4f6; color: #9ca3af; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; transition: background 0.2s, color 0.2s; }
+  .question.risk .question-num { background: #fee2e2; color: #b91c1c; }
+  .question.safe .question-num { background: #dcfce7; color: #15803d; }
+  .question-body { flex: 1; }
+  .question-text { font-size: 14px; font-weight: 500; color: #1f2937; line-height: 1.55; }
+  .question-note { font-size: 12px; color: #6b7280; margin-top: 4px; line-height: 1.4; }
+  .btn-row { display: flex; gap: 8px; margin-top: 12px; }
+  .ans-btn { padding: 7px 22px; border-radius: 8px; border: none; cursor: pointer; font-size: 13px; font-weight: 600; text-transform: capitalize; background: #f3f4f6; color: #374151; transition: all 0.15s; }
+  .ans-btn.selected-risk { background: #b91c1c; color: white; }
+  .ans-btn.selected-safe { background: #15803d; color: white; }
+
+  /* Action row */
+  .action-row { display: flex; gap: 12px; margin-top: 20px; margin-bottom: 0; }
+  .btn-score { flex: 1; padding: 14px; border-radius: 10px; border: none; background: #1e3a5f; color: white; font-size: 15px; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+  .btn-score:disabled { background: #d1d5db; cursor: not-allowed; }
+  .btn-reset-top { padding: 14px 18px; border-radius: 10px; border: 2px solid #b91c1c; background: white; color: #b91c1c; cursor: pointer; font-size: 14px; font-weight: 700; transition: all 0.15s; }
+  .btn-reset-top:hover { background: #b91c1c; color: white; }
+
+  /* Result */
+  .result { border-radius: 14px; padding: 22px 24px; margin-top: 20px; display: none; }
+  .result.show { display: block; }
+  .result-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 14px; margin-bottom: 16px; }
+  .result-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 3px; }
+  .result-level { font-size: 28px; font-weight: 800; line-height: 1.1; }
+  .result-child { font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+  .score-badge { border-radius: 12px; padding: 12px 20px; text-align: center; color: white; }
+  .score-badge-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.85; }
+  .score-badge-num { font-size: 36px; font-weight: 800; line-height: 1; }
+  .score-badge-of { font-size: 11px; opacity: 0.85; }
+  .action-box { background: white; border-radius: 10px; padding: 14px 16px; margin-bottom: 12px; }
+  .action-box-label { font-size: 11px; font-weight: 700; color: #374151; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+  .action-box p { font-size: 14px; color: #374151; line-height: 1.6; }
+  .risk-legend { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+  .legend-item { border-radius: 8px; padding: 10px 12px; }
+  .legend-range { font-size: 16px; font-weight: 800; }
+  .legend-name { font-size: 11px; font-weight: 600; }
+  .result-footer { font-size: 11px; color: #6b7280; line-height: 1.5; margin-top: 4px; }
+
+  /* Copy button */
+  .btn-copy { width: 100%; padding: 13px; border-radius: 10px; border: none; background: #0d6e6e; color: white; font-size: 14px; font-weight: 700; cursor: pointer; margin-bottom: 10px; transition: background 0.2s; margin-top: 12px; }
+  .btn-copy:hover { background: #0a5a5a; }
+  .btn-copy.copied { background: #15803d; }
+
+  /* Summary preview */
+  .summary-preview { background: white; border-radius: 10px; padding: 14px; margin-bottom: 12px; border: 1px solid #e5e7eb; }
+  .preview-label { font-size: 11px; font-weight: 700; color: #6b7280; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+  .preview-text { font-size: 12px; color: #374151; line-height: 1.7; white-space: pre-wrap; font-family: monospace; max-height: 260px; overflow-y: auto; }
+
+  /* Modal */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
+  .modal-overlay.show { display: flex; }
+  .modal-box { background: white; border-radius: 16px; padding: 28px 24px; max-width: 360px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+  .modal-title { font-size: 17px; font-weight: 800; color: #1f2937; margin-bottom: 10px; }
+  .modal-msg { font-size: 14px; color: #6b7280; line-height: 1.6; margin-bottom: 22px; }
+  .modal-btns { display: flex; gap: 10px; }
+  .modal-cancel { flex: 1; padding: 12px; border-radius: 9px; border: 1.5px solid #e5e7eb; background: white; color: #374151; font-size: 14px; font-weight: 700; cursor: pointer; }
+  .modal-confirm { flex: 1; padding: 12px; border-radius: 9px; border: none; background: #b91c1c; color: white; font-size: 14px; font-weight: 700; cursor: pointer; }
+
+  @media (max-width: 500px) {
+    .header { padding: 18px 16px; }
+    .card { padding: 14px 14px; }
+    .risk-legend { grid-template-columns: 1fr; }
+    .top-nav-bar { flex-direction: column; align-items: stretch; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Top Return Navigation -->
+<div class="top-nav-bar">
+  <a href="index.html" class="top-nav-link back">
+    <i class="fas fa-arrow-left"></i> Back to Dr. Chitra Sankar Clinic
+  </a>
+  <a href="ready2learn/Ready2LearnKids_App.html" class="top-nav-link app">
+    <i class="fas fa-rocket"></i> Launch Ready2Learn App <i class="fas fa-arrow-right"></i>
+  </a>
+</div>
+
+<!-- Reset Modal -->
+<div class="modal-overlay" id="resetModal">
+  <div class="modal-box">
+    <div class="modal-title">Start New Assessment?</div>
+    <div class="modal-msg">This will clear all answers and patient details. This cannot be undone.</div>
+    <div class="modal-btns">
+      <button class="modal-cancel" onclick="closeModal()">Cancel</button>
+      <button class="modal-confirm" onclick="confirmReset()">Yes, Reset</button>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-eyebrow"><i class="fas fa-shield-heart"></i> Developmental Pediatric Screening Tool</div>
+    <h1>Social Communication Screener (M-CHAT-R™)</h1>
+    <p>Modified Checklist for Autism in Toddlers, Revised &nbsp;·&nbsp; Ages 16–30 months &nbsp;·&nbsp; Clinical Protocol</p>
+  </div>
+
+  <!-- Patient Info -->
+  <div class="card">
+    <div class="info-row">
+      <div class="info-field">
+        <label class="field-label" for="childName">Child's Name</label>
+        <input class="field-input" id="childName" type="text" placeholder="Enter name" oninput="save()">
+      </div>
+      <div class="info-field">
+        <label class="field-label" for="childAge">Age (months)</label>
+        <input class="field-input" id="childAge" type="number" placeholder="e.g., 24" min="16" max="30" oninput="save()">
+      </div>
+      <div class="info-field">
+        <label class="field-label" for="clinician">Clinician / Parent</label>
+        <input class="field-input" id="clinician" type="text" placeholder="Enter name" oninput="save()">
+      </div>
+      <div class="info-field">
+        <label class="field-label" for="screenDate">Date</label>
+        <input class="field-input" id="screenDate" type="date" oninput="save()">
+      </div>
+    </div>
+  </div>
+
+  <!-- Progress -->
+  <div class="card">
+    <div class="progress-row">
+      <span class="progress-label">Screening Progress</span>
+      <span class="progress-count" id="progressCount">0 / 20 answered</span>
+    </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progressBar"></div>
+    </div>
+  </div>
+
+  <!-- Questions -->
+  <div id="questionsContainer"></div>
+
+  <!-- Actions -->
+  <div class="action-row">
+    <button class="btn-score" id="scoreBtn" disabled onclick="calculateScore()">Answer all questions (20 remaining)</button>
+    <button class="btn-reset-top" onclick="resetAll()">↺ Reset</button>
+  </div>
+
+  <!-- Result -->
+  <div class="result" id="result"></div>
+
+</div>
+
+<script>
+const questions = [
+  { id:1, text:"If you point at something across the room, does your child look at it?", note:"(e.g., if you point at a toy or an animal, does your child look at the toy or animal?)", risk:"no" },
+  { id:2, text:"Have you ever wondered if your child might be deaf?", note:"", risk:"yes" },
+  { id:3, text:"Does your child play pretend or make-believe?", note:"(e.g., pretend to drink from an empty cup, pretend to talk on a phone, or pretend to feed a doll or stuffed animal?)", risk:"no" },
+  { id:4, text:"Does your child like climbing on things?", note:"(e.g., furniture, playground equipment, or stairs)", risk:"no" },
+  { id:5, text:"Does your child make unusual finger movements near his or her eyes?", note:"(e.g., does your child wiggle his or her fingers close to his or her eyes?)", risk:"yes" },
+  { id:6, text:"Does your child point with one finger to ask for something or to get help?", note:"(e.g., pointing to a snack or toy that is out of reach)", risk:"no" },
+  { id:7, text:"Does your child point with one finger to show you something interesting?", note:"(e.g., pointing to an airplane in the sky or a big truck in the road)", risk:"no" },
+  { id:8, text:"Is your child interested in other children?", note:"(e.g., does your child watch other children, smile at them, or go to them?)", risk:"no" },
+  { id:9, text:"Does your child show you things by bringing them to you or holding them up for you to see — not to get help, but just to share?", note:"(e.g., showing you a flower, a stuffed animal, or a toy truck)", risk:"no" },
+  { id:10, text:"Does your child respond when you call his or her name?", note:"(e.g., does he or she look up, talk or babble, or stop what he or she is doing when you call his or her name?)", risk:"no" },
+  { id:11, text:"When you smile at your child, does he or she smile back at you?", note:"", risk:"no" },
+  { id:12, text:"Does your child get upset by everyday noises?", note:"(e.g., does your child scream or cry to noise such as a vacuum cleaner or loud music?)", risk:"yes" },
+  { id:13, text:"Does your child walk?", note:"", risk:"no" },
+  { id:14, text:"Does your child look you in the eye when you are talking to him or her, playing with him or her, or dressing him or her?", note:"", risk:"no" },
+  { id:15, text:"Does your child try to copy what you do?", note:"(e.g., wave bye-bye, clap, or make a funny noise when you do)", risk:"no" },
+  { id:16, text:"If you turn your head to look at something, does your child look around to see what you are looking at?", note:"", risk:"no" },
+  { id:17, text:"Does your child try to get you to watch him or her?", note:"(e.g., does your child look at you for praise, or say 'look' or 'watch me'?)", risk:"no" },
+  { id:18, text:"Does your child understand when you tell him or her to do something?", note:"(e.g., if you don't point, can your child understand 'put the book on the chair' or 'bring me the blanket'?)", risk:"no" },
+  { id:19, text:"If something new happens, does your child look at your face to see how you feel about it?", note:"(e.g., if he or she hears a strange or funny noise, or sees a new toy, will he or she look at your face?)", risk:"no" },
+  { id:20, text:"Does your child like movement activities?", note:"(e.g., being swung or bounced on your knee)", risk:"no" }
+];
+
+let answers = {};
+
+// ── AUTO-SAVE ────────────────────────────────────────────────────────────────
+function save() {
+  const fields = ["childName","childAge","clinician","screenDate"];
+  const data = { answers, fields:{} };
+  fields.forEach(id => { const el=document.getElementById(id); if(el) data.fields[id]=el.value; });
+  try { localStorage.setItem("mchat_r_tool", JSON.stringify(data)); } catch(e) {}
+}
+
+function loadSaved() {
+  try {
+    const raw = localStorage.getItem("mchat_r_tool");
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    if (data.answers) { Object.assign(answers, data.answers); }
+    if (data.fields) Object.keys(data.fields).forEach(id => {
+      const el=document.getElementById(id); if(el) el.value=data.fields[id]||"";
+    });
+  } catch(e) {}
+}
+
+// ── RISK ─────────────────────────────────────────────────────────────────────
+function getRisk(score) {
+  if (score <= 2) return { level:"Low Risk", color:"#2d7a4f", bg:"#e8f5ef", borderColor:"#86efac", action:"No further action required at this time. Administer M-CHAT-R/F at next well-child visit if child is 16–30 months." };
+  if (score <= 7) return { level:"Medium Risk", color:"#b45309", bg:"#fef3c7", borderColor:"#fcd34d", action:"Administer the M-CHAT-R Follow-Up (M-CHAT-R/F). If score remains 2 or above after follow-up, refer for diagnostic evaluation and early intervention." };
+  return { level:"High Risk", color:"#b91c1c", bg:"#fee2e2", borderColor:"#fca5a5", action:"Refer immediately for diagnostic evaluation and early intervention. Do not wait for M-CHAT-R/F results." };
+}
+
+// ── BUILD QUESTIONS ──────────────────────────────────────────────────────────
+function buildQuestions() {
+  const container = document.getElementById('questionsContainer');
+  container.innerHTML = '';
+  questions.forEach(q => {
+    const isAnswered = answers[q.id] !== undefined;
+    const val = answers[q.id];
+    const isRisk = isAnswered && val === q.risk;
+    const cls = isAnswered ? (isRisk ? 'question risk' : 'question safe') : 'question';
+    const div = document.createElement('div');
+    div.className = cls;
+    div.id = `q-${q.id}`;
+    const yesCls = val==='yes' ? (q.risk==='yes' ? ' selected-risk' : ' selected-safe') : '';
+    const noCls  = val==='no'  ? (q.risk==='no'  ? ' selected-risk' : ' selected-safe') : '';
+    div.innerHTML = `
+      <div class="question-inner">
+        <div class="question-num">${q.id}</div>
+        <div class="question-body">
+          <div class="question-text">${q.text}</div>
+          ${q.note ? `<div class="question-note">${q.note}</div>` : ''}
+          <div class="btn-row">
+            <button class="ans-btn${yesCls}" onclick="answer(${q.id},'yes')">Yes</button>
+            <button class="ans-btn${noCls}"  onclick="answer(${q.id},'no')">No</button>
+          </div>
+        </div>
+      </div>`;
+    container.appendChild(div);
+  });
+}
+
+function answer(id, val) {
+  const q = questions.find(x => x.id === id);
+  answers[id] = val;
+  save();
+  const isRisk = val === q.risk;
+  document.getElementById(`q-${id}`).className = 'question ' + (isRisk ? 'risk' : 'safe');
+  const yBtn = document.getElementById(`q-${id}`).querySelectorAll('.ans-btn')[0];
+  const nBtn = document.getElementById(`q-${id}`).querySelectorAll('.ans-btn')[1];
+  yBtn.className = 'ans-btn' + (val==='yes' ? (q.risk==='yes' ? ' selected-risk' : ' selected-safe') : '');
+  nBtn.className = 'ans-btn' + (val==='no'  ? (q.risk==='no'  ? ' selected-risk' : ' selected-safe') : '');
+  updateProgress();
+  document.getElementById('result').className = 'result';
+}
+
+function updateProgress() {
+  const count = Object.keys(answers).length;
+  const pct = Math.round((count / 20) * 100);
+  document.getElementById('progressCount').textContent = `${count} / 20 answered`;
+  document.getElementById('progressBar').style.width = pct + '%';
+  const btn = document.getElementById('scoreBtn');
+  if (count === 20) { btn.disabled=false; btn.textContent='Calculate Score'; }
+  else { btn.disabled=true; btn.textContent=`Answer all questions (${20-count} remaining)`; }
+}
+
+// ── SCORE ────────────────────────────────────────────────────────────────────
+function calculateScore() {
+  let score = 0;
+  questions.forEach(q => { if (answers[q.id] === q.risk) score++; });
+  const risk = getRisk(score);
+  const name = document.getElementById('childName').value.trim();
+  const age  = document.getElementById('childAge').value.trim();
+  const clin = document.getElementById('clinician').value.trim();
+  const date = document.getElementById('screenDate').value;
+  const dateStr = date ? new Date(date+'T12:00:00').toLocaleDateString('en-IN',{year:'numeric',month:'long',day:'numeric'}) : '';
+
+  const resultEl = document.getElementById('result');
+  resultEl.style.background = risk.bg;
+  resultEl.style.border = `2px solid ${risk.borderColor}`;
+
+  // Build summary text
+  const summaryTxt = buildSummaryText(score, risk, name, age, clin, dateStr);
+
+  resultEl.innerHTML = `
+    <div class="result-top">
+      <div>
+        ${name||age||clin||dateStr ? `<div class="result-child" style="color:${risk.color}">${[name,age?age+' months':'',clin?'Clinician: '+clin:'',dateStr].filter(Boolean).join(' · ')}</div>` : ''}
+        <div class="result-label" style="color:${risk.color}">Screening Result</div>
+        <div class="result-level" style="color:${risk.color}">${risk.level}</div>
+      </div>
+      <div class="score-badge" style="background:${risk.color}">
+        <div class="score-badge-label">Score</div>
+        <div class="score-badge-num">${score}</div>
+        <div class="score-badge-of">of 20</div>
+      </div>
+    </div>
+
+    <div class="action-box">
+      <div class="action-box-label">Recommended Pediatric Action</div>
+      <p>${risk.action}</p>
+    </div>
+
+    <div class="risk-legend">
+      <div class="legend-item" style="background:#e8f5ef;border:1.5px solid #86efac22">
+        <div class="legend-range" style="color:#2d7a4f">0–2</div>
+        <div class="legend-name" style="color:#2d7a4f">Low Risk</div>
+      </div>
+      <div class="legend-item" style="background:#fef3c7;border:1.5px solid #fcd34d22">
+        <div class="legend-range" style="color:#b45309">3–7</div>
+        <div class="legend-name" style="color:#b45309">Medium Risk</div>
+      </div>
+      <div class="legend-item" style="background:#fee2e2;border:1.5px solid #fca5a522">
+        <div class="legend-range" style="color:#b91c1c">8–20</div>
+        <div class="legend-name" style="color:#b91c1c">High Risk</div>
+      </div>
+    </div>
+
+    <div class="summary-preview">
+      <div class="preview-label">Clinical Summary Preview — tap Copy below to save or export</div>
+      <pre class="preview-text">${escHtml(summaryTxt)}</pre>
+    </div>
+
+    <button class="btn-copy" id="copyBtn" onclick="copySummary()">📋 Copy Full Summary to Clipboard</button>
+
+    <p class="result-footer">© Robins, Fein, &amp; Barton, 2009. The M-CHAT-R™ is available for use at no charge. This tool is for screening purposes only and does not constitute a formal diagnosis. Provided by Dr. Chitra Sankar, Developmental Pediatrician.</p>
+  `;
+
+  resultEl.className = 'result show';
+  resultEl.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function buildSummaryText(score, risk, name, age, clin, dateStr) {
+  const sep = "=".repeat(52);
+  const thin = "-".repeat(52);
+  const L = [];
+  L.push("","DR. CHITRA SANKAR — DEVELOPMENTAL PEDIATRICS","",sep);
+  L.push("  SOCIAL COMMUNICATION SCREENER (M-CHAT-R™)");
+  L.push("  Modified Checklist for Autism in Toddlers, Revised");
+  L.push(sep,"");
+  L.push("PATIENT DETAILS", thin);
+  if(name) L.push("Name      : "+name);
+  if(age)  L.push("Age       : "+age+" months");
+  if(clin) L.push("Clinician/Parent : "+clin);
+  if(dateStr) L.push("Date      : "+dateStr);
+  L.push("");
+  L.push("SCREENING RESULT", thin);
+  L.push("Total Score : "+score+" / 20");
+  L.push("Risk Level  : "+risk.level);
+  L.push("");
+  L.push("RECOMMENDED ACTION", thin);
+  L.push(risk.action);
+  L.push("");
+  L.push("RISK SCORE REFERENCE", thin);
+  L.push("0–2  : Low Risk");
+  L.push("3–7  : Medium Risk — administer M-CHAT-R/F Follow-Up");
+  L.push("8–20 : High Risk — refer immediately for diagnostic evaluation");
+  L.push("");
+  L.push("INDIVIDUAL RESPONSES", thin);
+  questions.forEach(q => {
+    const ans = answers[q.id] || "not answered";
+    const isRisk = ans === q.risk;
+    L.push(`Q${String(q.id).padStart(2,'0')}  [${isRisk ? "RISK" : ans==="not answered" ? "----" : "  ok"}]  ${q.text.substring(0,70)}${q.text.length>70?'...':''}`);
+  });
+  L.push("",sep);
+  L.push("© Robins, Fein, & Barton, 2009. M-CHAT-R™ is for screening only.");
+  L.push("Does not constitute a formal diagnostic evaluation.");
+  return L.join("\n");
+}
+
+function copySummary() {
+  let score = 0;
+  questions.forEach(q => { if (answers[q.id] === q.risk) score++; });
+  const risk = getRisk(score);
+  const name = document.getElementById('childName').value.trim();
+  const age  = document.getElementById('childAge').value.trim();
+  const clin = document.getElementById('clinician').value.trim();
+  const date = document.getElementById('screenDate').value;
+  const dateStr = date ? new Date(date+'T12:00:00').toLocaleDateString('en-IN',{year:'numeric',month:'long',day:'numeric'}) : '';
+  const txt = buildSummaryText(score, risk, name, age, clin, dateStr);
+
+  navigator.clipboard.writeText(txt).then(()=>{
+    const btn=document.getElementById('copyBtn');
+    btn.textContent='✓ Copied to Clipboard!'; btn.classList.add('copied');
+    setTimeout(()=>{ btn.textContent='📋 Copy Full Summary to Clipboard'; btn.classList.remove('copied'); },2500);
+  }).catch(()=>{
+    const ta=document.createElement('textarea');
+    ta.value=txt; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    const btn=document.getElementById('copyBtn');
+    btn.textContent='✓ Copied!'; btn.classList.add('copied');
+    setTimeout(()=>{ btn.textContent='📋 Copy Full Summary to Clipboard'; btn.classList.remove('copied'); },2500);
+  });
+}
+
+// ── RESET ────────────────────────────────────────────────────────────────────
+function resetAll() {
+  document.getElementById('resetModal').classList.add('show');
+}
+function closeModal() {
+  document.getElementById('resetModal').classList.remove('show');
+}
+function confirmReset() {
+  closeModal();
+  answers = {};
+  try { localStorage.removeItem('mchat_r_tool'); } catch(e) {}
+  ['childName','childAge','clinician'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  document.getElementById('screenDate').value = new Date().toISOString().split('T')[0];
+  document.getElementById('result').className = 'result';
+  buildQuestions();
+  updateProgress();
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+// ── INIT ─────────────────────────────────────────────────────────────────────
+window.onload = function() {
+  loadSaved();
+  buildQuestions();
+  if(!document.getElementById('screenDate').value) {
+    document.getElementById('screenDate').value = new Date().toISOString().split('T')[0];
+  }
+  updateProgress();
+};
+</script>
+</body>
+</html>

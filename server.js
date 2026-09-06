@@ -61,6 +61,11 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// Screener Clean URLs
+app.get(['/screener', '/social-communication-screener', '/mchat'], (req, res) => {
+  res.sendFile(path.join(__dirname, 'social-communication-screener.html'));
+});
+
 // Centralized Error Handling Middleware
 app.use((err, req, res, next) => {
   console.error('Unhandled server exception:', err);
@@ -76,6 +81,7 @@ app.listen(PORT, () => {
   console.log(`🚀 Ready2Learn & Dr. Chitra Sankar Full Platform Server Started`);
   console.log(`🌐 Port: ${PORT}`);
   console.log(`👶 Ready2Learn Kids App: http://localhost:${PORT}/ready2learn/Ready2LearnKids_App.html`);
+  console.log(`📋 Screener Tool:        http://localhost:${PORT}/social-communication-screener.html`);
   console.log(`🏥 Clinic Website:        http://localhost:${PORT}/index.html`);
   console.log(`📊 Admin Dashboard:       http://localhost:${PORT}/admin.html`);
   console.log(`================================================================`);
