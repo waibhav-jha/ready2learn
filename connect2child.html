@@ -1,0 +1,2272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Connect2Child — Evidence-based parent support for everyday interactions | Dr. Chitra Sankar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --coral: #E24E1B;
+    --coral-dark: #C23F13;
+    --gold: #C67C02;
+    --gold-light: #F0A93A;
+    --peach-bg: #FFF6EC;
+    --peach-card: #FFF0DE;
+    --peach-card-2: #FFE6C7;
+    --ink: #3A2E28;
+    --ink-soft: #6B584E;
+    --ink-faint: #9C8B80;
+    --green: #5C8A52;
+    --green-bg: #E7F0E2;
+    --amber: #C67C02;
+    --amber-bg: #FBEBCC;
+    --grey-nt: #B7A99C;
+    --grey-nt-bg: #F1EAE2;
+    --white: #FFFFFF;
+    --shadow: 0 2px 10px rgba(58, 46, 40, 0.08);
+    --shadow-lg: 0 8px 28px rgba(58, 46, 40, 0.16);
+    --radius: 18px;
+    --radius-sm: 12px;
+  }
+
+  * { box-sizing: border-box; }
+  :focus-visible {
+    outline: 3px solid var(--coral);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    background: var(--peach-bg);
+    color: var(--ink);
+    font-size: 17px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, .display {
+    font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0;
+  }
+
+  button {
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  #app {
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: var(--peach-bg);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding-bottom: 84px;
+  }
+
+  /* ---------- Top bar ---------- */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px 12px;
+    position: sticky;
+    top: 0;
+    background: var(--peach-bg);
+    z-index: 10;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .brand-mark {
+    width: 34px; height: 34px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--coral), var(--gold-light));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    box-shadow: var(--shadow);
+  }
+  .brand-name {
+    font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--coral-dark);
+  }
+  .icon-btn {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    box-shadow: var(--shadow);
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .icon-btn:active { transform: scale(0.94); }
+
+  .back-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 20px 4px;
+  }
+  .back-btn {
+    border: none; background: var(--white);
+    border-radius: 50%; width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: var(--shadow); font-size: 16px; color: var(--ink);
+  }
+
+  /* ---------- Persistent save reminder ---------- */
+  .save-strip {
+    margin: 0 20px 10px;
+    background: var(--peach-card-2);
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  /* ---------- Screens ---------- */
+  .screen { padding: 4px 20px 20px; animation: fadein 0.25s ease; }
+  @media (prefers-reduced-motion: reduce) { .screen { animation: none; } }
+  @keyframes fadein { from { opacity: 0; transform: translateY(6px);} to { opacity: 1; transform: translateY(0);} }
+
+  .hero-title {
+    font-size: 30px;
+    line-height: 1.15;
+    margin-bottom: 6px;
+  }
+  .tagline {
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+  .byline {
+    color: var(--ink-faint);
+    font-size: 12.5px;
+    margin-bottom: 18px;
+  }
+  p.body-text { color: var(--ink-soft); margin: 0 0 14px; }
+
+  .card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 18px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+  }
+  .card.soft { background: var(--peach-card); box-shadow: none; }
+
+  .btn-primary {
+    width: 100%;
+    background: var(--coral);
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 16px;
+    font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    box-shadow: 0 6px 16px rgba(226,78,27,0.32);
+    transition: transform 0.1s ease;
+  }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-primary[disabled] { background: var(--grey-nt); box-shadow: none; }
+
+  .btn-secondary {
+    width: 100%;
+    background: var(--white);
+    color: var(--coral-dark);
+    border: 2px solid var(--peach-card-2);
+    padding: 13px 20px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 15px;
+    font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  }
+
+  .btn-text {
+    background: none; border: none; color: var(--ink-faint);
+    font-size: 14px; text-decoration: underline; padding: 6px;
+  }
+
+  /* ---------- Onboarding ---------- */
+  .onboard-wrap { padding: 40px 24px 24px; text-align: center; }
+  .onboard-mark {
+    width: 76px; height: 76px; margin: 0 auto 18px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, var(--coral), var(--gold-light));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 38px;
+    box-shadow: var(--shadow-lg);
+  }
+  .hero-photo {
+    width: 100%; max-width: 320px; border-radius: 20px;
+    box-shadow: var(--shadow-lg); margin: 4px auto 18px; display: block;
+  }
+  .domain-photo {
+    width: 100%; border-radius: 16px;
+    box-shadow: var(--shadow); margin-bottom: 14px; display: block;
+  }
+  .onboard-wrap .hero-title { text-align: center; }
+  .onboard-wrap .tagline { text-align: center; }
+  .feature-row {
+    display: flex; align-items: flex-start; gap: 12px;
+    text-align: left; margin-bottom: 14px;
+  }
+  .feature-row .emoji { font-size: 22px; }
+  .feature-row .txt { font-size: 14.5px; color: var(--ink-soft); }
+  .feature-row .txt b { color: var(--ink); }
+
+  /* ---------- Domain grid ---------- */
+  .domain-grid { display: flex; flex-direction: column; gap: 10px; }
+  .domain-pick {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--white); border-radius: var(--radius);
+    padding: 14px 16px; box-shadow: var(--shadow);
+    border: 2px solid transparent;
+  }
+  .domain-pick.selected { border-color: var(--coral); background: var(--peach-card); }
+  .domain-pick .badge {
+    width: 46px; height: 46px; border-radius: 14px;
+    background: var(--peach-card-2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0;
+  }
+  .domain-pick.selected .badge { background: var(--coral); }
+  .domain-pick .info { flex: 1; }
+  .domain-pick .info .t { font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; font-weight: 700; font-size: 15.5px; }
+  .domain-pick .info .s { font-size: 12.5px; color: var(--ink-faint); }
+  .check-dot {
+    width: 24px; height: 24px; border-radius: 50%;
+    border: 2px solid var(--grey-nt); flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; color: white;
+  }
+  .domain-pick.selected .check-dot { background: var(--coral); border-color: var(--coral); }
+
+  /* ---------- Home dashboard ---------- */
+  .home-domain-card {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--white); border-radius: var(--radius);
+    padding: 16px; box-shadow: var(--shadow);
+    margin-bottom: 12px;
+  }
+  .home-domain-card .badge {
+    width: 50px; height: 50px; border-radius: 15px;
+    background: var(--peach-card-2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; flex-shrink: 0;
+  }
+  .home-domain-card .info { flex: 1; min-width: 0; }
+  .home-domain-card .t { font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; font-weight: 700; font-size: 16px; }
+  .home-domain-card .meta { font-size: 12.5px; color: var(--ink-faint); margin-top: 2px; }
+  .nudge-badge {
+    display: inline-block; margin-top: 5px;
+    background: var(--amber-bg); color: var(--amber);
+    font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 999px;
+  }
+  .chevron { color: var(--ink-faint); font-size: 20px; }
+
+  .add-domain-btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    border: 2px dashed var(--peach-card-2); border-radius: var(--radius);
+    padding: 14px; color: var(--coral-dark); font-weight: 700;
+    background: transparent; width: 100%; font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  }
+
+  .wins-trail {
+    display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+    margin-top: 8px;
+  }
+  .win-star { font-size: 18px; }
+
+  /* ---------- Tabs ---------- */
+  .tabbar-wrap { position: relative; margin-bottom: 16px; }
+  .tabbar-wrap::after {
+    content: ""; position: absolute; top: 0; right: 0; bottom: 2px; width: 28px;
+    background: linear-gradient(to right, rgba(255,246,236,0), var(--peach-bg));
+    pointer-events: none;
+  }
+  .tabbar {
+    display: flex; gap: 6px; overflow-x: auto;
+    padding-bottom: 2px;
+  }
+  .tab {
+    flex-shrink: 0;
+    background: var(--white); border: none; color: var(--ink-soft);
+    padding: 9px 15px; border-radius: 999px; font-size: 13.5px; font-weight: 700;
+    font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    box-shadow: var(--shadow);
+  }
+  .tab.active { background: var(--coral); color: white; }
+
+  /* ---------- Stage list ---------- */
+  .stage-item { background: var(--white); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .stage-text { font-size: 14.5px; color: var(--ink); margin-bottom: 10px; }
+  .mark-row { display: flex; gap: 8px; }
+  .mark-btn {
+    flex: 1; border: 2px solid var(--peach-card-2); background: var(--white);
+    border-radius: 10px; padding: 8px 4px; font-size: 12.5px; font-weight: 700;
+    font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; color: var(--ink-faint);
+  }
+  .mark-btn.active-done { background: var(--green-bg); border-color: var(--green); color: var(--green); }
+  .mark-btn.active-progress { background: var(--amber-bg); border-color: var(--amber); color: var(--amber); }
+  .mark-btn.active-notyet { background: var(--grey-nt-bg); border-color: var(--grey-nt); color: var(--ink-soft); }
+
+  /* ---------- Word bank ---------- */
+  .word-cat { margin-bottom: 16px; }
+  .word-cat-title { font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; font-weight: 700; font-size: 14px; margin-bottom: 8px; color: var(--gold); }
+
+  /* ---------- Common Mistakes ---------- */
+  .mistake-card {
+    background: var(--white); border-radius: var(--radius-sm);
+    padding: 14px 16px; margin-bottom: 12px; box-shadow: var(--shadow);
+  }
+  .mistake-instead { font-size: 13.5px; color: var(--ink-faint); line-height: 1.4; }
+  .mistake-try { font-size: 14px; color: var(--ink); font-weight: 600; line-height: 1.4; }
+  .mistake-arrow { text-align: center; color: var(--gold); font-size: 13px; margin: 4px 0; }
+  .mistake-tag {
+    display: inline-block; font-size: 10.5px; font-weight: 800; letter-spacing: 0.4px;
+    text-transform: uppercase; color: var(--ink-faint); background: var(--grey-nt-bg);
+    border-radius: 6px; padding: 2px 7px; margin-right: 6px; vertical-align: middle;
+  }
+  .mistake-tag.try { color: white; background: var(--green); }
+  .word-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .word-chip {
+    border: none; padding: 8px 13px; border-radius: 999px;
+    font-size: 13.5px; font-weight: 600; background: var(--peach-card);
+    color: var(--ink-soft);
+  }
+  .word-chip.understands { background: var(--grey-nt-bg); color: var(--ink-soft); }
+  .word-chip.tries { background: var(--amber-bg); color: var(--amber); }
+  .word-chip.says { background: var(--green-bg); color: var(--green); }
+
+  .word-pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: var(--peach-card); border-radius: 999px;
+    padding: 4px 5px 4px 13px;
+  }
+  .word-pill .word-label { font-size: 13.5px; font-weight: 600; color: var(--ink); }
+  .re-btn {
+    width: 25px; height: 25px; border: none; border-radius: 50%;
+    font-size: 10.5px; font-weight: 800; font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    background: var(--grey-nt-bg); color: var(--ink-faint); padding: 0; line-height: 1;
+  }
+  .re-btn.r-active { background: var(--amber-bg); color: var(--amber); }
+  .re-btn.e-tries { background: var(--amber-bg); color: var(--amber); }
+  .re-btn.e-says { background: var(--green-bg); color: var(--green); }
+  .re-legend { display: flex; gap: 14px; align-items: center; font-size: 12px; color: var(--ink-soft); margin-bottom: 12px; }
+  .re-legend .dot { width: 18px; height: 18px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; color: white; margin-right: 4px; }
+  .gesture-row {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--peach-card); border-radius: 12px;
+    padding: 9px 8px 9px 13px; margin-bottom: 8px;
+  }
+  .gesture-row .gesture-label { flex: 1; font-size: 13.5px; font-weight: 600; color: var(--ink); }
+
+  /* ---------- Activities / tips ---------- */
+  .wait-banner {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--peach-card-2); border-radius: var(--radius-sm);
+    padding: 12px 14px; margin-bottom: 14px; font-size: 13.5px; color: var(--ink);
+  }
+  .wait-banner .hourglass { font-size: 20px; }
+  .step-diagram { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; }
+  .step-diagram .sd-step { display: flex; flex-direction: column; align-items: center; flex: 1; }
+  .step-diagram .sd-circle {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--coral), var(--gold-light));
+    display: flex; align-items: center; justify-content: center; font-size: 20px;
+    box-shadow: 0 3px 8px rgba(226,78,27,0.28); margin-bottom: 6px;
+  }
+  .step-diagram .sd-label { font-size: 10.5px; font-weight: 700; text-align: center; color: var(--ink); line-height: 1.25; }
+  .step-diagram .sd-arrow { color: var(--gold); font-size: 16px; padding-top: 10px; flex: 0 0 auto; }
+  .activity-item {
+    background: var(--white); border-radius: var(--radius); padding: 14px 16px;
+    margin-bottom: 10px; box-shadow: var(--shadow); font-size: 14.5px;
+  }
+  .activity-item .principle { display: block; margin-top: 6px; font-size: 12px; color: var(--gold); font-weight: 700; }
+  .fav-field { margin-bottom: 12px; }
+  .fav-field label { display: block; font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 5px; }
+
+  .tipbox {
+    background: var(--peach-card); border-radius: var(--radius);
+    padding: 14px 16px; margin: 12px 0;
+  }
+  .tipbox .lbl { font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; font-weight: 700; font-size: 13px; color: var(--coral-dark); margin-bottom: 4px; }
+  .tipbox .txt { font-size: 14px; color: var(--ink-soft); font-style: italic; }
+
+  /* ---------- Cycle ---------- */
+  .week-track { display: flex; gap: 8px; margin-bottom: 16px; }
+  .week-dot {
+    flex: 1; text-align: center; padding: 10px 4px; border-radius: 12px;
+    background: var(--white); box-shadow: var(--shadow); font-size: 11px; font-weight: 700;
+    color: var(--ink-faint);
+  }
+  .week-dot .wk-icon { font-size: 20px; display: block; margin-bottom: 4px; }
+  .week-dot.current { background: var(--coral); color: white; }
+  .week-dot.done { background: var(--green-bg); color: var(--green); }
+  .week-card { background: var(--white); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); margin-bottom: 14px; }
+  .gen-item {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--white); border-radius: 10px; padding: 10px 12px;
+    margin-bottom: 8px; border: none; width: 100%; text-align: left;
+  }
+  .gen-check {
+    width: 22px; height: 22px; border-radius: 6px; flex-shrink: 0;
+    border: 2px solid var(--peach-card-2); display: flex; align-items: center; justify-content: center;
+    font-size: 13px; color: white;
+  }
+  .gen-item.checked .gen-check { background: var(--green); border-color: var(--green); }
+  .gen-item .gen-label { font-size: 13.5px; color: var(--ink); }
+  .gen-item.checked .gen-label { color: var(--ink-faint); text-decoration: line-through; }
+  .week-card .wk-title { font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; font-weight: 700; font-size: 16px; margin-bottom: 6px; }
+  .week-card .wk-text { font-size: 14.5px; color: var(--ink-soft); }
+  .cycle-meta { font-size: 13px; color: var(--ink-faint); margin-bottom: 14px; }
+
+  /* ---------- Small wins ---------- */
+  textarea, input[type=text] {
+    width: 100%; border: 2px solid var(--peach-card-2); border-radius: var(--radius-sm);
+    padding: 12px; font-family: inherit; font-size: 14.5px; color: var(--ink);
+    background: var(--white); resize: vertical;
+  }
+  .win-entry {
+    background: var(--white); border-radius: var(--radius-sm); padding: 12px 14px;
+    margin-bottom: 8px; box-shadow: var(--shadow); font-size: 14px;
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 10px;
+  }
+  .delete-btn {
+    border: none; background: none; color: var(--ink-faint); font-size: 15px;
+    padding: 2px 4px; flex-shrink: 0; line-height: 1;
+  }
+  .delete-btn:active { color: var(--coral); }
+  .win-entry .date { font-size: 11.5px; color: var(--ink-faint); font-weight: 700; margin-bottom: 3px; }
+
+  /* ---------- Bottom nav ---------- */
+  .bottomnav {
+    position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 100%; max-width: 480px;
+    background: var(--white); box-shadow: 0 -4px 18px rgba(58,46,40,0.10);
+    display: flex; justify-content: space-around; padding: 8px 6px calc(8px + env(safe-area-inset-bottom));
+    z-index: 20;
+  }
+  .navbtn {
+    background: none; border: none; display: flex; flex-direction: column; align-items: center; gap: 2px;
+    color: var(--ink-faint); font-size: 10.5px; font-weight: 700; padding: 4px 10px;
+  }
+  .navbtn .ic { font-size: 20px; }
+  .navbtn.active { color: var(--coral); }
+
+  /* ---------- Modal ---------- */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(58,46,40,0.45);
+    display: flex; align-items: flex-end; justify-content: center; z-index: 100;
+  }
+  .modal-sheet {
+    background: var(--peach-bg); width: 100%; max-width: 480px;
+    border-radius: 24px 24px 0 0; padding: 22px 22px 28px;
+    max-height: 85vh; overflow-y: auto;
+    animation: slideup 0.25s ease;
+  }
+  @keyframes slideup { from { transform: translateY(30px); opacity:0; } to { transform: translateY(0); opacity:1; } }
+  .modal-sheet h2 { font-size: 20px; margin-bottom: 10px; }
+  .modal-close { display:block; margin: 16px auto 0; }
+
+  .empty-state { text-align: center; padding: 40px 20px; color: var(--ink-faint); }
+  .empty-state .em { font-size: 40px; margin-bottom: 10px; }
+
+  a { color: var(--coral-dark); }
+
+  @media print {
+    .bottomnav, .topbar .icon-btn, .save-strip, .btn-secondary, .btn-text { display: none !important; }
+    body { background: white; }
+    #app { max-width: 100%; padding-bottom: 0; }
+  }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+/* =========================================================
+   CONNECT2CHILD — V1
+   Self-contained app. Uses plain browser localStorage.
+   ========================================================= */
+
+/* ---------------- Content data ---------------- */
+
+const DOMAINS = [
+  {
+    id: "first_words",
+    mistakes: [
+      { instead: "Asking \"what do you want?\" when your child can't yet answer in words", try: "Offer a choice instead — \"milk or juice?\" — or simply name what you see them reaching for" },
+      { instead: "Expecting a spoken word every time", try: "Remember a gesture, a sound, or a picture is just as real a form of communication — celebrate all of them" },
+      { instead: "Handing something over right away", try: "Pause briefly first, so your child has a moment to try a sound, word, or gesture" },
+    ],
+    beforeYouStartExample: "e.g. already says 'no' and 'mumma'",
+    icon: "🧒",
+    title: "First Words",
+    subtitle: "Talking",
+    intro: "Talking (speech) usually takes the longest time to develop. It's okay if this takes many months, or if you repeat the same 4-week plan several times. That is normal — not a sign that something is wrong.",
+    stages: [
+      "Not talking yet — makes sounds on purpose to communicate, but no real words yet",
+      "Just starting — says 1 to 5 word-tries (like 'ba' for ball), used the same way each time",
+      "Growing — says 6 to 20 words on their own",
+      "Expanding — says 20 or more words, starting to put 2 words together (e.g. 'more milk')"
+    ],
+    tip: "A word-try counts as a real word — it does not need to sound perfect. If your child says 'ba' every time they mean 'ball,' count it. Waiting for perfect speech means missing chances to encourage every attempt your child makes.",
+    ndbiActivities: [
+      { text: "During snack time, give one small piece at a time instead of the whole portion, and wait with an expectant look before giving the next piece.", principle: "set up the moment, then wait", stage: 0 },
+      { text: "When your child reaches or points for something, say the word clearly once ('milk!') before handing it over — don't ask them to repeat it back.", principle: "show them, don't quiz them", stage: 0 },
+      { text: "Copy any sound or word-try your child makes right back to them, right away, with a smile.", principle: "copy your child back", stage: 0 },
+      { text: "Narrate what your child is doing in short, simple phrases during play ('up, up, up!', 'pop!') rather than asking questions.", principle: "talk about what they're doing", stage: 1 },
+      { text: "Put a favourite toy in a clear box or bag your child can see but can't open, and wait for them to bring it to you or reach/vocalise before opening it together.", principle: "set up the moment", stage: 0 },
+      { text: "Read simple picture books and pause before turning the page or naming the picture, waiting for your child to point, reach, or make a sound first.", principle: "pause and wait", stage: 1 },
+      { text: "Sing familiar songs and pause right before a key word (e.g. 'Twinkle twinkle little ___') to give your child a chance to fill in the word or sound.", principle: "pause and wait, modelling", stage: 1 },
+      { text: "Use the same core word across different activities every day (e.g. say 'open' for a box, a door, a jar) so your child hears how one word works in many places.", principle: "repetition across contexts", stage: 3 }
+    ],
+    hasWordBank: true,
+    growthNote: "Start with any words that fit your child's day and interests — you do not need to follow the list in order. As you go, keep adding words from the Core Words group along the way. These words are the most useful because your child can use them in many different situations. Once your child says single words, help them combine a Core Word with another word (e.g. 'more milk,' 'big ball,' 'all done bath').",
+    wordCategories: [
+      { cat: "Core Words (keep coming back to these)", words: ["more","all done","stop","go","again","help","want","mine","no","yes","up","down","in","out","on","off","open","close","look","wait","come","give","take","put","get","see","do","that","this","you"] },
+      { cat: "Pronouns", words: ["I","me","my","we","he","she","they","it"] },
+      { cat: "Question Words", words: ["what","where","who","why","how","when"] },
+      { cat: "Location & Position Words", words: ["under","over","behind","next to","front","back","between","near"] },
+      { cat: "Time Words", words: ["now","later","today","tomorrow","morning","night","first","last"] },
+      { cat: "Quantity Words", words: ["all","some","little bit","lots","another","both"] },
+      { cat: "People", words: ["Mumma","Appa","Didi","Bhaiya","Dada","Dadi","Nana","Nani","baby","own name","friend","teacher"] },
+      { cat: "Greetings & Social Words", words: ["hi","bye-bye","please","thank you","sorry","uh-oh","yay","ouch","excuse me","welcome"] },
+      { cat: "Sound Effects & Animal Sounds", words: ["moo","woof woof","meow","baa baa","quack","vroom vroom","choo choo","yum yum","shh","boom"] },
+      { cat: "Food & Drink", words: ["milk","water","roti","rice","dal","biscuit","banana","apple","juice","egg","bread","chocolate","snack","hungry","curd","ghee","sugar","salt","sabzi","chai","paratha","sambar"] },
+      { cat: "Animals", words: ["dog","cat","cow","bird","fish","elephant","lion","duck","horse","goat","monkey","rabbit","tiger","sheep","hen","butterfly","squirrel","parrot"] },
+      { cat: "Body Parts", words: ["eyes","nose","mouth","ears","hands","head","tummy","feet","hair","teeth","tongue","knee"] },
+      { cat: "Clothing", words: ["shirt","pants","socks","shoe","cap","frock","chappal","sweater","diaper","dress"] },
+      { cat: "Vehicles", words: ["car","bus","train","bike","auto","plane","boat","truck"] },
+      { cat: "Toys & Play Things", words: ["ball","book","blocks","doll","teddy","puzzle","balloon","kite","drum","crayon","bubbles"] },
+      { cat: "Furniture & Rooms", words: ["bed","door","window","chair","table","kitchen","bathroom","cupboard","sofa","stairs","bath"] },
+      { cat: "Everyday Objects", words: ["cup","spoon","phone","light","plate","key","bag","umbrella","fan","soap","TV"] },
+      { cat: "Outside Things & Places", words: ["park","garden","school","place of worship","market","road","tree","flower","sun","moon","star","rain"] },
+      { cat: "Action Words", words: ["sit","stand","run","jump","sleep","wash","brush","push","pull","eat","drink","climb","throw","catch","kick","clap","dance","sing","read","draw","fall","ride"] },
+      { cat: "Describing Words", words: ["big","small","hot","cold","wet","dirty","clean","tired","happy","sad","scared","loud","soft","hard","heavy","full"] }
+    ]
+  },
+  {
+    id: "following_instructions",
+    mistakes: [
+      { instead: "Giving several instructions at once", try: "Give just one step, and let your child finish it before adding the next" },
+      { instead: "Speaking over the TV or a phone screen", try: "Turn it off first, so your instruction is the only thing competing for attention" },
+      { instead: "Repeating an instruction over and over", try: "Say it once, then wait quietly to give your child time to process it" },
+      { instead: "Helping right away", try: "Wait 5 to 10 seconds first, so your child has a real chance to try on their own" },
+      { instead: "Using long or complicated sentences", try: "Keep instructions short and simple, using words your child already understands" },
+    ],
+    beforeYouStartExample: "e.g. already sits down when asked at mealtime",
+    icon: "👂",
+    title: "Following Instructions",
+    subtitle: "Receptive Communication",
+    intro: "Understanding what you say usually develops before your child can talk. Many children understand far more than they can say. This is one of the most important areas to build early, because it helps your child feel less frustrated and more connected to you every day.",
+    stages: [
+      "Follows a 1-step instruction only with a gesture or visual cue (e.g. you point while saying 'sit')",
+      "Follows a 1-step instruction with words only, in a familiar routine (e.g. 'come here' at mealtime)",
+      "Follows a 1-step instruction with words only, in a new or unfamiliar situation",
+      "Follows a 2-step instruction when the two steps are linked (e.g. 'pick up the cup and give it to me')",
+      "Follows a 2-step instruction when the two steps are not linked (e.g. 'close the door and bring your shoes')"
+    ],
+    tip: "Always pair the instruction with the same gesture at first. As your child succeeds, make the gesture smaller and smaller over time (fade it) instead of stopping it all at once — for example, a full point can slowly become a small nod. Fading too fast, rather than too slow, is the most common reason a 'known' instruction stops working.",
+    ndbiActivities: [
+      { text: "Give instructions only during activities your child already enjoys (e.g. 'roll it' during a ball game), not out of context.", principle: "let your child lead" },
+      { text: "Use the smallest hint that works — try a gesture before physically guiding your child's hands.", principle: "give less help over time" },
+      { text: "The moment your child follows the instruction, let the natural result happen right away (the ball rolls, the door opens) instead of a separate reward.", principle: "reward right away" },
+      { text: "Take turns giving simple instructions back and forth in play ('your turn to say go!') once your child is ready.", principle: "take turns" },
+      { text: "Practise the same 1-step instruction in at least 3 different daily routines (mealtime, bath time, play) before moving to a 2-step instruction.", principle: "practise in different places" },
+      { text: "When you introduce a 2-step instruction, start with two steps your child already knows well on their own, just said together.", principle: "start with what they already know" },
+      { text: "Use a routine your child already follows well, like bath time, to introduce a brand-new instruction inside a predictable order they trust.", principle: "build on a known routine" },
+      { text: "If your child doesn't respond, wait 5 to 10 seconds and repeat the exact same instruction the exact same way before changing anything.", principle: "pause and wait before changing your approach" }
+    ],
+    hasInstructionExamples: true,
+    oneStepExamples: ["sit down","stand up","come here","give me","stop","wait","look","open it","close it","put it in","throw the ball","bring me your shoes","touch your nose","clap your hands","turn around","hug me","wash your hands","get in the car"],
+    twoStepLinked: ["pick up the block and put it in the box","take the spoon and give it to me","open the door and come inside","get your cup and bring it to the table","pick up your toy and put it in the basket"],
+    twoStepUnrelated: ["close the door and bring your shoes","wash your hands and sit at the table","turn off the light and come here","put on your shoes and get your bag"]
+  },
+  {
+    id: "gestures",
+    mistakes: [
+      { instead: "Handing over what they want right away", try: "Pause for a moment first, so there's a real chance to reach, point, or gesture for it" },
+      { instead: "Prompting the gesture straightaway", try: "Wait quietly first — your child may surprise you" },
+      { instead: "Saving this for therapy time only", try: "Look for chances all day — snack time, bath time, and play are all real opportunities" },
+    ],
+    beforeYouStartExample: "e.g. already waves bye-bye to Dada",
+    icon: "👉",
+    title: "Gestures",
+    subtitle: "",
+    intro: "Gestures (like pointing and waving) usually come before words. They tend to appear in this order, and each one helps your child learn the next.",
+    stages: [
+      "Reaching — reaches toward something they want while you are nearby",
+      "Pulling/leading — pulls your hand toward an object or place",
+      "Pointing to Ask/Request — points at something they want (sometimes called 'proto-imperative')",
+      "Pointing to Share — points to show you something interesting, and checks that you are looking (sometimes called 'proto-declarative')",
+      "Everyday gestures — waving bye-bye, nodding/shaking head for yes/no, 'come here' hand wave, blowing a kiss"
+    ],
+    tip: "Respond to every gesture attempt right away, even an imperfect one — a partial reach, a quick point that barely lifts off the table. Fast, predictable responses teach your child that gestures work, well before the movements themselves become smooth and clear.",
+    ndbiActivities: [
+      { text: "Hold favourite toys just out of reach so your child needs to reach, point, or vocalise to get them — then respond immediately when they do.", principle: "set up the moment, reward right away", stage: 0 },
+      { text: "Model the gesture yourself right before your child needs it (e.g. wave and say 'bye-bye' as you leave the room), rather than asking them to do it first.", principle: "show them how", stage: 4 },
+      { text: "When you see something interesting, point at it and say 'look!' — this models Pointing to Share, not just Pointing to Ask/Request.", principle: "show them how to share-point", stage: 3 },
+      { text: "Offer two items and wait for your child to point, reach, or look at the one they want before giving it.", principle: "offer a choice and wait", stage: 2 },
+      { text: "During favourite physical games (tickles, swinging), pause and hold your hands out, waiting for a reach or point before you continue.", principle: "set up the moment, then wait", stage: 0 },
+      { text: "Practise waving during real goodbyes with family members, not just as a drill — this ties the gesture to something meaningful that's actually happening.", principle: "teach inside real moments", stage: 4 },
+      { text: "If your child reaches with their whole hand instead of pointing, gently guide one finger forward during fun, relaxed moments — but don't insist on it every time.", principle: "give less help over time", stage: 2 }
+    ],
+    hasGestureBank: true,
+    gestureGrowthNote: "These are common gestures children use before or alongside their first words. Your child may understand a gesture (like waving) when they see you do it, before they can do it themselves — that's normal, just like with words. Start with whichever gestures fit your child's day.",
+    gestureCategories: [
+      { cat: "Asking & Reaching Gestures", gestures: ["Reaches toward something they want","Pulls your hand toward what they want","Points to ask for something","Holds an object out for you to open or fix","Taps on something they want"] },
+      { cat: "Sharing & Showing Gestures", gestures: ["Points to show you something interesting","Holds up an object to show you","Looks at you, then points, to check you're looking too","Brings you an object just to show you, not to give it away"] },
+      { cat: "Everyday Social Gestures", gestures: ["Waves bye-bye","Nods head for yes","Shakes head for no","Claps hands","Blows a kiss","Puts a finger to lips for 'quiet'","High-fives","Puts hands together for 'namaste'","Shrugs shoulders for 'all gone' or 'don't know'","Puts arms up to be picked up"] },
+      { cat: "Pretend & Descriptive Gestures", gestures: ["Pretends to drink from an empty cup","Pretends to eat with a spoon","Pretends to talk on a toy phone","Spreads arms wide for 'so big'","Sniffs a flower","Rocks or pats a doll or teddy to sleep"] }
+    ]
+  },
+  {
+    id: "play",
+    mistakesGroups: [
+      {
+        cat: "Turn Taking",
+        items: [
+          { instead: "Expecting long waits at first", try: "Start with very short turns, then stretch the wait time slowly as your child gets used to it" },
+          { instead: "Starting with a hard game", try: "Pick something simple your child already enjoys, so turn-taking feels easy at first" },
+          { instead: "Stopping after one \"no\"", try: "Try making the game a little easier or shorter before trying again" },
+          { instead: "Moving straight on after a good turn", try: "Notice it out loud — \"you waited for your turn!\"" },
+        ]
+      },
+      {
+        cat: "Pretend Play",
+        items: [
+          { instead: "Only showing actions to copy", try: "Make it playful and silly — pretend play grows best through fun, not drills" },
+          { instead: "Expecting big pretend stories early on", try: "Remember using toys the right way (like pushing a car) usually comes first — pretend builds on that" },
+          { instead: "Correcting how your child plays", try: "Let their own version of the game stand — there's no single \"right\" way to pretend" },
+          { instead: "Bringing out lots of toys together", try: "Keep just one or two out, so the pretend idea is easier to follow" },
+          { instead: "Jumping to long pretend stories", try: "Start with one simple pretend action, like feeding a teddy, before linking several steps together" },
+        ]
+      },
+      {
+        cat: "Social Play",
+        items: [
+          { instead: "Expecting friendships right away", try: "Focus first on simple back-and-forth play with one familiar person — friendships build from there" },
+          { instead: "Pushing group play before your child is ready", try: "Start with one-on-one play, which is usually easier to manage" },
+          { instead: "Choosing a loud or crowded setting", try: "Look for calmer, quieter spaces to start building social play skills" },
+          { instead: "Comparing your child's play to other children's", try: "Notice their own progress — every child develops social play at their own pace" },
+          { instead: "Stopping as soon as play gets hard", try: "Stay close and offer a little support, so your child can work through it with you there" },
+        ]
+      },
+      {
+        cat: "Moving Between Activities",
+        items: [
+          { instead: "Ending a favourite activity suddenly", try: "Give a heads-up first — \"two more minutes of blocks\"" },
+          { instead: "Moving straight to the next thing with no warning", try: "Use a countdown or a timer your child can see" },
+          { instead: "Changing the routine without notice", try: "Prepare your child ahead of time when something will be different" },
+          { instead: "Going back and forth once a limit is set", try: "Stay calm and consistent — this actually helps your child feel more secure" },
+          { instead: "Moving straight on after a smooth change", try: "Notice it out loud — \"you finished playing and came to eat so easily!\"" },
+        ]
+      },
+    ],
+    beforeYouStartExample: "e.g. already bangs blocks together or pushes a car",
+    icon: "🧸",
+    title: "Play",
+    subtitle: "",
+    intro: "How a child plays shows a lot about how ready they are to think and communicate. Track the most advanced type of play your child does regularly — not just once.",
+    stages: [
+      "Exploring — mouths, bangs, or examines objects to feel and see what they do",
+      "Cause and effect — presses a button or shakes a rattle, expecting the same result each time",
+      "Using toys the right way (called 'functional play') — pushes a car, stirs with a spoon",
+      "One pretend action (called 'single-scheme pretend play') — feeds a doll or teddy, talks on a toy phone",
+      "Linked pretend actions (called 'combined pretend play') — feeds the doll or teddy, then puts it to sleep"
+    ],
+    stageIdeas: [
+      "Try with: pots and pans, fabric with different textures, a steel katori and spoon",
+      "Try with: a bell, a pop-up toy, a light switch, banging a spoon on a katori",
+      "Try with: a toy comb, a toy phone, stirring in a bowl, pushing a toy car",
+      "Try with: feeding a doll or teddy, holding a toy phone to their ear, rocking a doll or teddy to sleep",
+      "Try with: feed the doll or teddy then wipe its mouth; put it to bed then cover it with a cloth"
+    ],
+    tip: "Join in with what your child is already doing before adding a new step. Stepping into their play (instead of redirecting them to a 'better' toy) is what turns a solo activity into a two-way exchange with you.",
+    ndbiActivities: [
+      { text: "Sit face-to-face and join whatever your child is already doing with a toy, even if it looks repetitive — add sounds or comments rather than changing the activity.", principle: "follow their lead, get down to their level", stage: 0 },
+      { text: "Once your child is happily playing, add one small new step to their play (e.g. if they push a car, add 'beep beep' and a small crash) and see if they copy it.", principle: "show them a small new step", stage: 2 },
+      { text: "Take turns during simple play (roll the ball, stack a block) so your child experiences a back-and-forth rhythm with you.", principle: "take turns", stage: 2 },
+      { text: "Keep a few of your child's favourite toys slightly out of easy reach so they need to involve you to keep playing.", principle: "set up the moment" },
+      { text: "For cause-and-effect play, use everyday sound-makers your child can control — a bell, a pop-up toy, or banging a steel katori with a spoon — and let them repeat the action as many times as they want.", principle: "let them repeat what works", stage: 1 },
+      { text: "For functional play, show real actions with toy versions of things you use — stir with a toy spoon in a bowl, 'give the doll or teddy water' with a toy cup, push a toy broom like you sweep.", principle: "show them how", stage: 2 },
+      { text: "Start pretend play with your child's most familiar routines first — feeding, sleeping, or bathing a doll or teddy — since these are actions they watch you do every day.", principle: "start with what they already know", stage: 3 },
+      { text: "Use a dupatta or thin cloth for simple peekaboo and hide-and-reveal games — this builds play and anticipation together.", principle: "set up the moment", stage: 0 },
+      { text: "Follow your child around during unstructured time and narrate their play in short phrases, rather than only playing during set playtime.", principle: "follow their lead" },
+      { text: "If your child lines up toys or repeats one action many times, join the line-up instead of stopping it — add one toy to their line, then wait to see if they let you continue.", principle: "follow their lead, then add a small step", stage: 0 }
+    ],
+    hasPlayChecklist: true,
+    playChecklistNote: "Tap ✓ Done, ~ In Progress, or — Not Yet under each skill, based on what you've seen your child do. These are the same skills as the broader Play stages, just broken into smaller, specific steps — so you always know exactly which one to try next.",
+    playSkillCategories: [
+      { cat: "Exploring Objects", skills: ["Bangs, shakes, or mouths toys to explore them","Explores toys with different textures (soft, hard, bumpy)","Pulls a string toy to bring it closer"] },
+      { cat: "Discovering How Toys Work", skills: ["Presses a button expecting a sound or light","Shakes a rattle to hear the sound","Turns the pages of a board book","Tries different ways to open a container","Hands a toy to you when they can't work it"] },
+      { cat: "Using Toys the Right Way", skills: ["Pushes a car along the ground","Stirs with a spoon in a bowl or cup","Puts a toy phone to their ear","Stacks blocks, then knocks them down","Rolls or bounces a ball with you"] },
+      { cat: "Pretend Play on Themselves", skills: ["Pretends to drink from an empty cup","Pretends to eat from a spoon","Pretends to go to sleep (closes eyes, lies down)","Pretends to brush their own hair or teeth","Pretends to talk on a toy phone"] },
+      { cat: "Pretend Play on a Doll, Teddy, or You", skills: ["Feeds a doll or teddy with a spoon or bottle","Grooms a doll or teddy (brushes hair or fur)","Covers a doll or teddy with a blanket","Gives you pretend food or a pretend drink","Puts a doll or teddy to sleep"] },
+      { cat: "Linking Pretend Actions Together", skills: ["Feeds the doll or teddy, then wipes its mouth","Puts the doll or teddy to bed, then covers it with a blanket","Cooks pretend food, then serves it to you","Uses one object to stand in for another (e.g. a block as a phone)","Plays out a short pretend story with 2-3 steps (e.g. wash the doll or teddy, dry it, dress it)"] }
+    ],
+    hasMaterialsList: true,
+    materialsNote: "None of this needs to be expensive. Household items work as well as bought toys, and the very first list below needs no materials at all — what matters is the type of play they invite, not the price.",
+    materialCategories: [
+      { cat: "No Toys Needed — Just You", items: ["Peekaboo — cover your face with your hands, then say 'boo!'","Tickles — build it up ('the tickle monster is coming...') before you tickle","Chase — crawl or walk after your child, and let them lead where you go","'So big!' — lift their arms up while you say 'sooo big!'","Piggyback or shoulder rides","Row your boat — sit facing each other, hold hands, and rock back and forth","Blow raspberries on their tummy or cheek","Mirror game — copy your child's face or movement, then let them copy yours"] },
+      { cat: "Developmental Toys (Cause & Effect, Functional, Pretend)", items: ["Stacking cups or blocks","A simple shape sorter","Large-piece puzzles (2 to 4 pieces)","A wind-up or pull-along toy","Steel katoris and a spoon for pretend cooking","A soft ball for rolling and catching"] },
+      { cat: "Touch (Tactile Input)", items: ["Homemade playdough (flour, salt, water, oil)","A tub of rice or dal for scooping and pouring","Scraps of different fabric to feel (velvet, net, cotton)","Sand or mud play outside","Bubble wrap to pop","A textured bath sponge or loofah"] },
+      { cat: "Movement & Body Awareness (Proprioceptive & Vestibular)", items: ["A big cardboard box to climb in and out of","Cushions or pillows to jump on, with you close by","A dupatta or old bedsheet for gentle swinging (two adults holding the ends)","Carrying a small bag of rice or books — real 'heavy work'","Rolling on a mat or carpet","An empty bottle on a string to pull along"] },
+      { cat: "Sound & Mouth (Auditory & Oral Motor)", items: ["Bubbles, for blowing and popping","A homemade shaker (sealed bottle with rice or beans inside)","A whistle or party blower","A steel plate and spoon for banging out a rhythm"] }
+    ]
+  },
+  {
+    id: "sharing_attention",
+    mistakes: [
+      { instead: "Calling their name several times in a row", try: "Say it once, then pause and wait before trying again" },
+      { instead: "Calling their name when they're deeply absorbed in something", try: "Pick moments when they're more likely to be able to respond" },
+      { instead: "Raising your voice", try: "Make yourself interesting instead — get into their eye line, or bring something fun into view" },
+      { instead: "Repeating their name right away", try: "Say it once and give a real pause, 5 to 10 seconds, before trying again" },
+      { instead: "Showing several toys together", try: "Offer just one at a time, so it's easier to focus" },
+      { instead: "Taking over what your child is doing", try: "Follow their lead, and join in with what they've already chosen" },
+      { instead: "Talking non-stop", try: "Pause often, and leave space for your child to respond in their own way" },
+      { instead: "Pointing right away", try: "Wait a moment first, to see what your child notices on their own" },
+      { instead: "Missing a quick glance your child gives you", try: "Respond warmly to it right away — even a half-second glance is a real moment of connection" },
+    ],
+    beforeYouStartExample: "e.g. already looks up when I say their name sometimes",
+    icon: "👀",
+    title: "Sharing Attention",
+    subtitle: "Together",
+    intro: "This means you and your child pay attention to the same thing at the same time — a person, toy, or event. Children need this skill before they can learn language well.",
+    stages: [
+      "Looks or responds when you call their name (within a few seconds, most of the time)",
+      "Looks where you point",
+      "Looks where your eyes are looking, even without a point",
+      "Shows you something — holds up an object for you to see",
+      "Gives you something to share (not just to ask for help)",
+      "Points at something interesting just to get you to notice it too"
+    ],
+    tip: "Respond warmly every time your child tries to share attention with you ('Oh, a red ball!'), even if it interrupts what you were doing. Your response teaches your child that sharing attention with you is worthwhile.",
+    ndbiActivities: [
+      { text: "Say your child's name and pause before giving an instruction or starting an activity, giving them a chance to look at you first.", principle: "give them a chance to look first" },
+      { text: "When your child shows or gives you something, respond right away with excitement and a short comment — don't just say 'good job.' For example, say 'Wow, a red ball!' or 'You found the truck!' — name what they're showing you.", principle: "reward right away" },
+      { text: "During play, briefly hold up an object near your own face before handing it over, encouraging your child's gaze to shift between the object and you.", principle: "set up the moment" },
+      { text: "Copy where your child is looking or pointing, and comment on it, rather than redirecting their attention elsewhere. For example, if they look at a bird outside, say 'A bird! It's flying.'", principle: "follow their lead" },
+      { text: "Play simple back-and-forth games like rolling a ball or passing a toy, pausing to check your child looks at you before you take your turn.", principle: "take turns" },
+      { text: "Point out interesting things during walks or car rides ('look, a dog!'), even if your child doesn't respond every time — repetition builds the habit of looking where you point.", principle: "show them how, often" },
+      { text: "Hold a favourite toy between your face and your child's so their gaze naturally shifts between the toy and you.", principle: "set up the moment" }
+    ]
+  },
+  {
+    id: "eye_contact",
+    mistakes: [
+      { instead: "Repeatedly saying \"Look at me\"", try: "Hold something exciting near your own eyes, so looking at you happens naturally" },
+      { instead: "Holding your child's face to make them look at you", try: "Wait, and make yourself interesting instead — eye contact should never be forced" },
+      { instead: "Expecting long periods of eye contact", try: "Treat even a quick glance as a real win — one second counts" },
+      { instead: "Practising only at a table", try: "Look for chances during play, tickles, and songs — eye contact grows best when your child is enjoying themselves" },
+      { instead: "Pausing play to ask for eye contact", try: "Let it happen inside the game itself, without interrupting the fun" },
+    ],
+    beforeYouStartExample: "e.g. already looks at me during tickles or songs",
+    icon: "😊",
+    title: "Eye Contact",
+    subtitle: "Checking In",
+    intro: "Track when and why eye contact happens, not just how much or how long. Forcing eye contact is never the goal.",
+    stages: [
+      "Brief eye contact during favourite activities (tickles, songs, a favourite toy)",
+      "Eye contact while asking for something (looks at you while reaching)",
+      "Checking in during play — glances at you now and then while playing alone",
+      "Checking your face for cues — looks at your face when unsure or excited (e.g. before trying something new)"
+    ],
+    tip: "If eye contact seems to cause your child distress, don't push for more of it. Track connection instead through checking-in glances — these do the same job as eye contact, without the discomfort.",
+    ndbiActivities: [
+      { text: "During favourite physical activities (tickles, swinging, chase), pause and wait with an expectant face — many children naturally look up at this pause.", principle: "pause and wait, at their level" },
+      { text: "Get down to your child's eye level during play so eye contact happens naturally as part of looking at the toy or activity, not as a separate demand.", principle: "get down to their level" },
+      { text: "Notice and warmly respond to any check-in glance, even brief ones, rather than only responding to sustained eye contact.", principle: "reward even small glances" },
+      { text: "Play simple cause-and-effect games (blowing bubbles, tickling) that naturally pause and need your child to look up to keep the game going.", principle: "set up the moment" },
+      { text: "Sit at your child's eye level during meals and everyday routines, not just during play, so eye contact has more chances to happen naturally.", principle: "get down to their level, often" },
+      { text: "If your child checks in with a quick glance during solo play, respond with a smile or small comment rather than calling them over — small check-ins deserve small responses. For example, smile and say 'I see you!' or 'Good building!' without stopping what they're doing.", principle: "reward even small glances" }
+    ]
+  },
+  {
+    id: "copying",
+    beforeYouStartExample: "e.g. already claps when I clap during a song",
+    icon: "🪞",
+    title: "Copying",
+    subtitle: "Imitation",
+    leadTip: "Start here: copy your child first. Repeat their sounds, actions, or play right back to them, before trying any other strategy below. This builds the connection your child needs before they'll copy you back.",
+    intro: "Copying helps your child learn to talk and connect with others. Track it across actions, sounds, and gestures.",
+    stages: [
+      "Copies an action with an object (bangs a drum after seeing you do it)",
+      "Copies a body movement without an object (claps, stomps)",
+      "Copies a sound (an animal noise, or an exaggerated mouth movement)",
+      "Copies a gesture (a wave, a clap, a point) after seeing you do it"
+    ],
+    tip: "Children often start copying back once they notice you copying them. Give this time — some children need many sessions of being copied before they copy back for the first time.",
+    ndbiActivities: [
+      { text: "Sit face-to-face and copy your child's actions, sounds, and facial expressions during play for a few minutes each day — without asking them to copy back.", principle: "copy your child back" },
+      { text: "Once your child notices you copying them and seems to enjoy it, show them a simple new action in a big, playful way, then pause to see if they copy you.", principle: "show them how" },
+      { text: "Use songs and action rhymes with repeated gestures (clapping, patting) — the repetition makes copying easier to predict and join in.", principle: "show them during a routine" },
+      { text: "Copy your child's exact facial expressions (surprised face, big smile) during face-to-face play, not just their actions with toys.", principle: "copy your child back" },
+      { text: "Play a simple cause-and-effect toy together and take turns copying each other's action (you press the button, then guide your child's hand to press it too).", principle: "take turns" },
+      { text: "Once your child reliably copies one action, try two actions in a row (e.g. clap, then touch your head) and see if they follow both in order.", principle: "start with what they already know" }
+    ]
+  }
+];
+
+const WEEK_PLAN = [
+  { title: "Week 1 — Observe", text: "Don't ask for anything new yet. Just notice what your child already does, during normal moments like meals, bath time, or play." },
+  { title: "Week 2 — Try", text: "Create 2 to 3 short, relaxed chances each day to practise the next small step, during activities your child already enjoys." },
+  { title: "Week 3 — Practise Everywhere", text: "Practise the same step in at least 2 different places or with 2 different people, so it isn't tied to just one situation. Check off what you've tried below." },
+  { title: "Week 4 — Check Progress", text: "Give a little less help than before if you can. Check the list again. Decide: move to the next stage, or repeat this plan." }
+];
+
+const OVERWHELM_SIGNS = [
+  "Turns their body or face away from you",
+  "Pushes the toy or object away",
+  "Cries, whines, or gets upset",
+  "Covers their ears or eyes",
+  "Stops responding, even after you try 2 or 3 times",
+  "Increases repetitive movements (e.g. rocking, flapping) more than usual",
+  "Tries to leave the activity or the room"
+];
+const WHAT_TO_DO = [
+  "Stop the activity right away. Do not ask for one more try.",
+  "Give your child a few minutes of calm, no-demand time.",
+  "Follow what your child wants to do next, even if it's not the planned activity.",
+  "Try the activity again later, with an easier step or a shorter version."
+];
+const RESET_STRATEGIES = [
+  "Move to a quiet space with fewer people and less noise.",
+  "Offer a familiar, comforting activity your child already enjoys (e.g. a favourite soft toy, a deep hug, gentle swinging).",
+  "Lower your own voice and slow your movements — your child often picks up on your calm.",
+  "Wait until your child looks settled and relaxed before you try the activity again."
+];
+
+/* ---------------- State ---------------- */
+
+const STORAGE_KEY = "connecto_v1";
+let state = loadState();
+
+function defaultGeneralization() {
+  return { mom: false, dad: false, other: false, newRoom: false, newToy: false };
+}
+
+function defaultDomainState() {
+  return {
+    stageMarks: {},
+    wordMarks: {},
+    gestureMarks: {},
+    playSkillMarks: {},
+    cycleWeek: 1,
+    cycleCount: 1,
+    cycleStartDate: todayISO(),
+    lastActivityDate: todayISO(),
+    beforeYouStart: "",
+    customActivities: [],
+    generalization: defaultGeneralization()
+  };
+}
+
+function defaultFavorites() {
+  return { toys: "", foods: "", songs: "", activities: "" };
+}
+
+function loadState() {
+  let s;
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    s = raw ? JSON.parse(raw) : null;
+  } catch (e) { s = null; }
+  if (!s) {
+    s = {
+      firstUseSeen: false,
+      selectedDomains: [],
+      domainState: {},
+      smallWins: [],
+      lastExportDate: null
+    };
+  }
+  if (!s.favorites) s.favorites = defaultFavorites();
+  if (s.tabHintSeen === undefined) s.tabHintSeen = false;
+  return s;
+}
+
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch (e) {
+    console.error("Connect2Child: could not save — storage may be full or unavailable.", e);
+  }
+}
+
+function todayISO() { return new Date().toISOString().slice(0, 10); }
+function daysSince(dateStr) {
+  const then = new Date(dateStr);
+  const now = new Date();
+  return Math.floor((now - then) / (1000 * 60 * 60 * 24));
+}
+function formatDate(dateStr) {
+  const d = new Date(dateStr);
+  return d.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+}
+function ensureDomainState(id) {
+  if (!state.domainState[id]) state.domainState[id] = defaultDomainState();
+  if (!state.domainState[id].customActivities) state.domainState[id].customActivities = [];
+  if (!state.domainState[id].generalization) state.domainState[id].generalization = defaultGeneralization();
+  if (!state.domainState[id].gestureMarks) state.domainState[id].gestureMarks = {};
+  if (!state.domainState[id].playSkillMarks) state.domainState[id].playSkillMarks = {};
+  return state.domainState[id];
+}
+function getDomain(id) { return DOMAINS.find(d => d.id === id); }
+
+/* ---------------- Router ---------------- */
+
+let route = { screen: state.selectedDomains.length ? "home" : "onboard", domainId: null, tab: "checklist" };
+let modal = null;
+let wordSearchQuery = "";
+let celebrationMsg = null;
+let pendingDelete = null;
+const WORD_MILESTONES = [1, 5, 10, 25, 50, 75, 100];
+
+function nav(screen, domainId, tab) {
+  route = { screen, domainId: domainId || null, tab: tab || "checklist" };
+  celebrationMsg = null;
+  window.scrollTo(0, 0);
+  render();
+}
+
+/* ---------------- Rendering ---------------- */
+
+const app = document.getElementById("app");
+
+const HANDS_ICON = `<svg viewBox="0 0 100 100" width="78%" height="78%" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="14" cy="92" r="11" fill="white"/>
+  <line x1="14" y1="92" x2="28.6" y2="44.2" stroke="white" stroke-width="9" stroke-linecap="round"/>
+  <line x1="14" y1="92" x2="39.3" y2="48.8" stroke="white" stroke-width="9" stroke-linecap="round"/>
+  <line x1="14" y1="92" x2="48.5" y2="55.8" stroke="white" stroke-width="9" stroke-linecap="round"/>
+  <line x1="14" y1="92" x2="55.9" y2="64.8" stroke="white" stroke-width="9" stroke-linecap="round"/>
+  <line x1="14" y1="92" x2="42.3" y2="85.5" stroke="white" stroke-width="9" stroke-linecap="round"/>
+  <circle cx="88" cy="10" r="8" fill="white" opacity="0.95"/>
+  <line x1="88" y1="10" x2="72.3" y2="53.2" stroke="white" stroke-width="6" stroke-linecap="round" opacity="0.95"/>
+  <line x1="88" y1="10" x2="64.1" y2="49.3" stroke="white" stroke-width="6" stroke-linecap="round" opacity="0.95"/>
+  <line x1="88" y1="10" x2="56.8" y2="43.8" stroke="white" stroke-width="6" stroke-linecap="round" opacity="0.95"/>
+  <line x1="88" y1="10" x2="50.8" y2="37.0" stroke="white" stroke-width="6" stroke-linecap="round" opacity="0.95"/>
+  <line x1="88" y1="10" x2="89.4" y2="37.0" stroke="white" stroke-width="6" stroke-linecap="round" opacity="0.95"/>
+</svg>`;
+
+function getFocusKey(el) {
+  if (!el || el === document.body || !app.contains(el)) return null;
+  const stableAttrs = ["data-mark", "data-play-mark", "data-toggle-domain", "data-open-domain",
+    "data-word-r", "data-word-e", "data-gesture-r", "data-gesture-e",
+    "data-tab", "data-nav", "data-action", "data-before-start"];
+  for (const attr of stableAttrs) {
+    const val = el.getAttribute(attr);
+    if (val !== null) return `[${attr}="${CSS.escape(val)}"]`;
+  }
+  if (el.id) return `#${CSS.escape(el.id)}`;
+  return null;
+}
+
+function restoreFocus(key) {
+  if (!key) return;
+  try {
+    const el = document.querySelector(key);
+    if (el) el.focus();
+  } catch (e) {}
+}
+
+function render() {
+  const focusKey = getFocusKey(document.activeElement);
+  let html = "";
+  if (!state.firstUseSeen) {
+    html += renderFirstUseGate();
+  } else if (route.screen === "onboard") {
+    html += renderOnboard();
+  } else if (route.screen === "domainPicker") {
+    html += renderDomainPicker();
+  } else if (route.screen === "home") {
+    html += renderTopbar() + renderHome() + renderBottomNav("home");
+  } else if (route.screen === "domain") {
+    html += renderDomainScreen();
+  } else if (route.screen === "bank") {
+    html += renderTopbar() + renderActivitiesBank() + renderBottomNav("bank");
+  } else if (route.screen === "export") {
+    html += renderTopbar() + renderExport() + renderBottomNav("export");
+  } else if (route.screen === "about") {
+    html += renderAbout();
+  } else if (route.screen === "favorites") {
+    html += renderFavoritesScreen();
+  }
+  app.innerHTML = html;
+  if (modal) renderModal();
+  attachHandlers();
+  restoreFocus(focusKey);
+}
+
+function renderTopbar() {
+  return `
+    <div class="topbar">
+      <div class="brand">
+        <a href="index.html" title="Back to Clinic Homepage" style="text-decoration:none;display:flex;align-items:center;gap:8px;">
+          <div class="brand-mark">${HANDS_ICON}</div>
+          <div class="brand-name">Connect2Child</div>
+        </a>
+      </div>
+      <div style="display:flex;gap:8px">
+        <a href="index.html" class="icon-btn" title="Back to Clinic Homepage" aria-label="Back to Clinic Homepage">🏠</a>
+        <button class="icon-btn" data-nav="about" title="About Connect2Child" aria-label="About Connect2Child">ℹ️</button>
+        <button class="icon-btn" data-action="open-export" title="Export" aria-label="Export your summary">📤</button>
+      </div>
+    </div>
+    <div class="save-strip">💾 Saved on this device only. Export a copy to keep it safe.</div>
+  `;
+}
+
+function renderBottomNav(active) {
+  function b(id, icon, label, screen) {
+    return `<button class="navbtn ${active === id ? "active" : ""}" data-nav="${screen}">
+      <span class="ic">${icon}</span>${label}
+    </button>`;
+  }
+  return `<div class="bottomnav">
+    ${b("home", "🏠", "Home", "home")}
+    ${b("bank", "🎯", "Activities", "bank")}
+    ${b("export", "📤", "Export", "export")}
+  </div>`;
+}
+
+/* ---- First-use gate ---- */
+function renderFirstUseGate() {
+  return `
+  <div class="modal-overlay">
+    <div class="modal-sheet">
+      <h2>📲 Before you start</h2>
+      <p class="body-text">Your answers are saved on this device only. If you switch phones, switch browsers, or clear your browser history, this data will be lost.</p>
+      <p class="body-text">Use <b>Export Summary</b> often to keep a safe copy — you'll find it any time from the bottom menu.</p>
+      <button class="btn-primary" data-action="dismiss-first-use">Got it, let's start</button>
+    </div>
+  </div>`;
+}
+
+/* ---- Onboarding & About (shared content) ---- */
+function introContent() {
+  return `
+    <p class="body-text" style="text-align:left">Connect2Child helps you get started. It shows you tips and techniques you can use to help your child, and helps you track how it's going.</p>
+    <div class="card soft" style="text-align:left">
+      <div class="feature-row"><div class="emoji">💡</div><div class="txt"><b>The examples are a starting point.</b> They show you what a technique looks like. Add your own once you find what works for your child.</div></div>
+      <div class="feature-row"><div class="emoji">🔁</div><div class="txt"><b>Repeat as many times as your child needs.</b> Many children need several rounds — that's expected.</div></div>
+      <div class="feature-row"><div class="emoji">🗓️</div><div class="txt"><b>There is no end date.</b> Use Connect2Child for as long as it helps your family.</div></div>
+      <div class="feature-row" style="margin-bottom:0"><div class="emoji">💛</div><div class="txt"><b>Every child develops at their own pace</b> — and that's okay.</div></div>
+    </div>
+  `;
+}
+
+function renderOnboard() {
+  return `
+  <div class="onboard-wrap">
+    <div class="onboard-mark">${HANDS_ICON}</div>
+    <h1 class="hero-title">Connect2Child</h1>
+    <div class="tagline">Evidence-based parent support for everyday interactions</div>
+    <div class="byline">By Dr Chitra Sankar, Developmental Paediatrician</div>
+    ${introContent()}
+    <div style="height:8px"></div>
+    <button class="btn-primary" data-action="start-picker">Get Started</button>
+  </div>`;
+}
+
+function howItWorksInfographic() {
+  const domainIcons = DOMAINS.map(d => `
+    <div style="display:flex;flex-direction:column;align-items:center;width:64px">
+      <div style="width:46px;height:46px;border-radius:14px;background:var(--peach-card-2);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:4px">${d.icon}</div>
+      <div style="font-size:9.5px;font-weight:700;text-align:center;line-height:1.2">${d.title}</div>
+    </div>
+  `).join("");
+
+  return `
+  <div class="card" style="text-align:left;background:linear-gradient(180deg, var(--peach-card) 0%, var(--white) 100%)">
+    <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;font-size:15px;margin-bottom:12px;text-align:center">How Connect2Child Works</div>
+
+    <div style="font-size:11px;font-weight:800;color:var(--gold);text-align:center;margin-bottom:8px;letter-spacing:0.5px">1 · CHOOSE YOUR GOALS</div>
+    <p class="body-text" style="font-size:12px;text-align:center;margin-bottom:10px">Pick any of these 7 areas to work on — no need to do them all, and you can add more later.</p>
+    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-bottom:18px">${domainIcons}</div>
+
+    <div style="font-size:11px;font-weight:800;color:var(--gold);text-align:center;margin-bottom:8px;letter-spacing:0.5px">2 · FOLLOW A SIMPLE 4-WEEK PLAN</div>
+    <p class="body-text" style="font-size:12px;text-align:center;margin-bottom:12px">Each area you choose moves through these 4 weeks, building step by step:</p>
+    <div style="position:relative;margin-bottom:14px">
+      <div style="position:absolute;left:17px;top:18px;bottom:18px;width:2px;background:repeating-linear-gradient(to bottom, var(--peach-card-2) 0 4px, transparent 4px 8px)"></div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;position:relative">
+        <div style="width:36px;height:36px;border-radius:50%;background:white;box-shadow:0 2px 6px rgba(0,0,0,0.08);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0">👀</div>
+        <div style="font-size:12.5px"><b>Observe</b> — notice what your child does now</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;position:relative">
+        <div style="width:36px;height:36px;border-radius:50%;background:white;box-shadow:0 2px 6px rgba(0,0,0,0.08);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0">🌱</div>
+        <div style="font-size:12.5px"><b>Try</b> — practise the next small step, building on Week 1</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;position:relative">
+        <div style="width:36px;height:36px;border-radius:50%;background:white;box-shadow:0 2px 6px rgba(0,0,0,0.08);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0">🔄</div>
+        <div style="font-size:12.5px"><b>Everywhere</b> — start trying it in new places, with new people</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;position:relative">
+        <div style="width:36px;height:36px;border-radius:50%;background:white;box-shadow:0 2px 6px rgba(0,0,0,0.08);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0">✅</div>
+        <div style="font-size:12.5px"><b>Check</b> — see what's ready to move on</div>
+      </div>
+    </div>
+    <div class="tipbox" style="margin-bottom:18px">
+      <div class="lbl">🩺 Dr Chitra Says</div>
+      <div class="txt">Generalising a skill — using it easily "everywhere" — is the goal, not something that happens in one 4-week pass. Most children need several rounds of this same plan before a skill truly sticks in every situation. That's expected, not a setback.</div>
+    </div>
+
+    <div style="font-size:11px;font-weight:800;color:var(--gold);text-align:center;margin-bottom:10px;letter-spacing:0.5px">3 · THREE THINGS TO REMEMBER</div>
+    <div style="display:flex;gap:8px">
+      <div style="flex:1;background:white;border-radius:12px;padding:10px 6px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06)">
+        <div style="font-size:20px;margin-bottom:4px">💡</div>
+        <div style="font-size:10px;font-weight:700;line-height:1.3">Examples are a starting point</div>
+      </div>
+      <div style="flex:1;background:white;border-radius:12px;padding:10px 6px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06)">
+        <div style="font-size:20px;margin-bottom:4px">🔁</div>
+        <div style="font-size:10px;font-weight:700;line-height:1.3">Repeat as many times as needed</div>
+      </div>
+      <div style="flex:1;background:white;border-radius:12px;padding:10px 6px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06)">
+        <div style="font-size:20px;margin-bottom:4px">🗓️</div>
+        <div style="font-size:10px;font-weight:700;line-height:1.3">No end date</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+const UNIVERSAL_MISTAKES = [
+  { instead: "Turning every moment into a lesson", try: "Let some time simply be about connection and fun, no teaching goal attached" },
+  { instead: "Using lots of words", try: "Keep your language short and simple, matching what your child can take in right now" },
+  { instead: "Stepping in right away", try: "Pause for 5 to 10 seconds first, so your child has a real chance to try" },
+  { instead: "Repeating yourself several times", try: "Say it once, then wait quietly" },
+  { instead: "Expecting quick change", try: "Remember skills usually take several rounds of practice before they stick — that's normal, not a setback" },
+  { instead: "Saving practice for therapy time", try: "Look for small moments throughout the day — meals, baths, and play all count" },
+  { instead: "Waiting for big milestones", try: "Notice and celebrate small wins too — they add up" },
+  { instead: "Comparing your child to others", try: "Focus on their own personal progress, at their own pace" },
+  { instead: "Trying to work on everything at once", try: "Pick just one or two areas at a time — it's easier for both of you" },
+  { instead: "Losing sight of fun", try: "Remember connection and enjoyment come first — learning grows out of that, not the other way around" },
+];
+
+function universalMistakesSection() {
+  const items = UNIVERSAL_MISTAKES.map((m, i) => `
+    <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:14px;text-align:left">
+      <div style="flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--peach-card-2);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:var(--coral-dark)">${i + 1}</div>
+      <div style="flex:1">
+        <div class="mistake-instead"><span class="mistake-tag">Instead of</span> ${m.instead}</div>
+        <div class="mistake-try" style="margin-top:4px"><span class="mistake-tag try">Try</span> ${m.try}</div>
+      </div>
+    </div>`).join("");
+
+  return `
+  <div class="card" style="text-align:left;margin-top:14px">
+    <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;font-size:15px;margin-bottom:4px;text-align:center">⚠️ 10 Common Mistakes Parents Make</div>
+    <p class="body-text" style="font-size:12.5px;text-align:center;margin-bottom:16px">These are natural instincts, not failures — every parent falls into a few of these. Each area also has its own specific tips under its "Common Mistakes" tab.</p>
+    ${items}
+  </div>`;
+}
+
+function renderAbout() {
+  return `
+    <div class="back-row">
+      <button class="back-btn" data-nav="home" aria-label="Back to Home">←</button>
+      <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;font-size:18px">About Connect2Child</div>
+    </div>
+    <div class="screen" style="padding-top:10px;text-align:center">
+      <div class="onboard-mark" style="margin:0 auto 14px">${HANDS_ICON}</div>
+      <h1 class="hero-title">Connect2Child</h1>
+      <div class="tagline">Evidence-based parent support for everyday interactions</div>
+      <div class="byline">By Dr Chitra Sankar, Developmental Paediatrician</div>
+      <p class="body-text" style="text-align:left">Connect2Child helps you get started. It shows you tips and techniques you can use to help your child, and helps you track how it's going.</p>
+      ${howItWorksInfographic()}
+      ${universalMistakesSection()}
+      <div class="card soft" style="text-align:left;margin-top:6px">
+        <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;margin-bottom:6px">📲 Add to Your Home Screen</div>
+        <p class="body-text" style="margin-bottom:6px">You can add Connect2Child to your phone's home screen, so it opens like a regular app with one tap.</p>
+        <p class="body-text" style="margin-bottom:4px"><b>iPhone:</b> Open this page in Safari, tap the Share icon, then tap "Add to Home Screen."</p>
+        <p class="body-text" style="margin-bottom:0"><b>Android:</b> Open this page in Chrome, tap the three-dot menu, then tap "Add to Home screen."</p>
+      </div>
+      <div style="height:6px"></div>
+      <button class="btn-secondary" data-action="start-picker">Choose Your Goals</button>
+      <div style="height:10px"></div>
+      <button class="btn-secondary" data-nav="favorites">🧸 Edit Your Child's Favorites</button>
+      <p class="body-text" style="font-size:11.5px;color:var(--ink-faint);margin-top:20px;margin-bottom:0">© 2026 Dr Chitra Sankar. All rights reserved.</p>
+    </div>
+  `;
+}
+
+/* ---- Favorite Things (personalization profile) ---- */
+function renderFavoritesScreen() {
+  const f = state.favorites || defaultFavorites();
+  return `
+    <div class="back-row">
+      <button class="back-btn" data-nav="home" aria-label="Back to Home">←</button>
+      <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;font-size:18px">🧸 Your Child's Favorites</div>
+    </div>
+    <div class="screen" style="padding-top:6px">
+      <p class="body-text">Write down what your child already loves. It's here for you to glance back at whenever you're deciding what to try in an activity.</p>
+      <div class="fav-field">
+        <label>Favorite toys or objects</label>
+        <textarea id="fav-toys" rows="2" aria-label="Favorite toys" placeholder="e.g. red ball, wooden blocks, toy phone">${escapeHtml(f.toys)}</textarea>
+      </div>
+      <div class="fav-field">
+        <label>Favorite foods or snacks</label>
+        <textarea id="fav-foods" rows="2" aria-label="Favorite foods" placeholder="e.g. banana, biscuits, milk">${escapeHtml(f.foods)}</textarea>
+      </div>
+      <div class="fav-field">
+        <label>Favorite songs, rhymes, or music</label>
+        <textarea id="fav-songs" rows="2" aria-label="Favorite songs" placeholder="e.g. nursery rhymes, a particular song">${escapeHtml(f.songs)}</textarea>
+      </div>
+      <div class="fav-field">
+        <label>Favorite games or activities</label>
+        <textarea id="fav-activities" rows="2" aria-label="Favorite games and activities" placeholder="e.g. tickles, peekaboo, bath time splashing">${escapeHtml(f.activities)}</textarea>
+      </div>
+      <button class="btn-primary" data-action="save-favorites">Save</button>
+      <p class="body-text" style="font-size:12.5px;margin-top:10px">You can update this anytime as your child's interests change.</p>
+    </div>
+  `;
+}
+
+/* ---- Domain picker ---- */
+function renderDomainPicker() {
+  const sel = new Set(state.selectedDomains);
+  const cards = DOMAINS.map(d => `
+    <div class="domain-pick ${sel.has(d.id) ? "selected" : ""}" data-toggle-domain="${d.id}" role="checkbox" aria-checked="${sel.has(d.id)}" aria-label="${d.title}${d.subtitle ? ", " + d.subtitle : ""}" tabindex="0">
+      <div class="badge">${d.icon}</div>
+      <div class="info">
+        <div class="t">${d.title}</div>
+        <div class="s">${d.subtitle || ""}</div>
+      </div>
+      <div class="check-dot">${sel.has(d.id) ? "✓" : ""}</div>
+    </div>
+  `).join("");
+  return `
+  <div class="screen" style="padding-top:24px">
+    <h1 class="hero-title" style="font-size:24px">Choose Your Goals</h1>
+    <p class="body-text">Pick as many or as few as you like. <b>You can add more anytime — no need to do all 7 at once.</b></p>
+    <div class="domain-grid">${cards}</div>
+    <div style="height:14px"></div>
+    <button class="btn-primary" id="picker-continue" ${sel.size === 0 ? "disabled" : ""} data-action="finish-picker">
+      Continue${sel.size ? ` (${sel.size} selected)` : ""}
+    </button>
+    ${state.selectedDomains.length ? `<div style="height:10px"></div><button class="btn-text" data-nav="home">Cancel</button>` : ""}
+  </div>`;
+}
+
+function currentStageIndex(d, ds) {
+  for (let i = 0; i < d.stages.length; i++) {
+    if ((ds.stageMarks[i] || "notyet") !== "done") return i;
+  }
+  return d.stages.length - 1;
+}
+
+function stageProgress(d, ds) {
+  const total = d.stages.length;
+  if (!total) return 0;
+  let credit = 0;
+  d.stages.forEach((s, i) => {
+    const m = ds.stageMarks[i];
+    if (m === "done") credit += 1;
+    else if (m === "progress") credit += 0.5;
+  });
+  return Math.round(100 * credit / total);
+}
+function progressRing(percent, size, strokeW) {
+  const r = (size - strokeW) / 2;
+  const c = 2 * Math.PI * r;
+  const offset = c * (1 - percent / 100);
+  return `<svg width="${size}" height="${size}" style="transform:rotate(-90deg)">
+    <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="${strokeW}"/>
+    <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="white" stroke-width="${strokeW}"
+      stroke-dasharray="${c}" stroke-dashoffset="${offset}" stroke-linecap="round"/>
+  </svg>`;
+}
+
+/* ---- Home dashboard ---- */
+function renderHome() {
+  if (!state.selectedDomains.length) {
+    return `<div class="screen"><div class="empty-state"><div class="em">🌱</div>No areas selected yet.</div>
+    <button class="btn-primary" data-action="start-picker">Choose Your Goals</button></div>`;
+  }
+  const cards = state.selectedDomains.map(id => {
+    const d = getDomain(id);
+    const ds = ensureDomainState(id);
+    const nudgeDue = daysSince(ds.lastActivityDate) >= 14;
+    const pct = stageProgress(d, ds);
+    const stuck = ds.cycleCount >= 3 && pct === 0;
+    let wordLine = "";
+    if (d.hasWordBank) {
+      const allMarks = d.wordCategories.flatMap(c => c.words).map(w => getWordMark(ds, w));
+      const says = allMarks.filter(m => m.e === 2).length;
+      if (says > 0) wordLine = ` · 🗣️ ${says} word${says === 1 ? "" : "s"} said!`;
+    }
+    return `
+    <div class="home-domain-card" data-open-domain="${id}" role="button" tabindex="0" aria-label="Open ${d.title}, ${pct}% of stages done">
+      <div class="badge" style="position:relative;background:linear-gradient(135deg, var(--coral), var(--gold-light))">
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">${progressRing(pct, 50, 4)}</div>
+        <div style="position:relative;z-index:1;filter:drop-shadow(0 0 2px rgba(0,0,0,0.15))">${d.icon}</div>
+      </div>
+      <div class="info">
+        <div class="t">${d.title}</div>
+        <div class="meta">Week ${ds.cycleWeek} of 4 · Round ${ds.cycleCount} · ${pct}% of stages done${wordLine}</div>
+        ${nudgeDue ? `<div class="nudge-badge">⏰ Check in on this area</div>` : ""}
+        ${stuck ? `<div class="nudge-badge" style="background:var(--peach-card-2);color:var(--coral-dark)">💡 Try a different approach</div>` : ""}
+      </div>
+      <div class="chevron">›</div>
+    </div>`;
+  }).join("");
+
+  const winCount = state.smallWins.length;
+  const wins = winCount ? `<div class="wins-trail">${"⭐".repeat(Math.min(winCount, 12))}${winCount > 12 ? ` +${winCount-12}` : ""}</div>` : `<p class="body-text" style="margin-bottom:0">No small wins logged yet — they'll show up here.</p>`;
+
+  const f = state.favorites || defaultFavorites();
+  const hasFavorites = f.toys || f.foods || f.songs || f.activities;
+  const favCard = hasFavorites
+    ? `<div class="card soft" style="margin-top:18px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+          <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700">🧸 Your Child's Favorites</div>
+          <button class="btn-text" data-nav="favorites" style="text-decoration:underline;font-size:12.5px">Edit</button>
+        </div>
+        <p class="body-text" style="font-size:12.5px;margin-bottom:0">Keep this updated as your child's interests change.</p>
+      </div>`
+    : `<div class="card soft" style="margin-top:18px;border:2px dashed var(--peach-card-2)">
+        <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;margin-bottom:4px">🧸 Tell us what your child loves</div>
+        <p class="body-text" style="font-size:12.5px">Add your child's favorite toys, foods, songs, and games — a place to jot it down so it's handy when you're deciding what to try.</p>
+        <button class="btn-secondary" data-nav="favorites">Add Favorites</button>
+      </div>`;
+
+  return `
+  <div class="screen">
+    <h1 class="hero-title" style="font-size:22px;margin-bottom:14px">Your areas</h1>
+    ${cards}
+    <button class="add-domain-btn" data-action="start-picker">+ Add another area</button>
+    <div class="card soft" style="margin-top:18px">
+      <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;margin-bottom:6px">⭐ Small Wins</div>
+      <p class="body-text" style="font-size:12.5px">A small win is anything that feels like progress — even if it's not on the formal checklist. A new sound, a longer glance, a moment of connection all count.</p>
+      ${wins}
+      <div style="height:10px"></div>
+      <button class="btn-secondary" data-action="open-add-win">+ Add a Small Win</button>
+    </div>
+    ${favCard}
+  </div>`;
+}
+
+/* ---- Domain detail screen ---- */
+function renderDomainScreen() {
+  const d = getDomain(route.domainId);
+  const ds = ensureDomainState(d.id);
+  const tabs = [["checklist","📋 Checklist"], ["activities","🎯 Activities"]];
+  if (d.hasWordBank) tabs.push(["words","🗣️ Words"]);
+  if (d.hasGestureBank) tabs.push(["gestures","🖐️ Gestures"]);
+  if (d.hasPlayChecklist) tabs.push(["playskills","🧸 Play Skills"]);
+  if (d.hasMaterialsList) tabs.push(["materials","🛍️ Materials"]);
+  if (d.hasInstructionExamples) tabs.push(["examples","👂 Examples"]);
+  if (d.mistakes || d.mistakesGroups) tabs.push(["mistakes","⚠️ Common Mistakes"]);
+  tabs.push(["cycle","🗓️ Cycle"], ["wins","⭐ Wins"]);
+
+  const tabBar = `<div class="tabbar-wrap"><div class="tabbar">${tabs.map(([id,label]) =>
+    `<button class="tab ${route.tab===id?"active":""}" data-tab="${id}">${label}</button>`).join("")}</div></div>`;
+
+  const scrollHint = (!state.tabHintSeen && tabs.length > 3) ? `
+    <div class="card soft" style="padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:10px">
+      <span class="body-text" style="font-size:12.5px;margin-bottom:0">👉 Slide the tabs above left to see Cycle and Wins.</span>
+      <button class="btn-text" data-action="dismiss-tab-hint" style="text-decoration:underline;font-size:12px;flex-shrink:0">Got it</button>
+    </div>` : "";
+
+  let body = "";
+  if (route.tab === "checklist") body = renderChecklistTab(d, ds);
+  else if (route.tab === "activities") body = renderActivitiesTab(d, ds);
+  else if (route.tab === "words") body = renderWordsTab(d, ds);
+  else if (route.tab === "gestures") body = renderGesturesTab(d, ds);
+  else if (route.tab === "playskills") body = renderPlaySkillsTab(d, ds);
+  else if (route.tab === "materials") body = renderMaterialsTab(d);
+  else if (route.tab === "examples") body = renderExamplesTab(d);
+  else if (route.tab === "mistakes") body = renderMistakesTab(d);
+  else if (route.tab === "cycle") body = renderCycleTab(d, ds);
+  else if (route.tab === "wins") body = renderWinsTab(d);
+
+  return `
+    <div class="back-row">
+      <button class="back-btn" data-nav="home" aria-label="Back to Home">←</button>
+      <div style="font-family:'Quicksand',sans-serif;font-weight:700;font-size:18px">${d.icon} ${d.title}</div>
+    </div>
+    <div class="screen" style="padding-top:6px">
+      ${tabBar}
+      ${scrollHint}
+      ${body}
+      <button class="btn-secondary" data-action="open-reset" style="margin-top:6px">😌 My child needs a break</button>
+    </div>
+  `;
+}
+
+function renderChecklistTab(d, ds) {
+  const before = `
+    <div class="card soft">
+      <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;margin-bottom:6px">🔍 Before You Start (optional)</div>
+      <p class="body-text" style="margin-bottom:8px">Write down anything your child already does in this area, even small or occasional things. You'll build from here.</p>
+      <textarea rows="2" aria-label="What your child already does in this area" placeholder="${escapeHtml(d.beforeYouStartExample || "e.g. anything you've noticed so far...")}" data-before-start="${d.id}">${escapeHtml(ds.beforeYouStart || "")}</textarea>
+    </div>`;
+
+  const lead = d.leadTip ? `<div class="tipbox"><div class="lbl">🩺 Start here</div><div class="txt">${d.leadTip}</div></div>` : "";
+
+  const markGuide = `
+    <div class="card" style="background:var(--peach-card-2);border:2px solid var(--coral)">
+      <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;color:var(--coral-dark);margin-bottom:6px">💡 How to mark a stage</div>
+      <p class="body-text" style="margin-bottom:4px"><b>✓ Done</b> — your child does this now, most of the time.</p>
+      <p class="body-text" style="margin-bottom:4px"><b>~ In Progress</b> — starting to show this sometimes, or needs help to do it.</p>
+      <p class="body-text" style="margin-bottom:0"><b>— Not Yet</b> — haven't seen this yet. That's a starting point, not a problem.</p>
+    </div>`;
+
+  const stages = d.stages.map((s, i) => {
+    const mark = ds.stageMarks[i] || "notyet";
+    const idea = d.stageIdeas && d.stageIdeas[i] ? `<div style="font-size:12.5px;color:var(--gold);font-style:italic;margin:-4px 0 10px">${d.stageIdeas[i]}</div>` : "";
+    const badgeBg = mark === "done" ? "var(--green-bg)" : mark === "progress" ? "var(--amber-bg)" : "var(--grey-nt-bg)";
+    const badgeColor = mark === "done" ? "var(--green)" : mark === "progress" ? "var(--amber)" : "var(--ink-faint)";
+    return `
+    <div class="stage-item" style="display:flex;gap:12px;align-items:flex-start">
+      <div style="flex-shrink:0;width:38px;height:38px;border-radius:50%;background:${badgeBg};color:${badgeColor};display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px">${i + 1}</div>
+      <div style="flex:1">
+        <div class="stage-text">${s}</div>
+        ${idea}
+        <div class="mark-row">
+          <button class="mark-btn ${mark==="done"?"active-done":""}" data-mark="${d.id}|${i}|done" aria-pressed="${mark==="done"}">✓ Done</button>
+          <button class="mark-btn ${mark==="progress"?"active-progress":""}" data-mark="${d.id}|${i}|progress" aria-pressed="${mark==="progress"}">~ In Progress</button>
+          <button class="mark-btn ${mark==="notyet"?"active-notyet":""}" data-mark="${d.id}|${i}|notyet" aria-pressed="${mark==="notyet"}">— Not Yet</button>
+        </div>
+      </div>
+    </div>`;
+  }).join("");
+
+  const doneCount = d.stages.filter((s, i) => ds.stageMarks[i] === "done").length;
+  const progressCount = d.stages.filter((s, i) => ds.stageMarks[i] === "progress").length;
+  const pct = stageProgress(d, ds);
+  const progressSummary = `
+    <div class="card soft" style="padding:12px 16px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:var(--ink-soft)">
+        <span>📋 <b style="font-size:16px;color:var(--coral-dark)">${doneCount}</b> done, ${progressCount} in progress</span>
+        <span style="color:var(--ink-faint)">/${d.stages.length} stages</span>
+      </div>
+      <div style="height:6px;background:var(--peach-card-2);border-radius:999px;margin-top:6px;overflow:hidden">
+        <div style="height:100%;width:${pct}%;background:var(--coral);border-radius:999px"></div>
+      </div>
+    </div>`;
+
+  return `
+    <p class="body-text">${d.intro}</p>
+    <p class="body-text" style="font-size:12.5px;color:var(--ink-faint);margin-top:-8px">This area has ${d.stages.length} stages, based on how this skill usually develops.</p>
+    ${progressSummary}
+    ${before}
+    ${lead}
+    ${markGuide}
+    ${stages}
+    <div class="tipbox"><div class="lbl">🩺 Dr Chitra Says</div><div class="txt">${d.tip}</div></div>
+    ${mistakesCallout(d)}
+  `;
+}
+
+function mistakesCallout(d) {
+  const preview = d.mistakesGroups ? d.mistakesGroups[0].items[0] : (d.mistakes ? d.mistakes[0] : null);
+  if (!preview) return "";
+  return `
+    <div class="card soft" style="margin-top:12px">
+      <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;margin-bottom:8px">⚠️ A Common Mistake to Avoid</div>
+      ${mistakeCard(preview)}
+      <button class="btn-text" data-tab="mistakes" style="text-decoration:underline;font-size:12.5px;margin-top:2px">See all common mistakes for this area →</button>
+    </div>
+  `;
+}
+
+function renderActivitiesTab(d, ds) {
+  const curStage = currentStageIndex(d, ds);
+  const items = d.ndbiActivities.map((a, i) => {
+    const stageBadge = a.stage === curStage ? `<span class="principle" style="color:var(--green)">🎯 matches your child's current stage</span>` : "";
+    return `<div class="activity-item">${a.text}<span class="principle">${a.principle}</span>${stageBadge}</div>`;
+  }).join("");
+  const custom = ds.customActivities || [];
+  const customItems = custom.map(c => `
+    <div class="activity-item" style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+      <div>${escapeHtml(c.text)}<span class="principle">your idea</span></div>
+      <button class="delete-btn" data-action="confirm-delete-custom|${d.id}|${c.id}" aria-label="Delete this activity">🗑️</button>
+    </div>
+  `).join("");
+  return `
+    <div class="step-diagram">
+      <div class="sd-step"><div class="sd-circle">🗣️</div><div class="sd-label">You say<br>or show</div></div>
+      <div class="sd-arrow">→</div>
+      <div class="sd-step"><div class="sd-circle">⏳</div><div class="sd-label">Wait<br>5–10 sec</div></div>
+      <div class="sd-arrow">→</div>
+      <div class="sd-step"><div class="sd-circle">👶</div><div class="sd-label">Child<br>responds</div></div>
+      <div class="sd-arrow">→</div>
+      <div class="sd-step"><div class="sd-circle">🎉</div><div class="sd-label">You react<br>warmly</div></div>
+    </div>
+    <div class="card" style="background:var(--peach-card-2);border:2px solid var(--coral)">
+      <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;color:var(--coral-dark);margin-bottom:6px">💡 How to use this list</div>
+      <p class="body-text" style="margin-bottom:0">These are examples, not a fixed routine. Try one that fits your child's mood today.</p>
+    </div>
+    ${items}
+    <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;margin:18px 0 10px">✏️ Your Own Ideas</div>
+    ${customItems || `<p class="body-text" style="font-size:13.5px">Nothing added yet — use the box below.</p>`}
+    <div class="card soft" style="margin-top:8px">
+      <textarea id="custom-activity-input" rows="2" aria-label="Your own technique or idea" placeholder="e.g. what worked for us — the technique and how we used it"></textarea>
+      <div style="height:8px"></div>
+      <button class="btn-secondary" data-action="add-custom-activity|${d.id}">+ Add Your Technique</button>
+    </div>
+  `;
+}
+
+function getWordMark(ds, word) {
+  const m = ds.wordMarks[word];
+  if (m && typeof m === "object") return { r: !!m.r, e: m.e || 0 };
+  return { r: false, e: 0 };
+}
+
+function renderWordsTab(d, ds) {
+  const cats = d.wordCategories.map(c => {
+    const pills = c.words.map(w => {
+      const mark = getWordMark(ds, w);
+      const eClass = mark.e === 2 ? "e-says" : mark.e === 1 ? "e-tries" : "";
+      return `<span class="word-pill" data-word-text="${escapeHtml(w.toLowerCase())}">
+        <span class="word-label">${w}</span>
+        <button class="re-btn ${mark.r ? "r-active" : ""}" data-word-r="${d.id}|${escapeHtml(w)}" title="Understands (receptive)" aria-label="Understands, receptive" aria-pressed="${!!mark.r}">R</button>
+        <button class="re-btn ${eClass}" data-word-e="${d.id}|${escapeHtml(w)}" title="Says (expressive)" aria-label="Says, expressive">E</button>
+      </span>`;
+    }).join("");
+    return `<div class="word-cat" data-cat-block>
+      <div class="word-cat-title">${c.cat}</div>
+      <div class="word-chips">${pills}</div>
+    </div>`;
+  }).join("");
+
+  const totalWords = d.wordCategories.reduce((n, c) => n + c.words.length, 0);
+  const allMarks = d.wordCategories.flatMap(c => c.words).map(w => getWordMark(ds, w));
+  const receptiveCount = allMarks.filter(m => m.r).length;
+  const saysCount = allMarks.filter(m => m.e === 2).length;
+  const triesCount = allMarks.filter(m => m.e === 1).length;
+
+  const celebration = celebrationMsg ? `
+    <div class="card" style="background:linear-gradient(135deg, var(--coral), var(--gold-light));text-align:center;padding:18px">
+      <div style="font-size:17px;font-weight:800;color:white;font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif">${celebrationMsg}</div>
+      <button class="btn-text" data-action="dismiss-celebration" style="color:rgba(255,255,255,0.85);text-decoration:underline;margin-top:6px">Nice!</button>
+    </div>` : "";
+
+  return `
+    ${celebration}
+    <div class="card soft" style="padding:12px 16px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:var(--ink-soft)">
+        <span>👂 ${receptiveCount} understand · <b style="font-size:16px;color:var(--coral-dark)">🗣️ ${saysCount}</b> say clearly</span>
+        <span style="color:var(--ink-faint)">/${totalWords}</span>
+      </div>
+      <div style="display:flex;gap:4px;height:6px;margin-top:6px">
+        <div style="flex:1;background:var(--peach-card-2);border-radius:999px;overflow:hidden">
+          <div style="height:100%;width:${totalWords ? Math.round(100*receptiveCount/totalWords) : 0}%;background:var(--gold);border-radius:999px"></div>
+        </div>
+        <div style="flex:1;background:var(--peach-card-2);border-radius:999px;overflow:hidden">
+          <div style="height:100%;width:${totalWords ? Math.round(100*(saysCount+triesCount)/totalWords) : 0}%;background:var(--coral);border-radius:999px"></div>
+        </div>
+      </div>
+    </div>
+    <div class="re-legend">
+      <span><span class="dot" style="background:var(--gold)">R</span>Understands (receptive)</span>
+      <span><span class="dot" style="background:var(--coral)">E</span>Says (expressive)</span>
+    </div>
+    <input type="text" id="word-search-input" placeholder="🔍 Search words..." value="${escapeHtml(wordSearchQuery)}" style="margin-bottom:14px">
+    <p class="body-text" id="no-word-match" style="display:none">No words match your search.</p>
+    <div class="tipbox"><div class="lbl">🩺 How This List Grows</div><div class="txt">${d.growthNote}</div></div>
+    <div class="card" style="background:var(--peach-card-2);border:2px solid var(--coral)">
+      <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;color:var(--coral-dark);margin-bottom:6px">💡 How to mark a word</div>
+      <p class="body-text" style="margin-bottom:0">Tap <b>R</b> when your child understands a word. Tap <b>E</b> once when they try to say it, tap again when they say it clearly.</p>
+    </div>
+    ${cats}
+  `;
+}
+
+function getGestureMark(ds, gesture) {
+  const m = ds.gestureMarks[gesture];
+  if (m && typeof m === "object") return { r: !!m.r, e: m.e || 0 };
+  return { r: false, e: 0 };
+}
+
+function renderGesturesTab(d, ds) {
+  const cats = d.gestureCategories.map(c => {
+    const rows = c.gestures.map(g => {
+      const mark = getGestureMark(ds, g);
+      const eClass = mark.e === 2 ? "e-says" : mark.e === 1 ? "e-tries" : "";
+      return `<div class="gesture-row">
+        <span class="gesture-label">${g}</span>
+        <button class="re-btn ${mark.r ? "r-active" : ""}" data-gesture-r="${d.id}|${escapeHtml(g)}" title="Understands (receptive)" aria-label="Understands, receptive" aria-pressed="${!!mark.r}">R</button>
+        <button class="re-btn ${eClass}" data-gesture-e="${d.id}|${escapeHtml(g)}" title="Does this (expressive)" aria-label="Does this">E</button>
+      </div>`;
+    }).join("");
+    return `<div class="word-cat"><div class="word-cat-title">${c.cat}</div>${rows}</div>`;
+  }).join("");
+
+  const totalGestures = d.gestureCategories.reduce((n, c) => n + c.gestures.length, 0);
+  const allMarks = d.gestureCategories.flatMap(c => c.gestures).map(g => getGestureMark(ds, g));
+  const receptiveCount = allMarks.filter(m => m.r).length;
+  const doesCount = allMarks.filter(m => m.e === 2).length;
+  const triesCount = allMarks.filter(m => m.e === 1).length;
+
+  return `
+    <div class="card soft" style="padding:12px 16px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:var(--ink-soft)">
+        <span>👀 ${receptiveCount} understand · <b style="font-size:16px;color:var(--coral-dark)">🖐️ ${doesCount}</b> do it</span>
+        <span style="color:var(--ink-faint)">/${totalGestures}</span>
+      </div>
+      <div style="display:flex;gap:4px;height:6px;margin-top:6px">
+        <div style="flex:1;background:var(--peach-card-2);border-radius:999px;overflow:hidden">
+          <div style="height:100%;width:${totalGestures ? Math.round(100*receptiveCount/totalGestures) : 0}%;background:var(--gold);border-radius:999px"></div>
+        </div>
+        <div style="flex:1;background:var(--peach-card-2);border-radius:999px;overflow:hidden">
+          <div style="height:100%;width:${totalGestures ? Math.round(100*(doesCount+triesCount)/totalGestures) : 0}%;background:var(--coral);border-radius:999px"></div>
+        </div>
+      </div>
+    </div>
+    <div class="re-legend">
+      <span><span class="dot" style="background:var(--gold)">R</span>Understands (receptive)</span>
+      <span><span class="dot" style="background:var(--coral)">E</span>Does it (expressive)</span>
+    </div>
+    <div class="tipbox"><div class="lbl">🩺 About These Gestures</div><div class="txt">${d.gestureGrowthNote}</div></div>
+    <div class="card" style="background:var(--peach-card-2);border:2px solid var(--coral)">
+      <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;color:var(--coral-dark);margin-bottom:6px">💡 How to mark a gesture</div>
+      <p class="body-text" style="margin-bottom:0">Tap <b>R</b> when your child understands the gesture. Tap <b>E</b> once when they try it, tap again when they do it clearly.</p>
+    </div>
+    ${cats}
+  `;
+}
+
+function renderPlaySkillsTab(d, ds) {
+  const cats = d.playSkillCategories.map(c => {
+    const items = c.skills.map((s, i) => {
+      const key = c.cat + "|" + i;
+      const mark = ds.playSkillMarks[key] || "notyet";
+      return `
+      <div class="stage-item">
+        <div class="stage-text">${s}</div>
+        <div class="mark-row">
+          <button class="mark-btn ${mark==="done"?"active-done":""}" data-play-mark="${d.id}|${escapeHtml(key)}|done" aria-pressed="${mark==="done"}">✓ Done</button>
+          <button class="mark-btn ${mark==="progress"?"active-progress":""}" data-play-mark="${d.id}|${escapeHtml(key)}|progress" aria-pressed="${mark==="progress"}">~ In Progress</button>
+          <button class="mark-btn ${mark==="notyet"?"active-notyet":""}" data-play-mark="${d.id}|${escapeHtml(key)}|notyet" aria-pressed="${mark==="notyet"}">— Not Yet</button>
+        </div>
+      </div>`;
+    }).join("");
+    return `<h3 style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;font-size:14px;color:var(--gold);margin:16px 0 8px">${c.cat}</h3>${items}`;
+  }).join("");
+
+  const totalSkills = d.playSkillCategories.reduce((n, c) => n + c.skills.length, 0);
+  let doneCount = 0, progressCount = 0;
+  d.playSkillCategories.forEach(c => c.skills.forEach((s, i) => {
+    const mark = ds.playSkillMarks[c.cat + "|" + i];
+    if (mark === "done") doneCount++;
+    else if (mark === "progress") progressCount++;
+  }));
+
+  return `
+    <div class="card soft" style="padding:12px 16px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:var(--ink-soft)">
+        <span>🧸 <b style="font-size:16px;color:var(--coral-dark)">${doneCount}</b> skills, ${progressCount} in progress</span>
+        <span style="color:var(--ink-faint)">/${totalSkills}</span>
+      </div>
+      <div style="height:6px;background:var(--peach-card-2);border-radius:999px;margin-top:6px;overflow:hidden">
+        <div style="height:100%;width:${totalSkills ? Math.round(100*(doneCount + progressCount*0.5)/totalSkills) : 0}%;background:var(--coral);border-radius:999px"></div>
+      </div>
+    </div>
+    <div class="tipbox"><div class="lbl">🩺 How To Use This List</div><div class="txt">${d.playChecklistNote}</div></div>
+    ${cats}
+  `;
+}
+
+function renderMaterialsTab(d) {
+  const cats = d.materialCategories.map(c => `
+    <div class="word-cat">
+      <div class="word-cat-title">${c.cat}</div>
+      ${c.items.map(item => `<div class="activity-item" style="margin-bottom:8px">${item}</div>`).join("")}
+    </div>
+  `).join("");
+  return `
+    <div class="tipbox"><div class="lbl">🩺 A Note on Cost</div><div class="txt">${d.materialsNote}</div></div>
+    <p class="body-text" style="font-size:13px">These are ideas to try, not a shopping list. Pick a few that match what your child already seems drawn to.</p>
+    ${cats}
+  `;
+}
+
+function renderExamplesTab(d) {
+  function chipList(words) {
+    return `<div class="word-chips">${words.map(w => `<span class="word-chip">${w}</span>`).join("")}</div>`;
+  }
+  return `
+    <div class="word-cat"><div class="word-cat-title">1-Step Instructions</div>${chipList(d.oneStepExamples)}</div>
+    <div class="word-cat"><div class="word-cat-title">2-Step — Steps That Go Together</div>${chipList(d.twoStepLinked)}</div>
+    <div class="word-cat"><div class="word-cat-title">2-Step — Steps That Are Not Related</div>${chipList(d.twoStepUnrelated)}</div>
+  `;
+}
+
+function mistakeCard(item) {
+  return `
+    <div class="mistake-card">
+      <div class="mistake-instead"><span class="mistake-tag">Instead of</span> ${item.instead}</div>
+      <div class="mistake-arrow">↓</div>
+      <div class="mistake-try"><span class="mistake-tag try">Try</span> ${item.try}</div>
+    </div>`;
+}
+
+function renderMistakesTab(d) {
+  const intro = `
+    <p class="body-text">Every parent falls into these patterns sometimes — they're natural instincts, not failures. Here's a gentler alternative for each one.</p>`;
+
+  if (d.mistakesGroups) {
+    const groups = d.mistakesGroups.map(g => `
+      <div class="word-cat-title" style="margin-top:18px">${g.cat}</div>
+      ${g.items.map(mistakeCard).join("")}
+    `).join("");
+    return intro + groups;
+  }
+
+  return intro + (d.mistakes || []).map(mistakeCard).join("");
+}
+
+function renderCycleTab(d, ds) {
+  const WEEK_ICONS = ["👀", "🌱", "🔄", "✅"];
+  const weekDots = [1,2,3,4].map(w => {
+    const cls = w < ds.cycleWeek ? "done" : (w === ds.cycleWeek ? "current" : "");
+    return `<div class="week-dot ${cls}"><span class="wk-icon">${WEEK_ICONS[w-1]}</span>Wk ${w}</div>`;
+  }).join("");
+  const wk = WEEK_PLAN[ds.cycleWeek - 1];
+  const isLastWeek = ds.cycleWeek === 4;
+
+  const curStage = currentStageIndex(d, ds);
+  function relevance(a) {
+    if (a.stage === curStage) return 0;
+    if (a.stage === undefined) return 1;
+    return 2;
+  }
+  const rawActivities = (d.ndbiActivities || []).concat((ds.customActivities || []).map(c => ({ text: c.text, stage: undefined })));
+  const allActivities = rawActivities
+    .map((a, i) => ({ ...a, origIndex: i }))
+    .sort((a, b) => relevance(a) - relevance(b) || a.origIndex - b.origIndex)
+    .map(a => a.text);
+  const pct = stageProgress(d, ds);
+  const isStuck = ds.cycleCount >= 3 && pct === 0;
+
+  function ideaLine(t) {
+    return `<div class="body-text" style="margin-bottom:8px">• ${t}</div>`;
+  }
+
+  let ideasBlock = "";
+  if (isStuck && allActivities.length) {
+    const offset = (ds.cycleCount - 1) % allActivities.length;
+    const rotated = [allActivities[offset], allActivities[(offset + 1) % allActivities.length]];
+    ideasBlock = `
+      <div class="card soft" style="border:2px solid var(--peach-card-2)">
+        <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;margin-bottom:6px">💡 Let's try something different this round</div>
+        <p class="body-text" style="font-size:13px">You've been on this stage for ${ds.cycleCount} rounds. Here's a different idea to try this time:</p>
+        ${rotated.map(ideaLine).join("")}
+      </div>`;
+  } else if ((ds.cycleWeek === 2 || ds.cycleWeek === 3) && allActivities.length) {
+    const weekIndex = ds.cycleWeek - 2;
+    const step = (ds.cycleCount - 1) * 2 + weekIndex;
+    const offset = (step * 3) % allActivities.length;
+    const picks = [0, 1, 2].map(i => allActivities[(offset + i) % allActivities.length]);
+    ideasBlock = `
+      <div class="card">
+        <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;margin-bottom:8px">💡 Ideas to try this week</div>
+        ${picks.map(ideaLine).join("")}
+        <p class="body-text" style="font-size:12.5px;margin-bottom:0">See the Activities tab for the full list.</p>
+      </div>`;
+  }
+
+  const GEN_ITEMS = [
+    ["mom", "Tried with Mom"],
+    ["dad", "Tried with Dad"],
+    ["other", "Tried with another caregiver (grandparent, nanny, etc.)"],
+    ["newRoom", "Tried in a new room"],
+    ["newToy", "Tried with a different toy or material"]
+  ];
+  const gen = ds.generalization || defaultGeneralization();
+  const genCheckedCount = GEN_ITEMS.filter(([key]) => gen[key]).length;
+
+  let genBlock = "";
+  if (ds.cycleWeek === 3) {
+    genBlock = `
+      <div class="card">
+        <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;margin-bottom:4px">🌍 Generalisation Checklist</div>
+        <p class="body-text" style="font-size:12.5px">Check off each one as you try it this week.</p>
+        ${GEN_ITEMS.map(([key, label]) => `
+          <button class="gen-item ${gen[key] ? "checked" : ""}" data-toggle-gen="${d.id}|${key}">
+            <span class="gen-check">${gen[key] ? "✓" : ""}</span>
+            <span class="gen-label">${label}</span>
+          </button>
+        `).join("")}
+      </div>`;
+  } else if (ds.cycleWeek === 4 && genCheckedCount > 0) {
+    genBlock = `
+      <div class="card soft">
+        <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;margin-bottom:4px">🌍 Generalisation this round</div>
+        <p class="body-text" style="font-size:13px;margin-bottom:0">You tried this in ${genCheckedCount} of 5 ways.</p>
+      </div>`;
+  }
+
+  return `
+    <div class="cycle-meta">Round ${ds.cycleCount} of this area's 4-week plan. Started ${formatDate(ds.cycleStartDate)}. ${pct}% of stages done.</div>
+    <div class="week-track">${weekDots}</div>
+    <div class="week-card">
+      <div class="wk-title">${wk.title}</div>
+      <div class="wk-text">${wk.text}</div>
+    </div>
+    ${genBlock}
+    ${ideasBlock}
+    ${isLastWeek
+      ? `<div class="card" style="background:var(--peach-card-2);border:2px solid var(--coral);margin-bottom:12px">
+           <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;color:var(--coral-dark);margin-bottom:6px">👉 Before you tap below</div>
+           <p class="body-text" style="margin-bottom:0">If your child moved to a new stage, go mark it in the <b>Checklist</b> tab first.</p>
+         </div>
+         <button class="btn-primary" data-action="advance-cycle|${d.id}">Check list again & start next round</button>`
+      : `<button class="btn-primary" data-action="advance-week|${d.id}">Mark this week done, move to next</button>`
+    }
+  `;
+}
+
+function renderWinsTab(d) {
+  const wins = state.smallWins.filter(w => w.domainId === d.id).sort((a,b) => b.date.localeCompare(a.date));
+  const list = wins.length
+    ? wins.map(w => `<div class="win-entry"><div><div class="date">${formatDate(w.date)}</div>${escapeHtml(w.text)}</div><button class="delete-btn" data-action="confirm-delete-win|${w.id}" aria-label="Delete this small win">🗑️</button></div>`).join("")
+    : `<p class="body-text">Nothing logged for this area yet.</p>`;
+  return `
+    <p class="body-text" style="font-size:13px">A small win is anything that feels like progress in this area — even if it's not on the formal checklist.</p>
+    <textarea id="win-input" rows="2" aria-label="Small win in this area today" placeholder="What did you notice today?"></textarea>
+    <div style="height:8px"></div>
+    <button class="btn-secondary" data-action="add-win|${d.id}">+ Add Small Win</button>
+    <div style="height:14px"></div>
+    ${list}
+  `;
+}
+
+/* ---- Activities bank ---- */
+function renderActivitiesBank() {
+  const domainsToShow = state.selectedDomains.length ? DOMAINS.filter(d => state.selectedDomains.includes(d.id)) : DOMAINS;
+  const sections = domainsToShow.map(d => {
+    const ds = ensureDomainState(d.id);
+    const custom = (ds.customActivities || []).map(c => `<div class="activity-item">${escapeHtml(c.text)}<span class="principle">your idea</span></div>`).join("");
+    return `
+    <div style="margin-bottom:18px">
+      <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;font-size:15px;margin-bottom:8px">${d.icon} ${d.title}</div>
+      ${d.ndbiActivities.map(a => `<div class="activity-item">${a.text}<span class="principle">${a.principle}</span></div>`).join("")}
+      ${custom}
+    </div>
+  `;
+  }).join("");
+  return `
+  <div class="screen">
+    <h1 class="hero-title" style="font-size:22px">🎯 Activities Bank</h1>
+    <p class="body-text">Every activity from your selected areas, including your own ideas, in one place.</p>
+    ${sections}
+  </div>`;
+}
+
+/* ---- Export ---- */
+function renderExport() {
+  const domainsToShow = DOMAINS.filter(d => state.selectedDomains.includes(d.id));
+  const summary = domainsToShow.map(d => {
+    const ds = ensureDomainState(d.id);
+    const stageLines = d.stages.map((s,i) => {
+      const mark = ds.stageMarks[i] || "notyet";
+      const symbol = mark === "done" ? "✓" : mark === "progress" ? "~" : "—";
+      return `<div style="font-size:13px;margin-bottom:3px">${symbol} ${s}</div>`;
+    }).join("");
+    const wordLine = d.hasWordBank ? (() => {
+      const allMarks = d.wordCategories.flatMap(c => c.words).map(w => getWordMark(ds, w));
+      const r = allMarks.filter(m => m.r).length;
+      const says = allMarks.filter(m => m.e === 2).length;
+      const tries = allMarks.filter(m => m.e === 1).length;
+      return `<div style="font-size:13px;margin-bottom:6px;color:var(--ink-soft)">Words: ${r} understood (receptive) · ${says} said clearly, ${tries} trying (expressive)</div>`;
+    })() : "";
+    const beforeLine = ds.beforeYouStart && ds.beforeYouStart.trim()
+      ? `<div style="font-size:13px;margin-bottom:6px;color:var(--ink-soft);font-style:italic">🔍 Before starting: "${escapeHtml(ds.beforeYouStart.trim())}"</div>`
+      : "";
+    const gen = ds.generalization || defaultGeneralization();
+    const genLabels = { mom: "Mom", dad: "Dad", other: "another caregiver", newRoom: "a new room", newToy: "a different toy" };
+    const genTried = Object.keys(genLabels).filter(k => gen[k]).map(k => genLabels[k]);
+    const genLine = genTried.length
+      ? `<div style="font-size:13px;margin-bottom:6px;color:var(--ink-soft)">🌍 Generalised with: ${genTried.join(", ")}</div>`
+      : "";
+    return `
+    <div class="card">
+      <div style="font-family:'Quicksand',sans-serif;font-weight:700;margin-bottom:8px">${d.icon} ${d.title} — Week ${ds.cycleWeek}, Round ${ds.cycleCount}</div>
+      ${beforeLine}
+      ${wordLine}
+      ${genLine}
+      ${stageLines}
+    </div>`;
+  }).join("");
+
+  const wins = state.smallWins.slice().sort((a,b) => b.date.localeCompare(a.date)).slice(0, 20);
+  const winsList = wins.length ? wins.map(w => {
+    const dm = getDomain(w.domainId);
+    return `<div style="font-size:13px;margin-bottom:4px">${formatDate(w.date)} — ${dm ? dm.icon : ""} ${escapeHtml(w.text)}</div>`;
+  }).join("") : `<div style="font-size:13px;color:var(--ink-faint)">No small wins logged yet.</div>`;
+
+  return `
+  <div class="screen">
+    <h1 class="hero-title" style="font-size:22px">📤 Export Summary</h1>
+    <p class="body-text" style="margin-bottom:2px">A printable summary of progress — useful to share with a therapist or paediatrician.</p>
+    <p class="body-text" style="font-size:12px;color:var(--ink-faint);margin-bottom:14px">Connect2Child — by Dr Chitra Sankar, Developmental Paediatrician</p>
+    <button class="btn-primary" data-action="do-export">🖨️ Print / Save as PDF</button>
+    <div style="height:6px"></div>
+    ${state.lastExportDate ? `<p class="body-text" style="font-size:12.5px">Last exported: ${formatDate(state.lastExportDate)}</p>` : ""}
+    <div style="height:10px"></div>
+    <p class="body-text" style="font-size:12px;color:var(--ink-faint)">Legend: ✓ Done &nbsp; ~ In Progress &nbsp; — Not Yet</p>
+    ${summary || `<p class="body-text">No areas selected yet.</p>`}
+    <div class="card">
+      <div style="font-family:'Quicksand',sans-serif;font-weight:700;margin-bottom:8px">⭐ Recent Small Wins</div>
+      ${winsList}
+    </div>
+    <p class="body-text" style="font-size:11px;color:var(--ink-faint);text-align:center;margin-top:10px">© 2026 Dr Chitra Sankar. All rights reserved.</p>
+  </div>`;
+}
+
+/* ---- Reset modal ---- */
+function renderModal() {
+  if (!modal) return;
+  const overlay = document.createElement("div");
+  overlay.className = "modal-overlay";
+
+  if (modal === "reset") {
+    overlay.innerHTML = `
+      <div class="modal-sheet">
+        <h2>😌 Reset & Reconnect</h2>
+        <p class="body-text">Never force an activity. Here's what to watch for and what to try.</p>
+        <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;margin:12px 0 6px">⚠️ Signs your child needs a break</div>
+        ${OVERWHELM_SIGNS.map(s => `<div class="body-text" style="margin-bottom:4px">• ${s}</div>`).join("")}
+        <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;margin:14px 0 6px">🤲 What to do</div>
+        ${WHAT_TO_DO.map(s => `<div class="body-text" style="margin-bottom:4px">• ${s}</div>`).join("")}
+        <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;margin:14px 0 6px">🔄 Reset strategies</div>
+        ${RESET_STRATEGIES.map(s => `<div class="body-text" style="margin-bottom:4px">• ${s}</div>`).join("")}
+        <div class="tipbox"><div class="lbl">🩺 Dr Chitra Says</div><div class="txt">A quiet or slow response usually means your child needs more time to think — it does not mean they got it wrong.</div></div>
+        <button class="btn-primary modal-close" data-action="close-modal">Close</button>
+      </div>
+    `;
+  } else if (modal === "add-win-global") {
+    const options = [`<option value="">General (not tied to one area)</option>`]
+      .concat(state.selectedDomains.map(id => {
+        const d = getDomain(id);
+        return `<option value="${id}">${d.icon} ${d.title}</option>`;
+      })).join("");
+    overlay.innerHTML = `
+      <div class="modal-sheet">
+        <h2>⭐ Add a Small Win</h2>
+        <p class="body-text">A small win is anything that feels like progress.</p>
+        <textarea id="global-win-input" rows="3" aria-label="Small win today" placeholder="What did you notice today?"></textarea>
+        <div style="height:10px"></div>
+        <label style="font-size:13px;color:var(--ink-soft);font-weight:700">Which area is this about? (optional)</label>
+        <div style="height:6px"></div>
+        <select id="global-win-domain" style="width:100%;border:2px solid var(--peach-card-2);border-radius:12px;padding:12px;font-family:inherit;font-size:14.5px;background:var(--white);color:var(--ink)">
+          ${options}
+        </select>
+        <div style="height:14px"></div>
+        <button class="btn-primary" data-action="save-global-win">Save Small Win</button>
+        <button class="btn-text modal-close" data-action="close-modal" style="display:block;margin:10px auto 0">Cancel</button>
+      </div>
+    `;
+  } else if (modal === "confirm-delete" && pendingDelete) {
+    const label = pendingDelete.type === "win" ? "small win" : "activity idea";
+    overlay.innerHTML = `
+      <div class="modal-sheet">
+        <h2>🗑️ Delete this ${label}?</h2>
+        <p class="body-text">"${escapeHtml(pendingDelete.preview || "")}"</p>
+        <p class="body-text" style="font-size:13px"><b>This can't be undone.</b></p>
+        <button class="btn-primary" style="background:var(--coral-dark)" data-action="do-delete">Delete</button>
+        <button class="btn-text modal-close" data-action="close-modal" style="display:block;margin:10px auto 0">Cancel</button>
+      </div>
+    `;
+  }
+  app.appendChild(overlay);
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+}
+
+function applyWordFilter(q) {
+  q = (q || "").trim().toLowerCase();
+  let anyVisible = false;
+  app.querySelectorAll("[data-cat-block]").forEach(block => {
+    let blockHasMatch = false;
+    block.querySelectorAll(".word-pill").forEach(chip => {
+      const match = !q || chip.getAttribute("data-word-text").includes(q);
+      chip.style.display = match ? "" : "none";
+      if (match) blockHasMatch = true;
+    });
+    block.style.display = blockHasMatch ? "" : "none";
+    if (blockHasMatch) anyVisible = true;
+  });
+  const noMatch = document.getElementById("no-word-match");
+  if (noMatch) noMatch.style.display = anyVisible ? "none" : "block";
+}
+
+function attachHandlers() {
+  app.querySelectorAll('[role="button"], [role="checkbox"]').forEach(el => {
+    el.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
+        e.preventDefault();
+        el.click();
+      }
+    });
+  });
+
+  const searchInput = document.getElementById("word-search-input");
+  if (searchInput) {
+    searchInput.addEventListener("input", () => {
+      wordSearchQuery = searchInput.value;
+      applyWordFilter(wordSearchQuery);
+    });
+    if (wordSearchQuery) applyWordFilter(wordSearchQuery);
+  }
+
+  app.querySelectorAll("[data-nav]").forEach(el => {
+    el.addEventListener("click", () => nav(el.getAttribute("data-nav")));
+  });
+  app.querySelectorAll("[data-open-domain]").forEach(el => {
+    el.addEventListener("click", () => nav("domain", el.getAttribute("data-open-domain"), "checklist"));
+  });
+  app.querySelectorAll("[data-tab]").forEach(el => {
+    el.addEventListener("click", () => { const newTab = el.getAttribute("data-tab"); if (newTab !== "words") celebrationMsg = null; route.tab = newTab; render(); });
+  });
+  app.querySelectorAll("[data-toggle-domain]").forEach(el => {
+    el.addEventListener("click", () => {
+      const id = el.getAttribute("data-toggle-domain");
+      const idx = state.selectedDomains.indexOf(id);
+      if (idx === -1) { state.selectedDomains.push(id); ensureDomainState(id); }
+      else state.selectedDomains.splice(idx, 1);
+      saveState();
+      render();
+    });
+  });
+  app.querySelectorAll("[data-mark]").forEach(el => {
+    el.addEventListener("click", () => {
+      const [domainId, idx, mark] = el.getAttribute("data-mark").split("|");
+      const ds = ensureDomainState(domainId);
+      ds.stageMarks[idx] = mark;
+      ds.lastActivityDate = todayISO();
+      saveState();
+      render();
+    });
+  });
+  app.querySelectorAll("[data-play-mark]").forEach(el => {
+    el.addEventListener("click", () => {
+      const parts = el.getAttribute("data-play-mark").split("|");
+      const domainId = parts[0];
+      const mark = parts[parts.length - 1];
+      const key = parts.slice(1, -1).join("|");
+      const ds = ensureDomainState(domainId);
+      ds.playSkillMarks[key] = mark;
+      ds.lastActivityDate = todayISO();
+      saveState();
+      render();
+    });
+  });
+  app.querySelectorAll("[data-toggle-gen]").forEach(el => {
+    el.addEventListener("click", () => {
+      const [domainId, key] = el.getAttribute("data-toggle-gen").split("|");
+      const ds = ensureDomainState(domainId);
+      if (!ds.generalization) ds.generalization = defaultGeneralization();
+      ds.generalization[key] = !ds.generalization[key];
+      ds.lastActivityDate = todayISO();
+      saveState();
+      render();
+    });
+  });
+  app.querySelectorAll("[data-word-r]").forEach(el => {
+    el.addEventListener("click", () => {
+      const [domainId, word] = el.getAttribute("data-word-r").split("|");
+      const ds = ensureDomainState(domainId);
+      const mark = getWordMark(ds, word);
+      mark.r = !mark.r;
+      if (!mark.r && !mark.e) delete ds.wordMarks[word]; else ds.wordMarks[word] = mark;
+      ds.lastActivityDate = todayISO();
+      saveState();
+      render();
+    });
+  });
+  app.querySelectorAll("[data-word-e]").forEach(el => {
+    el.addEventListener("click", () => {
+      const [domainId, word] = el.getAttribute("data-word-e").split("|");
+      const ds = ensureDomainState(domainId);
+      const d = getDomain(domainId);
+      const mark = getWordMark(ds, word);
+      const wasSays = mark.e === 2;
+      mark.e = (mark.e + 1) % 3;
+      if (!mark.r && !mark.e) delete ds.wordMarks[word]; else ds.wordMarks[word] = mark;
+      ds.lastActivityDate = todayISO();
+      if (!wasSays && mark.e === 2 && d && d.hasWordBank) {
+        const saysCount = d.wordCategories.flatMap(c => c.words).map(w => getWordMark(ds, w)).filter(m => m.e === 2).length;
+        if (WORD_MILESTONES.includes(saysCount)) {
+          celebrationMsg = saysCount === 1
+            ? "🎉 First word said! This is a big one."
+            : `🎉 ${saysCount} words said! Look how far you've come.`;
+        }
+      }
+      saveState();
+      render();
+    });
+  });
+  app.querySelectorAll("[data-gesture-r]").forEach(el => {
+    el.addEventListener("click", () => {
+      const [domainId, gesture] = el.getAttribute("data-gesture-r").split("|");
+      const ds = ensureDomainState(domainId);
+      const mark = getGestureMark(ds, gesture);
+      mark.r = !mark.r;
+      if (!mark.r && !mark.e) delete ds.gestureMarks[gesture]; else ds.gestureMarks[gesture] = mark;
+      ds.lastActivityDate = todayISO();
+      saveState();
+      render();
+    });
+  });
+  app.querySelectorAll("[data-gesture-e]").forEach(el => {
+    el.addEventListener("click", () => {
+      const [domainId, gesture] = el.getAttribute("data-gesture-e").split("|");
+      const ds = ensureDomainState(domainId);
+      const mark = getGestureMark(ds, gesture);
+      mark.e = (mark.e + 1) % 3;
+      if (!mark.r && !mark.e) delete ds.gestureMarks[gesture]; else ds.gestureMarks[gesture] = mark;
+      ds.lastActivityDate = todayISO();
+      saveState();
+      render();
+    });
+  });
+  app.querySelectorAll("[data-before-start]").forEach(el => {
+    el.addEventListener("change", () => {
+      const ds = ensureDomainState(el.getAttribute("data-before-start"));
+      ds.beforeYouStart = el.value;
+      saveState();
+    });
+  });
+
+  const actionEls = app.querySelectorAll("[data-action]");
+  actionEls.forEach(el => {
+    el.addEventListener("click", () => {
+      const raw = el.getAttribute("data-action");
+      const i = raw.indexOf("|");
+      const action = i === -1 ? raw : raw.slice(0, i);
+      const arg = i === -1 ? undefined : raw.slice(i + 1);
+      handleAction(action, arg);
+    });
+  });
+}
+
+function handleAction(action, arg) {
+  if (action === "dismiss-first-use") {
+    state.firstUseSeen = true; saveState(); render();
+  } else if (action === "start-picker") {
+    nav("domainPicker");
+  } else if (action === "finish-picker") {
+    if (state.selectedDomains.length) { saveState(); nav("home"); }
+  } else if (action === "open-export") {
+    nav("export");
+  } else if (action === "open-reset") {
+    modal = "reset"; render();
+  } else if (action === "open-add-win") {
+    modal = "add-win-global"; render();
+  } else if (action === "save-global-win") {
+    const input = document.getElementById("global-win-input");
+    const domainSel = document.getElementById("global-win-domain");
+    if (input && input.value.trim()) {
+      state.smallWins.push({
+        id: Date.now().toString(36),
+        domainId: domainSel && domainSel.value ? domainSel.value : null,
+        date: todayISO(),
+        text: input.value.trim()
+      });
+      saveState();
+      modal = null;
+      render();
+    }
+  } else if (action === "close-modal") {
+    modal = null; pendingDelete = null; render();
+  } else if (action === "confirm-delete-win") {
+    const win = state.smallWins.find(w => w.id === arg);
+    pendingDelete = { type: "win", id: arg, preview: win ? win.text : "" };
+    modal = "confirm-delete"; render();
+  } else if (action === "confirm-delete-custom") {
+    const [domainId, activityId] = arg.split("|");
+    const ds = ensureDomainState(domainId);
+    const item = (ds.customActivities || []).find(c => c.id === activityId);
+    pendingDelete = { type: "custom", domainId, id: activityId, preview: item ? item.text : "" };
+    modal = "confirm-delete"; render();
+  } else if (action === "do-delete") {
+    if (pendingDelete) {
+      if (pendingDelete.type === "win") {
+        state.smallWins = state.smallWins.filter(w => w.id !== pendingDelete.id);
+      } else if (pendingDelete.type === "custom") {
+        const ds = ensureDomainState(pendingDelete.domainId);
+        ds.customActivities = (ds.customActivities || []).filter(c => c.id !== pendingDelete.id);
+      }
+      saveState();
+    }
+    pendingDelete = null; modal = null; render();
+  } else if (action === "advance-week") {
+    const ds = ensureDomainState(arg);
+    ds.cycleWeek = Math.min(4, ds.cycleWeek + 1);
+    ds.lastActivityDate = todayISO();
+    saveState(); render();
+  } else if (action === "advance-cycle") {
+    const ds = ensureDomainState(arg);
+    ds.cycleWeek = 1;
+    ds.cycleCount += 1;
+    ds.cycleStartDate = todayISO();
+    ds.lastActivityDate = todayISO();
+    ds.generalization = defaultGeneralization();
+    saveState(); render();
+  } else if (action === "save-favorites") {
+    state.favorites = {
+      toys: (document.getElementById("fav-toys") || {}).value || "",
+      foods: (document.getElementById("fav-foods") || {}).value || "",
+      songs: (document.getElementById("fav-songs") || {}).value || "",
+      activities: (document.getElementById("fav-activities") || {}).value || ""
+    };
+    saveState();
+    nav("home");
+  } else if (action === "dismiss-tab-hint") {
+    state.tabHintSeen = true;
+    saveState();
+    render();
+  } else if (action === "dismiss-celebration") {
+    celebrationMsg = null;
+    render();
+  } else if (action === "add-win") {
+    const input = document.getElementById("win-input");
+    if (input && input.value.trim()) {
+      state.smallWins.push({ id: Date.now().toString(36), domainId: arg, date: todayISO(), text: input.value.trim() });
+      saveState(); render();
+    }
+  } else if (action === "add-custom-activity") {
+    const input = document.getElementById("custom-activity-input");
+    if (input && input.value.trim()) {
+      const ds = ensureDomainState(arg);
+      if (!ds.customActivities) ds.customActivities = [];
+      ds.customActivities.push({ id: Date.now().toString(36), text: input.value.trim(), date: todayISO() });
+      ds.lastActivityDate = todayISO();
+      saveState(); render();
+    }
+  } else if (action === "do-export") {
+    state.lastExportDate = todayISO();
+    saveState();
+    window.print();
+  }
+}
+
+/* ---------------- Init ---------------- */
+render();
+</script>
+</body>
+</html>

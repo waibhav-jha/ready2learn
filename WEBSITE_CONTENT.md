@@ -273,10 +273,10 @@
 - **Description**: Our interactive digital app assessing 9 critical readiness domains (Speech, Motor, Cognitive, Self-Help, Social-Emotional & more) with automated age-band calculation and doctor guidance.
 - **Action**: Launch Ready2Learn App (`ready2learn/Ready2LearnKids_App.html`)
 
-### Feature 2: AI Screen Behavior & Meltdown Diagnostic
-- **Tag**: IN DEVELOPMENT (BETA)
-- **Description**: An intelligent parent triage assistant that analyzes routine child screen meltdowns, bedtime resistance, and calculates personalized sensory reset schedules.
-- **Action**: Notify Me on Beta Launch
+### Feature 2: Connect2Child™ — Everyday Parent Support
+- **Tag**: LIVE PARENT SUPPORT APP
+- **Description**: Evidence-based coaching for everyday parent-child interactions covering 7 core domains: First Words, Instructions, Gestures, Play, Shared Attention, Eye Contact & Copying.
+- **Action**: Launch Connect2Child App (`connect2child.html`)
 
 ### Feature 3: Social Communication Screener (M-CHAT-R™)
 - **Tag**: LIVE CLINICAL SCREENER
