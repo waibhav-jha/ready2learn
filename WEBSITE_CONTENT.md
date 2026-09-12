@@ -278,11 +278,6 @@
 - **Description**: Evidence-based coaching for everyday parent-child interactions covering 7 core domains: First Words, Instructions, Gestures, Play, Shared Attention, Eye Contact & Copying.
 - **Action**: Launch Connect2Child App (`connect2child.html`)
 
-### Feature 3: Social Communication Screener (M-CHAT-R™)
-- **Tag**: LIVE CLINICAL SCREENER
-- **Description**: Clinically validated 20-point screening tool for toddlers (16–30 months) to evaluate early social communication, joint attention, and autism risk indicators with instant scoring and exportable clinical summary.
-- **Action**: Launch Screener Tool (`social-communication-screener.html`)
-
 ---
 
 ## 12. FOOTER & DISCLAIMERS

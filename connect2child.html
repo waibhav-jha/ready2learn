@@ -7,15 +7,22 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Playfair+Display:ital,wght@0,600;1,600;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
   :root {
+    /* Color Palette Specs aligned with Dr. Chitra Sankar practice site */
+    --bg-main: #FBF9F7;
+    --bg-secondary: #F8F3F0;
     --primary: #4A236E;
     --primary-dark: #351452;
     --primary-light: #6A4B87;
     --purple-outline: #8B5AC7;
     --lavender: #D8C6EC;
+    --soft-pink: #FDE9E5;
     --coral: #FF5A2E;
     --coral-dark: #E0481F;
+    --accent: #FF5A2E;
+    --accent-hover: #E0481F;
     --gold: #D97706;
     --gold-light: #FFA97D;
     --peach-bg: #FBF9F7;
@@ -31,24 +38,40 @@
     --grey-nt: #CBD5E1;
     --grey-nt-bg: #F1F5F9;
     --white: #FFFFFF;
+    
+    /* UI Elevations & Shadows */
+    --shadow-sm: 0 4px 12px rgba(74, 35, 110, 0.04);
     --shadow: 0 4px 16px rgba(74, 35, 110, 0.06);
-    --shadow-lg: 0 12px 32px rgba(74, 35, 110, 0.12);
-    --shadow-orange: 0 8px 20px rgba(255, 90, 46, 0.25);
-    --radius: 18px;
+    --shadow-md: 0 10px 28px rgba(74, 35, 110, 0.1);
+    --shadow-lg: 0 16px 44px rgba(74, 35, 110, 0.14);
+    --shadow-orange: 0 8px 22px rgba(255, 90, 46, 0.28);
+    
+    /* Shapes & Radii */
+    --radius: 20px;
     --radius-sm: 12px;
+    --radius-md: 20px;
+    --radius-lg: 32px;
+    --radius-full: 9999px;
+    
+    /* Smile2Steps signature animation easing */
+    --transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  * { box-sizing: border-box; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
   :focus-visible {
     outline: 3px solid var(--coral);
     outline-offset: 2px;
-    border-radius: 6px;
+    border-radius: 8px;
   }
-  html, body { margin: 0; padding: 0; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--peach-bg);
+  }
 
   body {
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-    background: var(--peach-bg);
+    background-color: var(--peach-bg);
     color: var(--ink);
     font-size: 16px;
     line-height: 1.6;
@@ -62,9 +85,17 @@
     margin: 0;
   }
 
+  .script-highlight {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    color: var(--accent);
+    display: inline-block;
+  }
+
   button {
     font-family: inherit;
     cursor: pointer;
+    transition: var(--transition);
   }
 
   #app {
@@ -75,7 +106,29 @@
     display: flex;
     flex-direction: column;
     position: relative;
-    padding-bottom: 84px;
+    padding-bottom: 88px;
+    transition: var(--transition);
+  }
+
+  /* Desktop Framing Layout */
+  @media (min-width: 640px) {
+    body {
+      background: linear-gradient(135deg, #F8F3F0 0%, #F4ECE6 100%);
+      min-height: 100vh;
+      padding: 32px 16px 64px;
+    }
+    #app {
+      max-width: 520px;
+      min-height: calc(100vh - 96px);
+      border-radius: 28px;
+      box-shadow: 0 20px 60px rgba(74, 35, 110, 0.12);
+      border: 1px solid rgba(139, 90, 199, 0.14);
+      overflow: hidden;
+    }
+    .bottomnav {
+      max-width: 520px;
+      border-radius: 0 0 28px 28px;
+    }
   }
 
   /* ---------- Top bar ---------- */
@@ -83,11 +136,15 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px 20px 12px;
+    padding: 16px 20px 14px;
     position: sticky;
     top: 0;
-    background: var(--peach-bg);
-    z-index: 10;
+    background: rgba(251, 249, 247, 0.94);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(74, 35, 110, 0.08);
+    z-index: 30;
+    transition: var(--transition);
   }
   .brand {
     display: flex;
@@ -95,65 +152,110 @@
     gap: 8px;
   }
   .brand-mark {
-    width: 36px; height: 36px;
+    width: 38px; height: 38px;
     border-radius: 12px;
     background: linear-gradient(135deg, var(--primary), var(--coral));
     display: flex; align-items: center; justify-content: center;
     font-size: 18px;
-    box-shadow: var(--shadow);
+    box-shadow: var(--shadow-sm);
+    color: white;
+    flex-shrink: 0;
+    transition: var(--transition);
+  }
+  .brand-mark:hover {
+    transform: scale(1.06);
   }
   .brand-name {
     font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
     font-weight: 800;
-    font-size: 20px;
+    font-size: 19px;
     color: var(--primary);
+    line-height: 1.1;
+  }
+  .nav-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    border: 1.5px solid var(--purple-outline);
+    color: var(--primary);
+    font-size: 12.5px;
+    font-weight: 700;
+    text-decoration: none;
+    background: var(--white);
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+  }
+  .nav-back-link:hover {
+    background: var(--primary);
+    color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(74, 35, 110, 0.2);
   }
   .icon-btn {
-    width: 40px; height: 40px;
+    width: 38px; height: 38px;
     border-radius: 50%;
-    border: 1px solid var(--lavender);
+    border: 1.5px solid var(--lavender);
     background: var(--white);
     display: flex; align-items: center; justify-content: center;
-    font-size: 18px;
-    box-shadow: var(--shadow);
+    font-size: 15px;
+    box-shadow: var(--shadow-sm);
     text-decoration: none;
     color: var(--primary);
-    transition: transform 0.15s ease, background 0.15s ease;
+    transition: var(--transition);
   }
-  .icon-btn:hover { background: var(--peach-card); }
+  .icon-btn:hover {
+    background: var(--peach-card);
+    border-color: var(--purple-outline);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+  }
   .icon-btn:active { transform: scale(0.94); }
 
   .back-row {
-    display: flex; align-items: center; gap: 10px;
-    padding: 14px 20px 4px;
+    display: flex; align-items: center; gap: 12px;
+    padding: 16px 20px 6px;
   }
   .back-btn {
-    border: 1px solid var(--lavender);
+    border: 1.5px solid var(--lavender);
     background: var(--white);
-    border-radius: 50%; width: 36px; height: 36px;
+    border-radius: 50%; width: 38px; height: 38px;
     display: flex; align-items: center; justify-content: center;
-    box-shadow: var(--shadow); font-size: 16px; color: var(--primary);
-    transition: all 0.2s;
+    box-shadow: var(--shadow-sm); font-size: 15px; color: var(--primary);
+    transition: var(--transition);
   }
-  .back-btn:hover { background: var(--peach-card); }
+  .back-btn:hover {
+    background: var(--peach-card);
+    border-color: var(--purple-outline);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+  }
+  .back-btn:active { transform: scale(0.94); }
 
   /* ---------- Persistent save reminder ---------- */
   .save-strip {
-    margin: 0 20px 10px;
+    margin: 0 20px 12px;
     background: var(--peach-card-2);
-    border: 1px solid #FFD8CE;
+    border: 1px solid rgba(255, 90, 46, 0.25);
     border-radius: var(--radius-sm);
-    padding: 8px 14px;
+    padding: 9px 14px;
     font-size: 12.5px;
     color: var(--primary-light);
-    display: flex; align-items: center; gap: 6px;
+    display: flex; align-items: center; gap: 8px;
     font-weight: 600;
   }
 
   /* ---------- Screens ---------- */
-  .screen { padding: 4px 20px 20px; animation: fadein 0.25s ease; }
+  .screen {
+    padding: 6px 20px 24px;
+    animation: screenFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
   @media (prefers-reduced-motion: reduce) { .screen { animation: none; } }
-  @keyframes fadein { from { opacity: 0; transform: translateY(6px);} to { opacity: 1; transform: translateY(0);} }
+  @keyframes screenFadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
   .hero-title {
     font-size: 28px;
@@ -165,75 +267,100 @@
   .tagline {
     color: var(--coral);
     font-weight: 700;
-    font-size: 14.5px;
-    margin-bottom: 4px;
+    font-size: 15px;
+    margin-bottom: 6px;
   }
   .byline {
     color: var(--ink-faint);
     font-size: 12.5px;
     font-weight: 600;
-    margin-bottom: 18px;
+    margin-bottom: 20px;
   }
   p.body-text { color: var(--ink-soft); margin: 0 0 14px; line-height: 1.6; }
 
   .card {
     background: var(--white);
     border-radius: var(--radius);
-    padding: 18px 20px;
+    padding: 20px 22px;
     box-shadow: var(--shadow);
     border: 1px solid rgba(139, 90, 199, 0.12);
-    margin-bottom: 14px;
+    margin-bottom: 16px;
+    transition: var(--transition);
+  }
+  .card:hover {
+    box-shadow: var(--shadow-md);
+    border-color: rgba(139, 90, 199, 0.24);
+    transform: translateY(-2px);
   }
   .card.soft {
     background: var(--peach-card);
     border: 1px solid rgba(139, 90, 199, 0.08);
     box-shadow: none;
   }
+  .card.soft:hover {
+    box-shadow: var(--shadow-sm);
+    transform: none;
+  }
 
   .btn-primary {
     width: 100%;
-    background: linear-gradient(135deg, var(--coral) 0%, var(--coral-dark) 100%);
+    background: var(--coral);
     color: white;
     border: none;
-    padding: 15px 22px;
+    padding: 15px 24px;
     border-radius: 999px;
     font-weight: 700;
     font-size: 16px;
     font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
     box-shadow: var(--shadow-orange);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
   }
   .btn-primary:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 10px 26px rgba(255, 90, 46, 0.35);
+    background: var(--coral-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 26px rgba(255, 90, 46, 0.35);
   }
   .btn-primary:active { transform: scale(0.98); }
-  .btn-primary[disabled] { background: var(--grey-nt); box-shadow: none; color: #9CA3AF; }
+  .btn-primary[disabled] { background: var(--grey-nt); box-shadow: none; color: #9CA3AF; transform: none; }
 
   .btn-secondary {
     width: 100%;
     background: var(--white);
     color: var(--primary);
-    border: 2px solid var(--lavender);
-    padding: 13px 20px;
+    border: 2px solid var(--purple-outline);
+    padding: 13px 22px;
     border-radius: 999px;
     font-weight: 700;
     font-size: 15px;
     font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-    transition: all 0.2s ease;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
   }
   .btn-secondary:hover {
-    border-color: var(--purple-outline);
-    background: var(--peach-card);
+    background: var(--primary);
+    color: var(--white);
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
   }
+  .btn-secondary:active { transform: scale(0.98); }
 
   .btn-text {
     background: none; border: none; color: var(--purple-outline);
-    font-size: 14px; font-weight: 600; text-decoration: underline; padding: 6px;
+    font-size: 14px; font-weight: 700; text-decoration: underline; padding: 6px;
+    cursor: pointer; transition: var(--transition);
   }
+  .btn-text:hover { color: var(--primary); }
 
   /* ---------- Onboarding ---------- */
-  .onboard-wrap { padding: 40px 24px 24px; text-align: center; }
+  .onboard-wrap { padding: 36px 24px 24px; text-align: center; }
   .onboard-mark {
     width: 80px; height: 80px; margin: 0 auto 18px;
     border-radius: 24px;
@@ -241,6 +368,10 @@
     display: flex; align-items: center; justify-content: center;
     font-size: 40px;
     box-shadow: var(--shadow-lg);
+    transition: var(--transition);
+  }
+  .onboard-mark:hover {
+    transform: scale(1.05) rotate(4deg);
   }
   .hero-photo {
     width: 100%; max-width: 320px; border-radius: 20px;
@@ -256,27 +387,41 @@
     display: flex; align-items: flex-start; gap: 12px;
     text-align: left; margin-bottom: 14px;
   }
-  .feature-row .emoji { font-size: 22px; }
+  .feature-row .emoji { font-size: 22px; flex-shrink: 0; }
   .feature-row .txt { font-size: 14.5px; color: var(--ink-soft); line-height: 1.5; }
   .feature-row .txt b { color: var(--ink); }
 
   /* ---------- Domain grid ---------- */
-  .domain-grid { display: flex; flex-direction: column; gap: 10px; }
+  .domain-grid { display: flex; flex-direction: column; gap: 12px; }
   .domain-pick {
     display: flex; align-items: center; gap: 14px;
     background: var(--white); border-radius: var(--radius);
-    padding: 14px 16px; box-shadow: var(--shadow);
+    padding: 15px 18px; box-shadow: var(--shadow-sm);
     border: 2px solid transparent;
-    transition: all 0.2s ease;
+    transition: var(--transition);
+    cursor: pointer;
   }
-  .domain-pick.selected { border-color: var(--purple-outline); background: var(--peach-card); }
+  .domain-pick:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(139, 90, 199, 0.25);
+  }
+  .domain-pick.selected {
+    border-color: var(--purple-outline);
+    background: var(--peach-card);
+    box-shadow: var(--shadow);
+  }
   .domain-pick .badge {
     width: 48px; height: 48px; border-radius: 14px;
     background: var(--peach-card-2);
     display: flex; align-items: center; justify-content: center;
     font-size: 22px; flex-shrink: 0;
+    transition: var(--transition);
   }
-  .domain-pick.selected .badge { background: linear-gradient(135deg, var(--primary), var(--purple-outline)); color: white; }
+  .domain-pick.selected .badge {
+    background: linear-gradient(135deg, var(--primary), var(--purple-outline));
+    color: white;
+  }
   .domain-pick .info { flex: 1; }
   .domain-pick .info .t { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-weight: 700; font-size: 15.5px; color: var(--primary); }
   .domain-pick .info .s { font-size: 12.5px; color: var(--ink-faint); }
@@ -285,6 +430,7 @@
     border: 2px solid var(--grey-nt); flex-shrink: 0;
     display: flex; align-items: center; justify-content: center;
     font-size: 13px; color: white;
+    transition: var(--transition);
   }
   .domain-pick.selected .check-dot { background: var(--coral); border-color: var(--coral); }
 
@@ -294,12 +440,17 @@
     background: var(--white); border-radius: var(--radius);
     padding: 16px 18px; box-shadow: var(--shadow);
     border: 1px solid rgba(139, 90, 199, 0.12);
-    margin-bottom: 12px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    margin-bottom: 14px;
+    transition: var(--transition);
+    cursor: pointer;
   }
   .home-domain-card:hover {
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(139, 90, 199, 0.28);
+  }
+  .home-domain-card:active {
+    transform: scale(0.98);
   }
   .home-domain-card .badge {
     width: 52px; height: 52px; border-radius: 16px;
@@ -315,18 +466,20 @@
     background: var(--amber-bg); color: var(--amber);
     font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 999px;
   }
-  .chevron { color: var(--purple-outline); font-size: 22px; }
+  .chevron { color: var(--purple-outline); font-size: 22px; transition: var(--transition); }
+  .home-domain-card:hover .chevron { transform: translateX(3px); color: var(--coral); }
 
   .add-domain-btn {
     display: flex; align-items: center; justify-content: center; gap: 8px;
     border: 2px dashed var(--lavender); border-radius: var(--radius);
     padding: 14px; color: var(--primary); font-weight: 700;
     background: transparent; width: 100%; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-    transition: all 0.2s ease;
+    transition: var(--transition);
   }
   .add-domain-btn:hover {
     border-color: var(--purple-outline);
     background: var(--peach-card);
+    transform: translateY(-2px);
   }
 
   .wins-trail {
@@ -344,7 +497,7 @@
   }
   .tabbar {
     display: flex; gap: 8px; overflow-x: auto;
-    padding-bottom: 4px;
+    padding-bottom: 6px;
     scrollbar-width: none;
   }
   .tabbar::-webkit-scrollbar { display: none; }
@@ -355,8 +508,13 @@
     color: var(--ink-soft);
     padding: 9px 16px; border-radius: 999px; font-size: 13.5px; font-weight: 700;
     font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-    box-shadow: var(--shadow);
-    transition: all 0.2s ease;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+  }
+  .tab:hover {
+    border-color: var(--purple-outline);
+    background: var(--peach-card);
+    transform: translateY(-1px);
   }
   .tab.active {
     background: var(--primary);
@@ -371,8 +529,13 @@
     border-radius: var(--radius);
     padding: 16px 18px;
     margin-bottom: 12px;
-    box-shadow: var(--shadow);
+    box-shadow: var(--shadow-sm);
     border: 1px solid rgba(139, 90, 199, 0.1);
+    transition: var(--transition);
+  }
+  .stage-item:hover {
+    box-shadow: var(--shadow);
+    border-color: rgba(139, 90, 199, 0.2);
   }
   .stage-text { font-size: 14.5px; font-weight: 600; color: var(--ink); margin-bottom: 12px; line-height: 1.5; }
   .mark-row { display: flex; gap: 8px; }
@@ -380,7 +543,11 @@
     flex: 1; border: 1.5px solid #E2D9EC; background: var(--white);
     border-radius: 10px; padding: 9px 4px; font-size: 12.5px; font-weight: 700;
     font-family: 'Plus Jakarta Sans', system-ui, sans-serif; color: var(--ink-faint);
-    transition: all 0.15s ease;
+    transition: var(--transition);
+  }
+  .mark-btn:hover {
+    border-color: var(--purple-outline);
+    transform: translateY(-1px);
   }
   .mark-btn.active-done { background: var(--green-bg); border-color: var(--green); color: var(--green); }
   .mark-btn.active-progress { background: var(--amber-bg); border-color: var(--amber); color: var(--amber); }
@@ -393,8 +560,13 @@
   /* ---------- Common Mistakes ---------- */
   .mistake-card {
     background: var(--white); border-radius: var(--radius-sm);
-    padding: 14px 16px; margin-bottom: 12px; box-shadow: var(--shadow);
+    padding: 14px 16px; margin-bottom: 12px; box-shadow: var(--shadow-sm);
     border: 1px solid rgba(139, 90, 199, 0.1);
+    transition: var(--transition);
+  }
+  .mistake-card:hover {
+    box-shadow: var(--shadow);
+    border-color: rgba(139, 90, 199, 0.2);
   }
   .mistake-instead { font-size: 13.5px; color: var(--ink-faint); line-height: 1.45; }
   .mistake-try { font-size: 14px; color: var(--ink); font-weight: 600; line-height: 1.45; }
@@ -410,6 +582,7 @@
     border: none; padding: 8px 14px; border-radius: 999px;
     font-size: 13.5px; font-weight: 600; background: var(--peach-card);
     color: var(--ink-soft);
+    transition: var(--transition);
   }
   .word-chip.understands { background: var(--grey-nt-bg); color: var(--ink-soft); }
   .word-chip.tries { background: var(--amber-bg); color: var(--amber); }
@@ -420,6 +593,11 @@
     background: var(--peach-card); border-radius: 999px;
     padding: 4px 6px 4px 14px;
     border: 1px solid rgba(139, 90, 199, 0.1);
+    transition: var(--transition);
+  }
+  .word-pill:hover {
+    border-color: rgba(139, 90, 199, 0.25);
+    background: var(--white);
   }
   .word-pill .word-label { font-size: 13.5px; font-weight: 600; color: var(--ink); }
   .re-btn {
@@ -427,8 +605,9 @@
     font-size: 11px; font-weight: 800; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
     background: var(--grey-nt-bg); color: var(--ink-faint); padding: 0; line-height: 1;
     cursor: pointer;
-    transition: all 0.15s ease;
+    transition: var(--transition);
   }
+  .re-btn:hover { transform: scale(1.1); }
   .re-btn.r-active { background: var(--primary); color: white; }
   .re-btn.e-tries { background: var(--amber-bg); color: var(--amber); }
   .re-btn.e-says { background: var(--green-bg); color: var(--green); }
@@ -439,6 +618,11 @@
     background: var(--peach-card); border-radius: 12px;
     padding: 10px 10px 10px 14px; margin-bottom: 8px;
     border: 1px solid rgba(139, 90, 199, 0.08);
+    transition: var(--transition);
+  }
+  .gesture-row:hover {
+    background: var(--white);
+    box-shadow: var(--shadow-sm);
   }
   .gesture-row .gesture-label { flex: 1; font-size: 13.5px; font-weight: 600; color: var(--ink); }
 
@@ -452,17 +636,28 @@
   .step-diagram { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 16px; }
   .step-diagram .sd-step { display: flex; flex-direction: column; align-items: center; flex: 1; }
   .step-diagram .sd-circle {
-    width: 44px; height: 44px; border-radius: 50%;
+    width: 46px; height: 46px; border-radius: 50%;
     background: linear-gradient(135deg, var(--primary), var(--coral));
     display: flex; align-items: center; justify-content: center; font-size: 20px;
-    box-shadow: 0 4px 12px rgba(74, 35, 110, 0.2); margin-bottom: 6px;
+    box-shadow: 0 4px 14px rgba(74, 35, 110, 0.2); margin-bottom: 6px;
+    color: white;
+    transition: var(--transition);
+  }
+  .step-diagram .sd-circle:hover {
+    transform: scale(1.08);
   }
   .step-diagram .sd-label { font-size: 11px; font-weight: 700; text-align: center; color: var(--ink); line-height: 1.25; }
-  .step-diagram .sd-arrow { color: var(--purple-outline); font-size: 16px; padding-top: 10px; flex: 0 0 auto; }
+  .step-diagram .sd-arrow { color: var(--purple-outline); font-size: 16px; padding-top: 12px; flex: 0 0 auto; }
   .activity-item {
-    background: var(--white); border-radius: var(--radius); padding: 14px 16px;
-    margin-bottom: 10px; box-shadow: var(--shadow); font-size: 14.5px;
+    background: var(--white); border-radius: var(--radius); padding: 15px 18px;
+    margin-bottom: 10px; box-shadow: var(--shadow-sm); font-size: 14.5px;
     border: 1px solid rgba(139, 90, 199, 0.1);
+    transition: var(--transition);
+  }
+  .activity-item:hover {
+    box-shadow: var(--shadow);
+    border-color: rgba(139, 90, 199, 0.22);
+    transform: translateY(-1px);
   }
   .activity-item .principle { display: block; margin-top: 6px; font-size: 12px; color: var(--primary); font-weight: 700; }
   .fav-field { margin-bottom: 14px; }
@@ -472,8 +667,9 @@
     background: var(--peach-card);
     border-left: 4px solid var(--coral);
     border-radius: var(--radius-sm);
-    padding: 14px 16px;
-    margin: 14px 0;
+    padding: 16px 18px;
+    margin: 16px 0;
+    box-shadow: var(--shadow-sm);
   }
   .tipbox .lbl { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-weight: 800; font-size: 13px; color: var(--primary); margin-bottom: 4px; }
   .tipbox .txt { font-size: 14px; color: var(--ink-soft); font-style: italic; line-height: 1.55; }
@@ -482,24 +678,32 @@
   .week-track { display: flex; gap: 8px; margin-bottom: 16px; }
   .week-dot {
     flex: 1; text-align: center; padding: 10px 4px; border-radius: 12px;
-    background: var(--white); box-shadow: var(--shadow); font-size: 11px; font-weight: 700;
+    background: var(--white); box-shadow: var(--shadow-sm); font-size: 11px; font-weight: 700;
     color: var(--ink-faint);
-    border: 1px solid rgba(139, 90, 199, 0.1);
+    border: 1.5px solid rgba(139, 90, 199, 0.1);
+    transition: var(--transition);
   }
+  .week-dot:hover { transform: translateY(-2px); }
   .week-dot .wk-icon { font-size: 20px; display: block; margin-bottom: 4px; }
-  .week-dot.current { background: var(--coral); color: white; border-color: var(--coral); }
+  .week-dot.current { background: var(--coral); color: white; border-color: var(--coral); box-shadow: var(--shadow-orange); }
   .week-dot.done { background: var(--green-bg); color: var(--green); border-color: var(--green); }
-  .week-card { background: var(--white); border-radius: var(--radius); padding: 16px 18px; box-shadow: var(--shadow); margin-bottom: 14px; border: 1px solid rgba(139, 90, 199, 0.1); }
+  .week-card { background: var(--white); border-radius: var(--radius); padding: 18px 20px; box-shadow: var(--shadow); margin-bottom: 14px; border: 1px solid rgba(139, 90, 199, 0.1); transition: var(--transition); }
   .gen-item {
     display: flex; align-items: center; gap: 10px;
-    background: var(--white); border-radius: 10px; padding: 10px 12px;
-    margin-bottom: 8px; border: 1px solid #E2D9EC; width: 100%; text-align: left;
+    background: var(--white); border-radius: 12px; padding: 11px 14px;
+    margin-bottom: 8px; border: 1.5px solid #E2D9EC; width: 100%; text-align: left;
     cursor: pointer;
+    transition: var(--transition);
+  }
+  .gen-item:hover {
+    border-color: var(--purple-outline);
+    background: var(--peach-card);
   }
   .gen-check {
     width: 22px; height: 22px; border-radius: 6px; flex-shrink: 0;
     border: 2px solid #D8C6EC; display: flex; align-items: center; justify-content: center;
     font-size: 13px; color: white;
+    transition: var(--transition);
   }
   .gen-item.checked .gen-check { background: var(--green); border-color: var(--green); }
   .gen-item .gen-label { font-size: 13.5px; color: var(--ink); font-weight: 600; }
@@ -511,75 +715,96 @@
   /* ---------- Small wins ---------- */
   textarea, input[type=text] {
     width: 100%; border: 1.5px solid #E2D9EC; border-radius: var(--radius-sm);
-    padding: 12px; font-family: inherit; font-size: 14.5px; color: var(--ink);
+    padding: 12px 16px; font-family: inherit; font-size: 14.5px; color: var(--ink);
     background: var(--white); resize: vertical;
     outline: none;
-    transition: all 0.2s;
+    transition: var(--transition);
   }
   textarea:focus, input[type=text]:focus {
     border-color: var(--purple-outline);
     box-shadow: 0 0 0 3px rgba(139, 90, 199, 0.15);
   }
   .win-entry {
-    background: var(--white); border-radius: var(--radius-sm); padding: 12px 14px;
-    margin-bottom: 8px; box-shadow: var(--shadow); font-size: 14px;
+    background: var(--white); border-radius: var(--radius-sm); padding: 14px 16px;
+    margin-bottom: 10px; box-shadow: var(--shadow-sm); font-size: 14px;
     display: flex; justify-content: space-between; align-items: flex-start; gap: 10px;
     border: 1px solid rgba(139, 90, 199, 0.1);
+    transition: var(--transition);
+  }
+  .win-entry:hover {
+    box-shadow: var(--shadow);
+    border-color: rgba(139, 90, 199, 0.22);
   }
   .delete-btn {
     border: none; background: none; color: var(--ink-faint); font-size: 15px;
-    padding: 2px 4px; flex-shrink: 0; line-height: 1; cursor: pointer;
+    padding: 4px 6px; flex-shrink: 0; line-height: 1; cursor: pointer;
+    transition: var(--transition);
   }
-  .delete-btn:active { color: var(--coral); }
+  .delete-btn:hover { color: var(--coral); transform: scale(1.1); }
   .win-entry .date { font-size: 11.5px; color: var(--primary-light); font-weight: 700; margin-bottom: 3px; }
 
   /* ---------- Bottom nav ---------- */
   .bottomnav {
     position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
     width: 100%; max-width: 480px;
-    background: var(--white);
-    box-shadow: 0 -4px 20px rgba(74, 35, 110, 0.08);
-    border-top: 1px solid rgba(139, 90, 199, 0.1);
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 -4px 24px rgba(74, 35, 110, 0.08);
+    border-top: 1px solid rgba(139, 90, 199, 0.12);
     display: flex; justify-content: space-around;
-    padding: 8px 6px calc(8px + env(safe-area-inset-bottom));
-    z-index: 20;
+    padding: 10px 8px calc(10px + env(safe-area-inset-bottom));
+    z-index: 40;
+    transition: var(--transition);
   }
   .navbtn {
-    background: none; border: none; display: flex; flex-direction: column; align-items: center; gap: 2px;
-    color: var(--ink-faint); font-size: 10.5px; font-weight: 700; padding: 4px 10px;
+    background: none; border: none; display: flex; flex-direction: column; align-items: center; gap: 4px;
+    color: var(--ink-faint); font-size: 11px; font-weight: 700; padding: 6px 16px;
     font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-    transition: color 0.2s;
+    border-radius: 999px;
+    transition: var(--transition);
   }
-  .navbtn .ic { font-size: 20px; }
-  .navbtn.active { color: var(--coral); }
+  .navbtn .ic { font-size: 17px; }
+  .navbtn:hover { color: var(--primary); background: var(--peach-card); }
+  .navbtn.active {
+    color: var(--coral);
+    background: var(--soft-pink);
+  }
 
   /* ---------- Modal ---------- */
   .modal-overlay {
     position: fixed; inset: 0;
-    background: rgba(74, 35, 110, 0.45);
-    backdrop-filter: blur(2px);
+    background: rgba(74, 35, 110, 0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     display: flex; align-items: flex-end; justify-content: center; z-index: 100;
+    animation: fadeInOverlay 0.25s ease;
+  }
+  @keyframes fadeInOverlay {
+    from { opacity: 0; } to { opacity: 1; }
   }
   .modal-sheet {
-    background: var(--peach-bg); width: 100%; max-width: 480px;
-    border-radius: 24px 24px 0 0; padding: 24px 22px 30px;
+    background: var(--peach-bg); width: 100%; max-width: 500px;
+    border-radius: 28px 28px 0 0; padding: 28px 24px 34px;
     max-height: 85vh; overflow-y: auto;
-    animation: slideup 0.25s ease;
-    box-shadow: 0 -10px 40px rgba(74, 35, 110, 0.2);
+    animation: slideup 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 -12px 48px rgba(74, 35, 110, 0.24);
+    border: 1px solid rgba(139, 90, 199, 0.15);
   }
-  @keyframes slideup { from { transform: translateY(30px); opacity:0; } to { transform: translateY(0); opacity:1; } }
-  .modal-sheet h2 { font-size: 20px; margin-bottom: 10px; color: var(--primary); }
+  @keyframes slideup { from { transform: translateY(36px); opacity:0; } to { transform: translateY(0); opacity:1; } }
+  .modal-sheet h2 { font-size: 21px; margin-bottom: 12px; color: var(--primary); }
   .modal-close { display:block; margin: 16px auto 0; }
 
   .empty-state { text-align: center; padding: 40px 20px; color: var(--ink-faint); }
-  .empty-state .em { font-size: 40px; margin-bottom: 10px; }
+  .empty-state .em { font-size: 44px; margin-bottom: 12px; }
 
-  a { color: var(--coral-dark); }
+  a { color: var(--coral); transition: var(--transition); }
+  a:hover { color: var(--coral-dark); }
 
   @media print {
-    .bottomnav, .topbar .icon-btn, .save-strip, .btn-secondary, .btn-text { display: none !important; }
-    body { background: white; }
-    #app { max-width: 100%; padding-bottom: 0; }
+    .bottomnav, .topbar .icon-btn, .topbar .nav-back-link, .save-strip, .btn-secondary, .btn-text { display: none !important; }
+    body { background: white; padding: 0; }
+    #app { max-width: 100%; padding-bottom: 0; border: none; box-shadow: none; }
   }
 </style>
 </head>
@@ -1106,31 +1331,34 @@ function renderTopbar() {
   return `
     <div class="topbar">
       <div class="brand">
-        <a href="index.html" title="Back to Clinic Homepage" style="text-decoration:none;display:flex;align-items:center;gap:8px;">
+        <a href="index.html" title="Back to Main Portfolio" style="text-decoration:none;display:flex;align-items:center;gap:10px;">
           <div class="brand-mark">${HANDS_ICON}</div>
-          <div class="brand-name">Connect2Child</div>
+          <div>
+            <div class="brand-name">Connect2Child</div>
+            <div style="font-size:10px;color:var(--ink-faint);font-weight:700;letter-spacing:0.04em;text-transform:uppercase;">Dr. Chitra Sankar</div>
+          </div>
         </a>
       </div>
-      <div style="display:flex;gap:8px">
-        <a href="index.html" class="icon-btn" title="Back to Clinic Homepage" aria-label="Back to Clinic Homepage">🏠</a>
-        <button class="icon-btn" data-nav="about" title="About Connect2Child" aria-label="About Connect2Child">ℹ️</button>
-        <button class="icon-btn" data-action="open-export" title="Export" aria-label="Export your summary">📤</button>
+      <div style="display:flex;align-items:center;gap:8px">
+        <a href="index.html" class="nav-back-link" title="Return to Main Portfolio"><i class="fas fa-arrow-left"></i> Portfolio</a>
+        <button class="icon-btn" data-nav="about" title="About Connect2Child" aria-label="About Connect2Child"><i class="fas fa-info-circle"></i></button>
+        <button class="icon-btn" data-action="open-export" title="Export Summary" aria-label="Export your summary"><i class="fas fa-arrow-up-from-bracket"></i></button>
       </div>
     </div>
-    <div class="save-strip">💾 Saved on this device only. Export a copy to keep it safe.</div>
+    <div class="save-strip"><i class="fas fa-shield-halved" style="color:var(--coral);margin-right:4px;"></i> Saved privately on this device. Export a copy to keep it safe.</div>
   `;
 }
 
 function renderBottomNav(active) {
-  function b(id, icon, label, screen) {
+  function b(id, iconHtml, label, screen) {
     return `<button class="navbtn ${active === id ? "active" : ""}" data-nav="${screen}">
-      <span class="ic">${icon}</span>${label}
+      <span class="ic">${iconHtml}</span><span>${label}</span>
     </button>`;
   }
   return `<div class="bottomnav">
-    ${b("home", "🏠", "Home", "home")}
-    ${b("bank", "🎯", "Activities", "bank")}
-    ${b("export", "📤", "Export", "export")}
+    ${b("home", '<i class="fas fa-house"></i>', "Home", "home")}
+    ${b("bank", '<i class="fas fa-bullseye"></i>', "Activities", "bank")}
+    ${b("export", '<i class="fas fa-file-export"></i>', "Export", "export")}
   </div>`;
 }
 
@@ -1139,10 +1367,15 @@ function renderFirstUseGate() {
   return `
   <div class="modal-overlay">
     <div class="modal-sheet">
-      <h2>📲 Before you start</h2>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+        <div style="width:44px;height:44px;border-radius:14px;background:var(--soft-pink);color:var(--coral);display:flex;align-items:center;justify-content:center;font-size:20px;">
+          <i class="fas fa-mobile-screen"></i>
+        </div>
+        <h2 style="margin:0;">Before you start</h2>
+      </div>
       <p class="body-text">Your answers are saved on this device only. If you switch phones, switch browsers, or clear your browser history, this data will be lost.</p>
       <p class="body-text">Use <b>Export Summary</b> often to keep a safe copy — you'll find it any time from the bottom menu.</p>
-      <button class="btn-primary" data-action="dismiss-first-use">Got it, let's start</button>
+      <button class="btn-primary" data-action="dismiss-first-use">Got it, let's start <i class="fas fa-arrow-right"></i></button>
     </div>
   </div>`;
 }
@@ -1163,13 +1396,16 @@ function introContent() {
 function renderOnboard() {
   return `
   <div class="onboard-wrap">
+    <div style="display:flex;justify-content:flex-start;margin-bottom:18px;">
+      <a href="index.html" class="nav-back-link"><i class="fas fa-arrow-left"></i> Main Site</a>
+    </div>
     <div class="onboard-mark">${HANDS_ICON}</div>
     <h1 class="hero-title">Connect2Child</h1>
-    <div class="tagline">Evidence-based parent support for everyday interactions</div>
-    <div class="byline">By Dr Chitra Sankar, Developmental Paediatrician</div>
+    <div class="tagline">Evidence-based parent support for <span class="script-highlight">everyday interactions</span></div>
+    <div class="byline">By Dr. Chitra Sankar, Developmental Paediatrician</div>
     ${introContent()}
-    <div style="height:8px"></div>
-    <button class="btn-primary" data-action="start-picker">Get Started</button>
+    <div style="height:12px"></div>
+    <button class="btn-primary" data-action="start-picker">Get Started <i class="fas fa-arrow-right"></i></button>
   </div>`;
 }
 
@@ -1183,7 +1419,7 @@ function howItWorksInfographic() {
 
   return `
   <div class="card" style="text-align:left;background:linear-gradient(180deg, var(--peach-card) 0%, var(--white) 100%)">
-    <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;font-size:15px;margin-bottom:12px;text-align:center">How Connect2Child Works</div>
+    <div style="font-family:'Plus Jakarta Sans', system-ui, sans-serif;font-weight:700;font-size:15px;margin-bottom:12px;text-align:center">How Connect2Child Works</div>
 
     <div style="font-size:11px;font-weight:800;color:var(--gold);text-align:center;margin-bottom:8px;letter-spacing:0.5px">1 · CHOOSE YOUR GOALS</div>
     <p class="body-text" style="font-size:12px;text-align:center;margin-bottom:10px">Pick any of these 7 areas to work on — no need to do them all, and you can add more later.</p>
@@ -1258,7 +1494,7 @@ function universalMistakesSection() {
 
   return `
   <div class="card" style="text-align:left;margin-top:14px">
-    <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;font-size:15px;margin-bottom:4px;text-align:center">⚠️ 10 Common Mistakes Parents Make</div>
+    <div style="font-family:'Plus Jakarta Sans', system-ui, sans-serif;font-weight:700;font-size:15px;margin-bottom:4px;text-align:center">⚠️ 10 Common Mistakes Parents Make</div>
     <p class="body-text" style="font-size:12.5px;text-align:center;margin-bottom:16px">These are natural instincts, not failures — every parent falls into a few of these. Each area also has its own specific tips under its "Common Mistakes" tab.</p>
     ${items}
   </div>`;
@@ -1267,8 +1503,8 @@ function universalMistakesSection() {
 function renderAbout() {
   return `
     <div class="back-row">
-      <button class="back-btn" data-nav="home" aria-label="Back to Home">←</button>
-      <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;font-size:18px">About Connect2Child</div>
+      <button class="back-btn" data-nav="home" aria-label="Back to Home"><i class="fas fa-arrow-left"></i></button>
+      <div style="font-family:'Plus Jakarta Sans', system-ui, sans-serif;font-weight:700;font-size:18px">About Connect2Child</div>
     </div>
     <div class="screen" style="padding-top:10px;text-align:center">
       <div class="onboard-mark" style="margin:0 auto 14px">${HANDS_ICON}</div>
@@ -1279,7 +1515,7 @@ function renderAbout() {
       ${howItWorksInfographic()}
       ${universalMistakesSection()}
       <div class="card soft" style="text-align:left;margin-top:6px">
-        <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;margin-bottom:6px">📲 Add to Your Home Screen</div>
+        <div style="font-family:'Plus Jakarta Sans', system-ui, sans-serif;font-weight:700;margin-bottom:6px">📲 Add to Your Home Screen</div>
         <p class="body-text" style="margin-bottom:6px">You can add Connect2Child to your phone's home screen, so it opens like a regular app with one tap.</p>
         <p class="body-text" style="margin-bottom:4px"><b>iPhone:</b> Open this page in Safari, tap the Share icon, then tap "Add to Home Screen."</p>
         <p class="body-text" style="margin-bottom:0"><b>Android:</b> Open this page in Chrome, tap the three-dot menu, then tap "Add to Home screen."</p>
@@ -1299,7 +1535,7 @@ function renderFavoritesScreen() {
   return `
     <div class="back-row">
       <button class="back-btn" data-nav="home" aria-label="Back to Home">←</button>
-      <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;font-size:18px">🧸 Your Child's Favorites</div>
+      <div style="font-family:'Plus Jakarta Sans', system-ui, sans-serif;font-weight:700;font-size:18px">🧸 Your Child's Favorites</div>
     </div>
     <div class="screen" style="padding-top:6px">
       <p class="body-text">Write down what your child already loves. It's here for you to glance back at whenever you're deciding what to try in an activity.</p>
@@ -1422,13 +1658,13 @@ function renderHome() {
   const favCard = hasFavorites
     ? `<div class="card soft" style="margin-top:18px">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-          <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700">🧸 Your Child's Favorites</div>
+          <div style="font-family:'Plus Jakarta Sans', system-ui, sans-serif;font-weight:700">🧸 Your Child's Favorites</div>
           <button class="btn-text" data-nav="favorites" style="text-decoration:underline;font-size:12.5px">Edit</button>
         </div>
         <p class="body-text" style="font-size:12.5px;margin-bottom:0">Keep this updated as your child's interests change.</p>
       </div>`
     : `<div class="card soft" style="margin-top:18px;border:2px dashed var(--peach-card-2)">
-        <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;margin-bottom:4px">🧸 Tell us what your child loves</div>
+        <div style="font-family:'Plus Jakarta Sans', system-ui, sans-serif;font-weight:700;margin-bottom:4px">🧸 Tell us what your child loves</div>
         <p class="body-text" style="font-size:12.5px">Add your child's favorite toys, foods, songs, and games — a place to jot it down so it's handy when you're deciding what to try.</p>
         <button class="btn-secondary" data-nav="favorites">Add Favorites</button>
       </div>`;
@@ -1439,7 +1675,7 @@ function renderHome() {
     ${cards}
     <button class="add-domain-btn" data-action="start-picker">+ Add another area</button>
     <div class="card soft" style="margin-top:18px">
-      <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;margin-bottom:6px">⭐ Small Wins</div>
+      <div style="font-family:'Plus Jakarta Sans', system-ui, sans-serif;font-weight:700;margin-bottom:6px">⭐ Small Wins</div>
       <p class="body-text" style="font-size:12.5px">A small win is anything that feels like progress — even if it's not on the formal checklist. A new sound, a longer glance, a moment of connection all count.</p>
       ${wins}
       <div style="height:10px"></div>
@@ -1486,7 +1722,7 @@ function renderDomainScreen() {
   return `
     <div class="back-row">
       <button class="back-btn" data-nav="home" aria-label="Back to Home">←</button>
-      <div style="font-family:'Quicksand',sans-serif;font-weight:700;font-size:18px">${d.icon} ${d.title}</div>
+      <div style="font-family:'Plus Jakarta Sans', system-ui, sans-serif;font-weight:700;font-size:18px">${d.icon} ${d.title}</div>
     </div>
     <div class="screen" style="padding-top:6px">
       ${tabBar}
@@ -1500,7 +1736,7 @@ function renderDomainScreen() {
 function renderChecklistTab(d, ds) {
   const before = `
     <div class="card soft">
-      <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;margin-bottom:6px">🔍 Before You Start (optional)</div>
+      <div style="font-family:'Plus Jakarta Sans', system-ui, sans-serif;font-weight:700;margin-bottom:6px">🔍 Before You Start (optional)</div>
       <p class="body-text" style="margin-bottom:8px">Write down anything your child already does in this area, even small or occasional things. You'll build from here.</p>
       <textarea rows="2" aria-label="What your child already does in this area" placeholder="${escapeHtml(d.beforeYouStartExample || "e.g. anything you've noticed so far...")}" data-before-start="${d.id}">${escapeHtml(ds.beforeYouStart || "")}</textarea>
     </div>`;
@@ -1509,7 +1745,7 @@ function renderChecklistTab(d, ds) {
 
   const markGuide = `
     <div class="card" style="background:var(--peach-card-2);border:2px solid var(--coral)">
-      <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;color:var(--coral-dark);margin-bottom:6px">💡 How to mark a stage</div>
+      <div style="font-family:'Plus Jakarta Sans', system-ui, sans-serif;font-weight:700;color:var(--coral-dark);margin-bottom:6px">💡 How to mark a stage</div>
       <p class="body-text" style="margin-bottom:4px"><b>✓ Done</b> — your child does this now, most of the time.</p>
       <p class="body-text" style="margin-bottom:4px"><b>~ In Progress</b> — starting to show this sometimes, or needs help to do it.</p>
       <p class="body-text" style="margin-bottom:0"><b>— Not Yet</b> — haven't seen this yet. That's a starting point, not a problem.</p>
@@ -1567,7 +1803,7 @@ function mistakesCallout(d) {
   if (!preview) return "";
   return `
     <div class="card soft" style="margin-top:12px">
-      <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;margin-bottom:8px">⚠️ A Common Mistake to Avoid</div>
+      <div style="font-family:'Plus Jakarta Sans', system-ui, sans-serif;font-weight:700;margin-bottom:8px">⚠️ A Common Mistake to Avoid</div>
       ${mistakeCard(preview)}
       <button class="btn-text" data-tab="mistakes" style="text-decoration:underline;font-size:12.5px;margin-top:2px">See all common mistakes for this area →</button>
     </div>
@@ -1598,11 +1834,11 @@ function renderActivitiesTab(d, ds) {
       <div class="sd-step"><div class="sd-circle">🎉</div><div class="sd-label">You react<br>warmly</div></div>
     </div>
     <div class="card" style="background:var(--peach-card-2);border:2px solid var(--coral)">
-      <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;color:var(--coral-dark);margin-bottom:6px">💡 How to use this list</div>
+      <div style="font-family:'Plus Jakarta Sans', system-ui, sans-serif;font-weight:700;color:var(--coral-dark);margin-bottom:6px">💡 How to use this list</div>
       <p class="body-text" style="margin-bottom:0">These are examples, not a fixed routine. Try one that fits your child's mood today.</p>
     </div>
     ${items}
-    <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;margin:18px 0 10px">✏️ Your Own Ideas</div>
+    <div style="font-family:'Plus Jakarta Sans', system-ui, sans-serif;font-weight:700;margin:18px 0 10px">✏️ Your Own Ideas</div>
     ${customItems || `<p class="body-text" style="font-size:13.5px">Nothing added yet — use the box below.</p>`}
     <div class="card soft" style="margin-top:8px">
       <textarea id="custom-activity-input" rows="2" aria-label="Your own technique or idea" placeholder="e.g. what worked for us — the technique and how we used it"></textarea>
@@ -1643,7 +1879,7 @@ function renderWordsTab(d, ds) {
 
   const celebration = celebrationMsg ? `
     <div class="card" style="background:linear-gradient(135deg, var(--coral), var(--gold-light));text-align:center;padding:18px">
-      <div style="font-size:17px;font-weight:800;color:white;font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif">${celebrationMsg}</div>
+      <div style="font-size:17px;font-weight:800;color:white;font-family:'Plus Jakarta Sans', system-ui, sans-serif">${celebrationMsg}</div>
       <button class="btn-text" data-action="dismiss-celebration" style="color:rgba(255,255,255,0.85);text-decoration:underline;margin-top:6px">Nice!</button>
     </div>` : "";
 
@@ -1671,7 +1907,7 @@ function renderWordsTab(d, ds) {
     <p class="body-text" id="no-word-match" style="display:none">No words match your search.</p>
     <div class="tipbox"><div class="lbl">🩺 How This List Grows</div><div class="txt">${d.growthNote}</div></div>
     <div class="card" style="background:var(--peach-card-2);border:2px solid var(--coral)">
-      <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;color:var(--coral-dark);margin-bottom:6px">💡 How to mark a word</div>
+      <div style="font-family:'Plus Jakarta Sans', system-ui, sans-serif;font-weight:700;color:var(--coral-dark);margin-bottom:6px">💡 How to mark a word</div>
       <p class="body-text" style="margin-bottom:0">Tap <b>R</b> when your child understands a word. Tap <b>E</b> once when they try to say it, tap again when they say it clearly.</p>
     </div>
     ${cats}
@@ -1725,7 +1961,7 @@ function renderGesturesTab(d, ds) {
     </div>
     <div class="tipbox"><div class="lbl">🩺 About These Gestures</div><div class="txt">${d.gestureGrowthNote}</div></div>
     <div class="card" style="background:var(--peach-card-2);border:2px solid var(--coral)">
-      <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;color:var(--coral-dark);margin-bottom:6px">💡 How to mark a gesture</div>
+      <div style="font-family:'Plus Jakarta Sans', system-ui, sans-serif;font-weight:700;color:var(--coral-dark);margin-bottom:6px">💡 How to mark a gesture</div>
       <p class="body-text" style="margin-bottom:0">Tap <b>R</b> when your child understands the gesture. Tap <b>E</b> once when they try it, tap again when they do it clearly.</p>
     </div>
     ${cats}
@@ -1747,7 +1983,7 @@ function renderPlaySkillsTab(d, ds) {
         </div>
       </div>`;
     }).join("");
-    return `<h3 style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;font-size:14px;color:var(--gold);margin:16px 0 8px">${c.cat}</h3>${items}`;
+    return `<h3 style="font-family:'Plus Jakarta Sans', system-ui, sans-serif;font-weight:700;font-size:14px;color:var(--gold);margin:16px 0 8px">${c.cat}</h3>${items}`;
   }).join("");
 
   const totalSkills = d.playSkillCategories.reduce((n, c) => n + c.skills.length, 0);
@@ -1855,7 +2091,7 @@ function renderCycleTab(d, ds) {
     const rotated = [allActivities[offset], allActivities[(offset + 1) % allActivities.length]];
     ideasBlock = `
       <div class="card soft" style="border:2px solid var(--peach-card-2)">
-        <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;margin-bottom:6px">💡 Let's try something different this round</div>
+        <div style="font-family:'Plus Jakarta Sans', system-ui, sans-serif;font-weight:700;margin-bottom:6px">💡 Let's try something different this round</div>
         <p class="body-text" style="font-size:13px">You've been on this stage for ${ds.cycleCount} rounds. Here's a different idea to try this time:</p>
         ${rotated.map(ideaLine).join("")}
       </div>`;
@@ -1866,7 +2102,7 @@ function renderCycleTab(d, ds) {
     const picks = [0, 1, 2].map(i => allActivities[(offset + i) % allActivities.length]);
     ideasBlock = `
       <div class="card">
-        <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;margin-bottom:8px">💡 Ideas to try this week</div>
+        <div style="font-family:'Plus Jakarta Sans', system-ui, sans-serif;font-weight:700;margin-bottom:8px">💡 Ideas to try this week</div>
         ${picks.map(ideaLine).join("")}
         <p class="body-text" style="font-size:12.5px;margin-bottom:0">See the Activities tab for the full list.</p>
       </div>`;
@@ -1886,7 +2122,7 @@ function renderCycleTab(d, ds) {
   if (ds.cycleWeek === 3) {
     genBlock = `
       <div class="card">
-        <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;margin-bottom:4px">🌍 Generalisation Checklist</div>
+        <div style="font-family:'Plus Jakarta Sans', system-ui, sans-serif;font-weight:700;margin-bottom:4px">🌍 Generalisation Checklist</div>
         <p class="body-text" style="font-size:12.5px">Check off each one as you try it this week.</p>
         ${GEN_ITEMS.map(([key, label]) => `
           <button class="gen-item ${gen[key] ? "checked" : ""}" data-toggle-gen="${d.id}|${key}">
@@ -1898,7 +2134,7 @@ function renderCycleTab(d, ds) {
   } else if (ds.cycleWeek === 4 && genCheckedCount > 0) {
     genBlock = `
       <div class="card soft">
-        <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;margin-bottom:4px">🌍 Generalisation this round</div>
+        <div style="font-family:'Plus Jakarta Sans', system-ui, sans-serif;font-weight:700;margin-bottom:4px">🌍 Generalisation this round</div>
         <p class="body-text" style="font-size:13px;margin-bottom:0">You tried this in ${genCheckedCount} of 5 ways.</p>
       </div>`;
   }
@@ -1914,7 +2150,7 @@ function renderCycleTab(d, ds) {
     ${ideasBlock}
     ${isLastWeek
       ? `<div class="card" style="background:var(--peach-card-2);border:2px solid var(--coral);margin-bottom:12px">
-           <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;color:var(--coral-dark);margin-bottom:6px">👉 Before you tap below</div>
+           <div style="font-family:'Plus Jakarta Sans', system-ui, sans-serif;font-weight:700;color:var(--coral-dark);margin-bottom:6px">👉 Before you tap below</div>
            <p class="body-text" style="margin-bottom:0">If your child moved to a new stage, go mark it in the <b>Checklist</b> tab first.</p>
          </div>
          <button class="btn-primary" data-action="advance-cycle|${d.id}">Check list again & start next round</button>`
@@ -1946,7 +2182,7 @@ function renderActivitiesBank() {
     const custom = (ds.customActivities || []).map(c => `<div class="activity-item">${escapeHtml(c.text)}<span class="principle">your idea</span></div>`).join("");
     return `
     <div style="margin-bottom:18px">
-      <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;font-size:15px;margin-bottom:8px">${d.icon} ${d.title}</div>
+      <div style="font-family:'Plus Jakarta Sans', system-ui, sans-serif;font-weight:700;font-size:15px;margin-bottom:8px">${d.icon} ${d.title}</div>
       ${d.ndbiActivities.map(a => `<div class="activity-item">${a.text}<span class="principle">${a.principle}</span></div>`).join("")}
       ${custom}
     </div>
@@ -1988,7 +2224,7 @@ function renderExport() {
       : "";
     return `
     <div class="card">
-      <div style="font-family:'Quicksand',sans-serif;font-weight:700;margin-bottom:8px">${d.icon} ${d.title} — Week ${ds.cycleWeek}, Round ${ds.cycleCount}</div>
+      <div style="font-family:'Plus Jakarta Sans', system-ui, sans-serif;font-weight:700;margin-bottom:8px">${d.icon} ${d.title} — Week ${ds.cycleWeek}, Round ${ds.cycleCount}</div>
       ${beforeLine}
       ${wordLine}
       ${genLine}
@@ -2014,7 +2250,7 @@ function renderExport() {
     <p class="body-text" style="font-size:12px;color:var(--ink-faint)">Legend: ✓ Done &nbsp; ~ In Progress &nbsp; — Not Yet</p>
     ${summary || `<p class="body-text">No areas selected yet.</p>`}
     <div class="card">
-      <div style="font-family:'Quicksand',sans-serif;font-weight:700;margin-bottom:8px">⭐ Recent Small Wins</div>
+      <div style="font-family:'Plus Jakarta Sans', system-ui, sans-serif;font-weight:700;margin-bottom:8px">⭐ Recent Small Wins</div>
       ${winsList}
     </div>
     <p class="body-text" style="font-size:11px;color:var(--ink-faint);text-align:center;margin-top:10px">© 2026 Dr Chitra Sankar. All rights reserved.</p>
@@ -2032,11 +2268,11 @@ function renderModal() {
       <div class="modal-sheet">
         <h2>😌 Reset & Reconnect</h2>
         <p class="body-text">Never force an activity. Here's what to watch for and what to try.</p>
-        <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;margin:12px 0 6px">⚠️ Signs your child needs a break</div>
+        <div style="font-family:'Plus Jakarta Sans', system-ui, sans-serif;font-weight:700;margin:12px 0 6px">⚠️ Signs your child needs a break</div>
         ${OVERWHELM_SIGNS.map(s => `<div class="body-text" style="margin-bottom:4px">• ${s}</div>`).join("")}
-        <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;margin:14px 0 6px">🤲 What to do</div>
+        <div style="font-family:'Plus Jakarta Sans', system-ui, sans-serif;font-weight:700;margin:14px 0 6px">🤲 What to do</div>
         ${WHAT_TO_DO.map(s => `<div class="body-text" style="margin-bottom:4px">• ${s}</div>`).join("")}
-        <div style="font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-weight:700;margin:14px 0 6px">🔄 Reset strategies</div>
+        <div style="font-family:'Plus Jakarta Sans', system-ui, sans-serif;font-weight:700;margin:14px 0 6px">🔄 Reset strategies</div>
         ${RESET_STRATEGIES.map(s => `<div class="body-text" style="margin-bottom:4px">• ${s}</div>`).join("")}
         <div class="tipbox"><div class="lbl">🩺 Dr Chitra Says</div><div class="txt">A quiet or slow response usually means your child needs more time to think — it does not mean they got it wrong.</div></div>
         <button class="btn-primary modal-close" data-action="close-modal">Close</button>

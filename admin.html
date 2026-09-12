@@ -19,18 +19,21 @@
   <!-- PIN LOCK SCREEN GATE -->
   <div class="admin-lock-overlay" id="admin-lock-screen">
     <div class="admin-lock-card">
-      <div class="lock-icon-wrap"><i class="fas fa-lock"></i></div>
-      <h2>Dr. Chitra Sankar Admin Portal</h2>
+      <div class="lock-icon-wrap"><i class="fas fa-shield-halved"></i></div>
+      <h2>Dr. Chitra Sankar <span class="script-highlight">Admin Portal</span></h2>
       <p>Enter administrative Security PIN to access practice analytics, waitlists, and content management.</p>
       
       <form id="admin-pin-form" style="margin-top:24px;">
         <div class="form-group">
-          <input type="password" id="admin-pin-input" class="form-control" placeholder="Enter PIN (Default: 2026)" maxlength="8" required style="text-align:center; font-size:1.4rem; letter-spacing:0.2em;">
+          <input type="password" id="admin-pin-input" class="form-control" placeholder="Enter PIN (Default: 2026)" maxlength="8" required style="text-align:center; font-size:1.4rem; letter-spacing:0.2em; border-radius:var(--radius-full); border:2px solid var(--lavender); padding:12px 20px;">
         </div>
-        <button type="submit" class="btn btn-primary" style="width:100%; margin-top:12px;">Unlock Portal <i class="fas fa-arrow-right"></i></button>
+        <button type="submit" class="btn btn-primary" style="width:100%; margin-top:14px;">Unlock Portal <i class="fas fa-arrow-right"></i></button>
       </form>
-      <div id="pin-error-msg" style="color:#D32F2F; font-size:0.85rem; font-weight:700; margin-top:12px; display:none;">
+      <div id="pin-error-msg" style="color:#D32F2F; font-size:0.85rem; font-weight:700; margin-top:14px; display:none;">
         <i class="fas fa-exclamation-circle"></i> Invalid Security PIN. Please try again.
+      </div>
+      <div style="margin-top:20px;">
+        <a href="index.html" class="btn btn-outline-purple" style="font-size:0.85rem; padding:8px 18px;"><i class="fas fa-arrow-left"></i> Return to Main Site</a>
       </div>
     </div>
   </div>
@@ -57,8 +60,8 @@
         </ul>
 
         <div class="nav-actions">
-          <a href="index.html" target="_blank" class="btn btn-outline-purple" style="padding:8px 18px; font-size:0.85rem;"><i class="fas fa-external-link-alt"></i> View Main Site</a>
-          <button class="btn btn-primary" onclick="lockAdminPortal()" style="padding:8px 18px; font-size:0.85rem;"><i class="fas fa-sign-out-alt"></i> Lock Portal</button>
+          <a href="index.html" class="btn btn-outline-purple" style="padding:8px 18px; font-size:0.85rem;"><i class="fas fa-arrow-left"></i> Main Site</a>
+          <button class="btn btn-primary" onclick="lockAdminPortal()" style="padding:8px 18px; font-size:0.85rem;"><i class="fas fa-lock"></i> Lock Portal</button>
         </div>
       </div>
     </nav>
@@ -67,10 +70,10 @@
     <main class="container section-padding" style="padding-top:120px;">
 
       <!-- SECTION 1: OVERVIEW METRICS CARDS -->
-      <section id="admin-analytics" class="admin-section">
+      <section id="admin-analytics" class="admin-section reveal">
         <div class="admin-section-header">
           <div>
-            <h2>Practice Analytics & Engagement</h2>
+            <h2>Practice Analytics & <span class="script-highlight">Engagement</span></h2>
             <p>Real-time insights on digital store sales, resource downloads, and parent interactions.</p>
           </div>
           <div style="display:flex; gap:10px;">
@@ -142,10 +145,10 @@
       </section>
 
       <!-- SECTION 2: APPOINTMENT CONSULTATION WAITLIST QUEUE -->
-      <section id="admin-waitlist" class="admin-section" style="margin-top:64px;">
+      <section id="admin-waitlist" class="admin-section reveal" style="margin-top:64px;">
         <div class="admin-section-header">
           <div>
-            <h2>Priority Consultation Waitlist Queue</h2>
+            <h2>Priority Consultation <span class="script-highlight">Waitlist Queue</span></h2>
             <p>Manage parent consultation booking requests for Dr. Chitra Sankar.</p>
           </div>
           <button class="btn btn-primary" onclick="exportWaitlistCSV()"><i class="fas fa-file-csv"></i> Export to CSV</button>
@@ -172,10 +175,10 @@
       </section>
 
       <!-- SECTION 3: CONTENT MANAGEMENT (Store Items, Blogs, Photos & Videos) -->
-      <section id="admin-content" class="admin-section" style="margin-top:64px;">
+      <section id="admin-content" class="admin-section reveal" style="margin-top:64px;">
         <div class="admin-section-header">
           <div>
-            <h2>Content Management System</h2>
+            <h2>Content <span class="script-highlight">Management</span> System</h2>
             <p>Add new store resources, publishing blog articles, and photo/video media gallery items.</p>
           </div>
         </div>
@@ -290,10 +293,10 @@
       </section>
 
       <!-- SECTION 4: RAZORPAY ORDERS & TAX INVOICE RE-PRINTER -->
-      <section id="admin-orders" class="admin-section" style="margin-top:64px;">
+      <section id="admin-orders" class="admin-section reveal" style="margin-top:64px;">
         <div class="admin-section-header">
           <div>
-            <h2>Order History & Customer Tax Invoices</h2>
+            <h2>Order History & <span class="script-highlight">Tax Invoices</span></h2>
             <p>View Razorpay completed orders and re-issue tax receipt documents.</p>
           </div>
         </div>
